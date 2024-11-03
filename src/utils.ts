@@ -10,7 +10,7 @@ import type { Buffer } from "node:buffer";
 
 import type { Ora } from "ora";
 
-export const TEMP_DIR = join(os.tmpdir(), "snelusha-noto");
+export const APP_DIR = join(os.tmpdir(), "snelusha-noto");
 
 export function remove<T>(arr: T[], v: T) {
   const index = arr.indexOf(v);
@@ -35,9 +35,9 @@ interface TempFile {
 let counter = 0;
 
 async function openTemp(): Promise<TempFile | undefined> {
-  if (!existsSync(TEMP_DIR)) await fs.mkdir(TEMP_DIR, { recursive: true });
+  if (!existsSync(APP_DIR)) await fs.mkdir(APP_DIR, { recursive: true });
 
-  const competitivePath = join(TEMP_DIR, `.${process.pid}.${counter}`);
+  const competitivePath = join(APP_DIR, `.${process.pid}.${counter}`);
   counter += 1;
 
   return fs

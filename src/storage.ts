@@ -1,7 +1,7 @@
 import { resolve } from "node:path";
 import { existsSync, promises as fs } from "node:fs";
 
-import { TEMP_DIR, writeFileSafe } from "@/utils";
+import { APP_DIR, writeFileSafe } from "@/utils";
 
 export interface Storage {
   apiKey?: string;
@@ -9,7 +9,7 @@ export interface Storage {
 
 let storage: Storage = {};
 
-const storagePath = resolve(TEMP_DIR, "storage.json");
+const storagePath = resolve(APP_DIR, "storage.json");
 
 export async function load(
   fn?: (storage: Storage) => Promise<boolean> | boolean
