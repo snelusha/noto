@@ -35,15 +35,14 @@
       },
     },
     "packages/cli": {
-      "name": "@snelusha/noto-beta",
-      "version": "1.0.0",
+      "name": "@snelusha/noto",
+      "version": "1.0.0-beta.1",
       "bin": {
-        "noto-beta": "./bin/noto.mjs"
+        "noto": "./bin/noto.mjs"
       },
       "dependencies": {
         "@ai-sdk/google": "^1.1.14",
         "@clack/prompts": "^0.10.0",
-        "@snelusha/noto": "link:@snelusha/noto",
         "ai": "^4.1.40",
         "arg": "^5.0.2",
         "dedent": "^1.5.3",
@@ -281,9 +280,7 @@
 
     "@rushstack/eslint-patch": ["@rushstack/eslint-patch@1.10.5", "", {}, "sha512-kkKUDVlII2DQiKy7UstOR1ErJP8kUKAQ4oa+SQtM0K+lPdmmjj0YnnxBgtTVYH7mUKtbsxeFC9y0AmK7Yb78/A=="],
 
-    "@snelusha/noto": ["@snelusha/noto@link:@snelusha/noto", { "bin": { "noto": "bin/noto.mjs" } }],
-
-    "@snelusha/noto-beta": ["@snelusha/noto-beta@workspace:packages/cli"],
+    "@snelusha/noto": ["@snelusha/noto@workspace:packages/cli"],
 
     "@swc/counter": ["@swc/counter@0.1.3", "", {}, "sha512-e2BR4lsJkkRlKZ/qCHPw9ZaSxc0MVUd7gtbtaB7aMvHeJVYe8sOB8DBZkP2DtISHGSku9sCK6T6cnY0CtXrOCQ=="],
 

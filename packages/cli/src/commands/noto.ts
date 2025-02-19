@@ -22,14 +22,13 @@ const command: Command = {
         spin.start("generating commit message");
 
         const message = await generateCommitMessage(diff);
-
         spin.stop(color.green(message));
-        console.log();
       } catch {
         spin.stop(color.red("failed to generate commit message"), 1);
         console.log();
         process.exit(1);
       }
+      console.log();
     })
   ),
 };
