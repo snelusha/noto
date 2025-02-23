@@ -43,6 +43,7 @@
     "@clack/prompts": "^0.10.0",
     "ai": "^4.1.40",
     "arg": "^5.0.2",
+    "clipboardy": "^4.0.0",
     "dedent": "^1.5.3",
     "picocolors": "^1.1.1",
     "simple-git": "^3.27.0",
