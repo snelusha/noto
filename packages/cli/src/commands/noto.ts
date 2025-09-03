@@ -4,7 +4,7 @@ import color from "picocolors";
 import clipboard from "clipboardy";
 
 import { withAuth } from "~/middleware/auth";
-import { withRepository } from "~/middleware/git";
+import { repositoryProcedure, withRepository } from "~/middleware/git";
 
 import { generateCommitMessage } from "~/ai";
 
@@ -14,6 +14,12 @@ import { commit, isFirstCommit, INIT_COMMIT_MESSAGE, push } from "~/utils/git";
 import { exit } from "~/utils/process";
 
 import type { Command } from "~/types";
+
+export const noto = repositoryProcedure
+  .meta({
+    default: true,
+  })
+  .query(() => console.log("noto command executed"));
 
 const availableTypes = [
   "chore",
