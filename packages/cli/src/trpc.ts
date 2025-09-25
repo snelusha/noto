@@ -1,3 +1,4 @@
+import { promises as fs } from "fs";
 import { trpcServer } from "trpc-cli";
 
 import * as p from "@clack/prompts";
@@ -5,8 +6,9 @@ import color from "picocolors";
 
 import dedent from "dedent";
 
-import { getStagedDiff, isGitRepository } from "~/utils/git";
+import { getGitRoot, getStagedDiff, isGitRepository } from "~/utils/git";
 import { StorageManager } from "~/utils/storage";
+import { findUp } from "~/utils/fs";
 import { exit } from "~/utils/process";
 
 import type { TrpcCliMeta } from "trpc-cli";
@@ -16,6 +18,7 @@ export type Meta = TrpcCliMeta & {
   authRequired?: boolean;
   repoRequired?: boolean;
   diffRequired?: boolean;
+  promptRequired?: boolean;
 };
 
 export const t = trpcServer.initTRPC.meta<Meta>().create({
@@ -24,6 +27,7 @@ export const t = trpcServer.initTRPC.meta<Meta>().create({
     authRequired: true,
     repoRequired: true,
     diffRequired: false,
+    promptRequired: false,
   },
 });
 
@@ -65,8 +69,27 @@ export const gitMiddleware = t.middleware(async (opts) => {
     return await exit(1);
   }
 
+  let prompt: string | null = null;
+
+  if (meta?.promptRequired) {
+    const root = await getGitRoot();
+    const promptPath = await findUp(".noto/prompt.md", {
+      stopAt: root || process.cwd(),
+      type: "file",
+    });
+
+    if (promptPath) {
+      try {
+        prompt = await fs.readFile(promptPath, "utf-8");
+      } catch {}
+    }
+  }
+
   return next({
     ctx: {
+      noto: {
+        prompt,
+      },
       git: {
         isRepository,
         diff,

@@ -35,6 +35,7 @@ export const noto = authedGitProcedure
     description: "generate a commit message",
     default: true,
     diffRequired: true,
+    promptRequired: true,
   })
   .input(
     z.object({
@@ -65,6 +66,12 @@ export const noto = authedGitProcedure
   )
   .mutation(async (opts) => {
     const { input, ctx } = opts;
+
+    const result = await p.text({
+      message: "something",
+      initialValue: ctx.noto.prompt ?? "",
+    });
+    return;
 
     const spin = p.spinner();
     try {
@@ -140,6 +147,7 @@ export const noto = authedGitProcedure
       if (!(await isFirstCommit())) {
         message = await generateCommitMessage(
           ctx.git.diff as string,
+          ctx.noto.prompt ?? "",
           type as string,
           typeof context === "string" ? context : undefined,
           input.force,
@@ -212,6 +220,6 @@ function safeParseErrorMessage(body: unknown): string | undefined {
     const parsed = JSON.parse(body);
     return parsed?.error?.message ?? parsed?.message;
   } catch {
-    return;
+    return undefined;
   }
 }
