@@ -119,3 +119,29 @@ export const generateCommitMessage = async (
 
   return object.message.trim();
 };
+
+export const generatePrompt = async (commits: string[]) => {
+  const model = await getModel();
+  const { object } = await generateObject({
+    model,
+    schema: z.object({
+      prompt: z.string(),
+    }),
+    messages: [
+      {
+        role: "system",
+        content: dedent`
+        You are a highly specialized AI assistant engineered for crafting effective prompts for an AI system that generates Git commit messages. Your function is to serve as an automated tool ensuring that the prompts provided to the commit message generation AI are clear, concise, and optimized for eliciting high-quality responses.`,
+      },
+      {
+        role: "user",
+        content: dedent`Previous commit messages:
+        ${commits.map((c) => `- ${c}`).join("\n")}
+        
+        Based on the above commit history, generate a concise and effective prompt that can be used to guide an AI in generating future commit messages that align with the style and conventions observed in these examples. The prompt should be clear and specific, providing enough context to ensure the AI understands the desired format and tone for the commit messages.`,
+      },
+    ],
+  });
+
+  return object.prompt.trim();
+};

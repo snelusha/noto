@@ -212,6 +212,6 @@ function safeParseErrorMessage(body: unknown): string | undefined {
     const parsed = JSON.parse(body);
     return parsed?.error?.message ?? parsed?.message;
   } catch {
-    return;
+    return undefined;
   }
 }
