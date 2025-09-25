@@ -8,6 +8,14 @@ export const isGitRepository = async () => {
   return git.checkIsRepo();
 };
 
+export const getGitRoot = async () => {
+  try {
+    return await git.revparse(["--show-toplevel"]);
+  } catch {
+    return null;
+  }
+};
+
 export const getCommitCount = async () => {
   try {
     const count = await git.raw(["rev-list", "--all", "--count"]);
@@ -24,6 +32,15 @@ export const getCommitCount = async () => {
 export const isFirstCommit = async () => {
   const count = await getCommitCount();
   return count === 0;
+};
+
+export const getCommits = async (limit: number = 10) => {
+  try {
+    const log = await git.log({ n: limit });
+    return log.all.map((c) => c.message);
+  } catch {
+    return [];
+  }
 };
 
 export const getBranch = async () => {
@@ -107,27 +124,6 @@ export const checkoutLocalBranch = async (branch: string) => {
   try {
     await git.checkoutLocalBranch(branch);
     return true;
-  } catch {
-    return false;
-  }
-};
-
-export const deleteBranches = async (
-  branches: string[],
-  force: boolean = false,
-) => {
-  try {
-    const result = await git.deleteLocalBranches(branches, force);
-    return result.success;
-  } catch {
-    return false;
-  }
-};
-
-export const pull = async (remote?: string, branch?: string) => {
-  try {
-    const result = await git.pull();
-    return result.summary.changes;
   } catch {
     return false;
   }
