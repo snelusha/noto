@@ -43,6 +43,9 @@ export const noto = authedGitProcedure
         alias: "f",
       }),
       manual: z.boolean().meta({ description: "custom commit message" }),
+      stdin: z.boolean().meta({
+        description: "enable pipe mode: read from stdin, write to stdout",
+      }),
     }),
   )
   .mutation(async (opts) => {

@@ -50,7 +50,10 @@ export const authMiddleware = t.middleware(async (opts) => {
 });
 
 export const gitMiddleware = t.middleware(async (opts) => {
-  const { meta, next } = opts;
+  const { meta, next, getRawInput } = opts;
+
+  const stdin = ((await getRawInput()) as any).stdin;
+  const isTTY = process.stdin.isTTY;
 
   const isRepository = await isGitRepository();
   if (meta?.repoRequired && !isRepository) {
