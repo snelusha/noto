@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 
-import { initTRPC } from "@trpc/server";
+import { trpcServer } from "trpc-cli";
 
 import * as p from "@clack/prompts";
 import color from "picocolors";
@@ -22,7 +22,7 @@ export type Meta = TrpcCliMeta & {
   promptRequired?: boolean;
 };
 
-export const t = initTRPC.meta<Meta>().create({
+export const t = trpcServer.initTRPC.meta<Meta>().create({
   defaultMeta: {
     intro: true,
     authRequired: true,

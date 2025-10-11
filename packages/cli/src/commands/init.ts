@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 
-import { z } from "zod";
+import { z } from "trpc-cli";
 
 import * as p from "@clack/prompts";
 import color from "picocolors";

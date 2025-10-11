@@ -50,7 +50,6 @@
     "@ai-sdk/google": "^2.0.17",
     "@ai-sdk/provider": "^2.0.0",
     "@clack/prompts": "^0.11.0",
-    "@trpc/server": "^11.6.0",
     "ai": "^5.0.60",
     "arg": "^5.0.2",
     "bunup": "^0.14.19",
@@ -60,7 +59,7 @@
     "simple-git": "^3.28.0",
     "superjson": "^2.2.2",
     "tinyexec": "^1.0.1",
-    "trpc-cli": "^0.11.0",
+    "trpc-cli": "^0.10.2",
     "zod": "^4.1.12"
   }
 }

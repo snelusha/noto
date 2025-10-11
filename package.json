@@ -24,6 +24,6 @@
     }
   },
   "patchedDependencies": {
-    "trpc-cli@0.11.0": "patches/trpc-cli@0.11.0.patch"
+    "trpc-cli@0.10.2": "patches/trpc-cli@0.10.2.patch"
   }
 }
