@@ -26,6 +26,7 @@ const docs = defineCollection({
   include: "**/*.md",
   schema: z.object({
     title: z.string(),
+    slug: z.string(),
   }),
   transform: async (doc, { cache }) => {
     const { mdx, toc } = await cache(doc.content, async () => {
@@ -74,8 +75,6 @@ const docs = defineCollection({
         toc,
       };
     });
-
-    console.log(toc);
 
     return {
       ...doc,
