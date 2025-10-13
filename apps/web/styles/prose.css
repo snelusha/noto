@@ -26,7 +26,7 @@
 
 .prose {
   color: var(--tw-prose-body);
-  max-width: 65ch;
+  /* max-width: 65ch; */
 }
 
 .prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {

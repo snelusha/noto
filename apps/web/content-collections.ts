@@ -14,21 +14,19 @@ import type { Options as MDXOptions } from "@content-collections/mdx";
 import type { TocItem, FlexibleTocOptions } from "remark-flexible-toc";
 import type { Options as RehypePrettyCodeOptions } from "rehype-pretty-code";
 
-type TOCItem = {
-  title: string;
-  url: string;
-  depth: number;
-};
+import type { TOCItem } from "~/components/toc";
 
 const docs = defineCollection({
   name: "docs",
-  directory: "contents/docs",
+  directory: "content/docs",
   include: "**/*.md",
   schema: z.object({
     title: z.string(),
-    slug: z.string(),
   }),
   transform: async (doc, { cache }) => {
+    const filePath = doc._meta.filePath.replace(/\.mdx?$/, "");
+    const slugs = filePath.split("/").filter(Boolean);
+
     const { mdx, toc } = await cache(doc.content, async () => {
       let toc: TOCItem[] = [];
 
@@ -80,6 +78,7 @@ const docs = defineCollection({
       ...doc,
       mdx,
       toc,
+      slugs,
     };
   },
 });
