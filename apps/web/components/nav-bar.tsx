@@ -1,11 +1,21 @@
+import Link from "next/link";
+import { NavbarMobile, NavbarMobileButton } from "~/components/nav-mobile";
+
 export function Navbar() {
   return (
-    <div className="bg-background_ sticky top-0 z-30 flex flex-col backdrop-blur-md">
+    <div className="bg-background sticky top-0 z-30 flex flex-col backdrop-blur-md">
       <nav className="top-0 flex h-16 grid-cols-12 items-center justify-between md:grid md:border-b">
-        <div className="relative flex items-center justify-end md:col-span-10">
+        <div className="flex h-full shrink-0 items-center px-6 md:col-span-2 md:w-[268px] md:border-r lg:w-[286px]">
+          <Link href="/" className="text-muted-foreground text-lg">
+            @snelusha/<span className="text-foreground">noto</span>
+          </Link>
+        </div>
+        <div className="relative flex w-full items-center justify-end px-6 md:col-span-10">
           <ul className="hidden w-max shrink-0 items-center divide-x md:flex"></ul>
+          <NavbarMobileButton />
         </div>
       </nav>
+      <NavbarMobile />
     </div>
   );
 }
