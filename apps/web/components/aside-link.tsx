@@ -6,7 +6,10 @@ import Link from "next/link";
 
 import { usePathname } from "next/navigation";
 
+import { cn } from "~/styles/utils";
+
 export function AsideLink({
+  className,
   href,
   children,
 }: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
@@ -17,7 +20,10 @@ export function AsideLink({
 
   return (
     <Link
-      className="text-muted-foreground hover:text-foreground data-[active]:text-foreground flex w-full items-center gap-2 px-5 py-2.5 transition-colors"
+      className={cn(
+        "text-muted-foreground hover:text-foreground data-[active]:text-foreground flex w-full items-center gap-2 transition-colors",
+        className,
+      )}
       href={{ pathname: href }}
       data-active={isActive || undefined}
     >

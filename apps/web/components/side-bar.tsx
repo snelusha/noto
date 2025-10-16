@@ -9,8 +9,6 @@ import { ChevronDown } from "lucide-react";
 
 import { AsideLink } from "~/components/aside-link";
 
-import { cn } from "~/styles/utils";
-
 export interface Content {
   title: string;
   href?: string;
@@ -97,7 +95,9 @@ export function Sidebar() {
                       <motion.div>
                         {content.list.map((item) => (
                           <div key={item.title}>
-                            <AsideLink href={item.href}>{item.title}</AsideLink>
+                            <AsideLink className="px-5 py-2.5" href={item.href}>
+                              {item.title}
+                            </AsideLink>
                           </div>
                         ))}
                       </motion.div>

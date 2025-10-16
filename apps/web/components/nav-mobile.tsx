@@ -2,13 +2,54 @@
 
 import * as React from "react";
 
-import Link from "next/link";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
+import { ChevronDown, Menu } from "lucide-react";
 
-import { Menu } from "lucide-react";
-
+import { usePathname } from "next/navigation";
 import { useHotkeys } from "react-hotkeys-hook";
 
+import { AsideLink } from "~/components/aside-link";
+
 import { cn } from "~/styles/utils";
+
+export interface Content {
+  title: string;
+  href?: string;
+  list: {
+    title: string;
+    href: string;
+    isNew?: boolean;
+  }[];
+}
+
+const contents: Content[] = [
+  {
+    title: "Getting Started",
+    list: [
+      {
+        title: "Introduction",
+        href: "/docs/introduction",
+      },
+      {
+        title: "Installation",
+        href: "/docs/installation",
+      },
+      {
+        title: "Configuration",
+        href: "/docs/configuration",
+      },
+    ],
+  },
+  {
+    title: "Commands",
+    list: [
+      {
+        title: "noto",
+        href: "/docs/commands/noto",
+      },
+    ],
+  },
+];
 
 export interface NavbarMobileContextProps {
   isOpen: boolean;
@@ -20,7 +61,7 @@ export const NavbarMobileContext = React.createContext<
 >(undefined);
 
 export function NavbarMobileProvider({ children }: React.PropsWithChildren) {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(true);
 
   const toggle = React.useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -58,7 +99,22 @@ export function NavbarMobileButton() {
 }
 
 export function NavbarMobile() {
+  const pathname = usePathname();
+
   const { isOpen, toggle } = useNavbarMobile();
+
+  const [currentOpen, setCurrentOpen] = React.useState<number>(0);
+
+  const getDefaultValue = () => {
+    const defaultValue = contents.findIndex((content) =>
+      content.list.some((item) => item.href === pathname),
+    );
+    return defaultValue === -1 ? 0 : defaultValue;
+  };
+
+  React.useEffect(() => {
+    setCurrentOpen(getDefaultValue());
+  }, [pathname]);
 
   return (
     <div
@@ -69,11 +125,51 @@ export function NavbarMobile() {
     >
       <div
         className={cn(
-          "no-scrollbar flex max-h-[80vh] min-h-0 flex-col gap-4 overflow-y-auto [mask-image:linear-gradient(to_top,transparent,white_40px)] px-4 transition-all duration-300",
-          isOpen ? "py-5" : "invisible",
+          "no-scrollbar flex max-h-[80vh] min-h-0 flex-col gap-4 overflow-y-auto [mask-image:linear-gradient(to_top,transparent,white_40px)] transition-all duration-300",
+          isOpen ? "pt-5 pb-2" : "invisible",
         )}
       >
-        <Link href="/docs/introduction">Introduction</Link>
+        <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0 }}>
+          <div className="flex flex-col divide-y">
+            {contents.map((content, index) => (
+              <div key={content.title} className="px-6 py-4">
+                <button
+                  className="flex w-full items-center text-start hover:underline"
+                  onClick={() =>
+                    setCurrentOpen(currentOpen === index ? -1 : index)
+                  }
+                >
+                  <span className="grow">{content.title}</span>
+                  <motion.div
+                    animate={{ rotate: currentOpen === index ? 180 : 0 }}
+                  >
+                    <ChevronDown className="size-4 shrink-0 transition-transform" />
+                  </motion.div>
+                </button>
+                <AnimatePresence initial={false}>
+                  {currentOpen === index && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="relative overflow-hidden"
+                    >
+                      <motion.div className="flex flex-col gap-2.5 px-4 pt-4">
+                        {content.list.map((item) => (
+                          <div key={item.title}>
+                            <AsideLink href={item.href} onClick={toggle}>
+                              {item.title}
+                            </AsideLink>
+                          </div>
+                        ))}
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </MotionConfig>
       </div>
     </div>
   );
