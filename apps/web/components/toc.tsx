@@ -98,7 +98,12 @@ export function TOCItem({ href, onActiveChange, ...props }: TOCItemProps) {
   });
 
   return (
-    <a ref={anchorRef} data-active={isActive} href={href} {...props}>
+    <a
+      ref={anchorRef}
+      data-active={isActive || undefined}
+      href={href}
+      {...props}
+    >
       {props.children}
     </a>
   );

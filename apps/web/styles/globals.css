@@ -88,5 +88,6 @@
 
   --ring: oklch(0.705 0.015 286.067);
 
-  --radius: 0.625rem;
+  /* --radius: 0.625rem; */
+  --radius: 0;
 }

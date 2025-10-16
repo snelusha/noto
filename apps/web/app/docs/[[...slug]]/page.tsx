@@ -48,7 +48,7 @@ export default async function Page({ params }: PageProps) {
               href={item.url}
               className={cn(
                 item.depth !== 2 && "ml-2",
-                "text-muted-foreground data-[active=true]:text-secondary-foreground",
+                "text-muted-foreground data-[active]:text-secondary-foreground",
               )}
             >
               {item.title}

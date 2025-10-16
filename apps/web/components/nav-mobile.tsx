@@ -20,7 +20,7 @@ export const NavbarMobileContext = React.createContext<
 >(undefined);
 
 export function NavbarMobileProvider({ children }: React.PropsWithChildren) {
-  const [isOpen, setIsOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const toggle = React.useCallback(() => {
     setIsOpen((prev) => !prev);
