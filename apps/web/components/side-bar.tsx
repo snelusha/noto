@@ -9,44 +9,7 @@ import { ChevronDown } from "lucide-react";
 
 import { AsideLink } from "~/components/aside-link";
 
-export interface Content {
-  title: string;
-  href?: string;
-  list: {
-    title: string;
-    href: string;
-    isNew?: boolean;
-  }[];
-}
-
-const contents: Content[] = [
-  {
-    title: "Getting Started",
-    list: [
-      {
-        title: "Introduction",
-        href: "/docs/introduction",
-      },
-      {
-        title: "Installation",
-        href: "/docs/installation",
-      },
-      {
-        title: "Configuration",
-        href: "/docs/configuration",
-      },
-    ],
-  },
-  {
-    title: "Commands",
-    list: [
-      {
-        title: "noto",
-        href: "/docs/commands/noto",
-      },
-    ],
-  },
-];
+import { config } from "~/config";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -54,7 +17,7 @@ export function Sidebar() {
   const [currentOpen, setCurrentOpen] = React.useState<number>(0);
 
   const getDefaultValue = () => {
-    const defaultValue = contents.findIndex((content) =>
+    const defaultValue = config.docs.contents.findIndex((content) =>
       content.list.some((item) => item.href === pathname),
     );
     return defaultValue === -1 ? 0 : defaultValue;
@@ -69,7 +32,7 @@ export function Sidebar() {
       <aside className="absolute top-16 hidden h-dvh shrink-0 flex-col justify-between overflow-y-auto border-r pb-2 md:flex md:w-[268px] md:transition-all lg:w-[286px]">
         <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0 }}>
           <div className="flex flex-col">
-            {contents.map((content, index) => (
+            {config.docs.contents.map((content, index) => (
               <div key={content.title}>
                 <button
                   className="flex w-full items-center gap-2 border-b px-5 py-2.5 text-start hover:underline"

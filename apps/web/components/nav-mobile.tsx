@@ -10,46 +10,9 @@ import { useHotkeys } from "react-hotkeys-hook";
 
 import { AsideLink } from "~/components/aside-link";
 
+import { config } from "~/config";
+
 import { cn } from "~/styles/utils";
-
-export interface Content {
-  title: string;
-  href?: string;
-  list: {
-    title: string;
-    href: string;
-    isNew?: boolean;
-  }[];
-}
-
-const contents: Content[] = [
-  {
-    title: "Getting Started",
-    list: [
-      {
-        title: "Introduction",
-        href: "/docs/introduction",
-      },
-      {
-        title: "Installation",
-        href: "/docs/installation",
-      },
-      {
-        title: "Configuration",
-        href: "/docs/configuration",
-      },
-    ],
-  },
-  {
-    title: "Commands",
-    list: [
-      {
-        title: "noto",
-        href: "/docs/commands/noto",
-      },
-    ],
-  },
-];
 
 export interface NavbarMobileContextProps {
   isOpen: boolean;
@@ -61,7 +24,7 @@ export const NavbarMobileContext = React.createContext<
 >(undefined);
 
 export function NavbarMobileProvider({ children }: React.PropsWithChildren) {
-  const [isOpen, setIsOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const toggle = React.useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -106,7 +69,7 @@ export function NavbarMobile() {
   const [currentOpen, setCurrentOpen] = React.useState<number>(0);
 
   const getDefaultValue = () => {
-    const defaultValue = contents.findIndex((content) =>
+    const defaultValue = config.docs.contents.findIndex((content) =>
       content.list.some((item) => item.href === pathname),
     );
     return defaultValue === -1 ? 0 : defaultValue;
@@ -131,7 +94,7 @@ export function NavbarMobile() {
       >
         <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0 }}>
           <div className="flex flex-col divide-y">
-            {contents.map((content, index) => (
+            {config.docs.contents.map((content, index) => (
               <div key={content.title} className="px-6 py-4">
                 <button
                   className="flex w-full items-center text-start hover:underline"
