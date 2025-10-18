@@ -66,18 +66,27 @@ export function NavbarMobile() {
 
   const { isOpen, toggle } = useNavbarMobile();
 
-  const [currentOpen, setCurrentOpen] = React.useState<number>(0);
+  const [openSections, setOpenSections] = React.useState<Set<number>>(
+    new Set(),
+  );
 
-  const getDefaultValue = () => {
+  const getDefaultValue = (): Set<number> => {
     const defaultValue = config.docs.contents.findIndex((content) =>
       content.list.some((item) => item.href === pathname),
     );
-    return defaultValue === -1 ? 0 : defaultValue;
+    return defaultValue === -1 ? new Set() : new Set([defaultValue]);
   };
 
   React.useEffect(() => {
-    setCurrentOpen(getDefaultValue());
+    setOpenSections(getDefaultValue());
   }, [pathname]);
+
+  const toggleSection = (index: number) =>
+    setOpenSections((prev) => {
+      const set = new Set(prev);
+      set.has(index) ? set.delete(index) : set.add(index);
+      return set;
+    });
 
   return (
     <div
@@ -98,19 +107,17 @@ export function NavbarMobile() {
               <div key={content.title} className="px-6 py-4">
                 <button
                   className="flex w-full items-center text-start hover:underline"
-                  onClick={() =>
-                    setCurrentOpen(currentOpen === index ? -1 : index)
-                  }
+                  onClick={() => toggleSection(index)}
                 >
                   <span className="grow">{content.title}</span>
                   <motion.div
-                    animate={{ rotate: currentOpen === index ? 180 : 0 }}
+                    animate={{ rotate: openSections.has(index) ? 180 : 0 }}
                   >
                     <ChevronDown className="size-4 shrink-0 transition-transform" />
                   </motion.div>
                 </button>
                 <AnimatePresence initial={false}>
-                  {currentOpen === index && (
+                  {openSections.has(index) && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
