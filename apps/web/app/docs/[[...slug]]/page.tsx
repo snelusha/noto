@@ -9,6 +9,7 @@ import { AnchorProvider, TOCItem } from "~/components/toc";
 import { allDocs } from "content-collections";
 
 import { cn } from "~/styles/utils";
+import { TOCPopover } from "~/components/toc-popover";
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>;
@@ -29,9 +30,10 @@ export default async function Page({ params }: PageProps) {
   return (
     <AnchorProvider toc={doc.toc}>
       <div className="flex w-full min-w-0 flex-col">
+        <TOCPopover />
         <div className="flex w-full max-w-[860px] min-w-0 flex-grow flex-col gap-6 px-6 pt-8 md:pt-12 xl:mx-auto xl:px-12">
           <h1 className="text-3xl font-medium">{doc.title}</h1>
-          <article className="prose">
+          <article className="prose h-[200dvh]">
             <MDXContent code={doc.mdx} />
           </article>
         </div>
