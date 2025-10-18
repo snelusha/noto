@@ -2,7 +2,8 @@
 
 import * as React from "react";
 
-import { MotionConfig } from "motion/react";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
+
 import { useOnClickOutside } from "~/hooks/use-on-click-outside";
 
 export function TOCPopover() {
@@ -22,9 +23,18 @@ export function TOCPopover() {
           On this page
         </button>
         <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0 }}>
-          {open && (
-            <div className="bg-background/10 h-52 backdrop-blur-md"></div>
-          )}
+          <AnimatePresence initial={false}>
+            {open && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="relative overflow-hidden"
+              >
+                <div className="bg-background/10 h-52 backdrop-blur-md"></div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </MotionConfig>
       </header>
     </div>
