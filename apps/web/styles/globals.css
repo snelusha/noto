@@ -49,8 +49,14 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans text-sm antialiased;
+  }
+
+  a,
+  button {
+    @apply outline-none;
   }
 }
 
@@ -88,6 +94,5 @@
 
   --ring: oklch(0.705 0.015 286.067);
 
-  /* --radius: 0.625rem; */
   --radius: 0;
 }
