@@ -16,6 +16,8 @@ export type TableOfContents = TOCItem[];
 
 const ActiveAnchorContext = React.createContext<string[]>([]);
 
+const TOCContext = React.createContext<TableOfContents>([]);
+
 const ScrollContext = React.createContext<React.RefObject<HTMLElement | null>>({
   current: null,
 });
@@ -26,6 +28,10 @@ export function useActiveAnchor(): string | undefined {
 
 export function useActiveAnchors(): string[] {
   return React.useContext(ActiveAnchorContext);
+}
+
+export function useTOC(): TableOfContents {
+  return React.useContext(TOCContext);
 }
 
 export interface AnchorProviderProps {
@@ -61,9 +67,11 @@ export function AnchorProvider({
   );
 
   return (
-    <ActiveAnchorContext.Provider value={useAnchorObserver(headings, single)}>
-      {children}
-    </ActiveAnchorContext.Provider>
+    <TOCContext.Provider value={toc}>
+      <ActiveAnchorContext.Provider value={useAnchorObserver(headings, single)}>
+        {children}
+      </ActiveAnchorContext.Provider>
+    </TOCContext.Provider>
   );
 }
 
@@ -74,9 +82,11 @@ export interface TOCItemProps
 }
 
 export function TOCItem({ href, onActiveChange, ...props }: TOCItemProps) {
-  const containerRef = React.useContext(ScrollContext);
-  const anchors = useActiveAnchors();
   const anchorRef = React.useRef<HTMLAnchorElement | null>(null);
+
+  const containerRef = React.useContext(ScrollContext);
+
+  const anchors = useActiveAnchors();
 
   const isActive = anchors.includes(href.slice(1));
 

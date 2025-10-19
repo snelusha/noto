@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@openpanel/nextjs": "^1.0.8",
-    "@radix-ui/react-collapsible": "^1.1.12",
+    "@radix-ui/react-scroll-area": "^1.2.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "geist": "^1.5.1",
