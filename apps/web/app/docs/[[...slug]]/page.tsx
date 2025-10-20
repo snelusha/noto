@@ -2,15 +2,11 @@ import { notFound } from "next/navigation";
 
 import { MDXContent } from "@content-collections/mdx/react";
 
-import { Text } from "lucide-react";
-
-import { AnchorProvider, TOCItem } from "~/components/toc";
+import { AnchorProvider } from "~/components/toc";
 import { TOCMobile } from "~/components/toc-mobile";
 import { TOCDesktop } from "~/components/toc-desktop";
 
 import { allDocs } from "content-collections";
-
-import { cn } from "~/styles/utils";
 
 interface PageProps {
   params: Promise<{ slug?: string[] }>;

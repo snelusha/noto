@@ -38,7 +38,7 @@ export function TOCMobile() {
       ref={outsideRef}
       className="sticky top-16 z-10 h-12 overflow-visible xl:hidden"
     >
-      <header className="bg-background/80 border-b px-6 backdrop-blur-md">
+      <header className="bg-background/90 border-b px-6 backdrop-blur-md">
         <button
           className="w-full py-2.5 text-start"
           onClick={() => setOpen(!open)}
