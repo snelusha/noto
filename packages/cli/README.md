@@ -28,7 +28,7 @@ Before using noto, you must configure your [Google Generative API](https://aistu
 
 ### 1. Using an environment variable (recommended)
 
-Set the `NOTO_API_KEY` environment variable globally os it's available across your system.
+Set the `NOTO_API_KEY` environment variable globally so it's available across your system.
 
 #### macOS/Linux (eg., in .bashrc, .zshrc or .profile)
 
@@ -106,7 +106,7 @@ noto prev --amend --edit # or simply: noto prev --amend -e
 
 Note: All of the flags shown above (`--apply`, `--copy`, `--type`, `--edit`) can also be used with the `noto prev` command to work with the previously generated commit message.
 
-Switch between branches in you git repo with an interactive prompt:
+Switch between branches in your git repo with an interactive prompt:
 
 ```bash
 noto checkout
