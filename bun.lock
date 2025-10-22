@@ -67,9 +67,6 @@
       },
     },
   },
-  "patchedDependencies": {
-    "trpc-cli@0.11.0": "patches/trpc-cli@0.11.0.patch",
-  },
   "catalog": {
     "@types/node": "^22.15.23",
     "typescript": "^5.8.3",
