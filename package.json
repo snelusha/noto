@@ -19,7 +19,7 @@
       "packages/*"
     ],
     "catalog": {
-      "@types/node": "^22.15.23",
+      "@types/node": "^24.9.1",
       "typescript": "^5.8.3"
     }
   }
