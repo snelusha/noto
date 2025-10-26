@@ -44,23 +44,23 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "typescript": "catalog:",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.3"
   },
   "dependencies": {
-    "@ai-sdk/google": "^2.0.17",
+    "@ai-sdk/google": "^2.0.23",
     "@ai-sdk/provider": "^2.0.0",
     "@clack/prompts": "^0.11.0",
-    "@trpc/server": "^11.6.0",
-    "ai": "^5.0.60",
+    "@trpc/server": "^11.7.0",
+    "ai": "^5.0.80",
     "arg": "^5.0.2",
-    "bunup": "^0.14.19",
+    "bunup": "^0.15.7",
     "clipboardy": "^5.0.0",
     "dedent": "^1.7.0",
     "picocolors": "^1.1.1",
     "simple-git": "^3.28.0",
-    "superjson": "^2.2.2",
+    "superjson": "^2.2.3",
     "tinyexec": "^1.0.1",
-    "trpc-cli": "^0.11.0",
+    "trpc-cli": "^0.12.0",
     "zod": "^4.1.12"
   }
 }
