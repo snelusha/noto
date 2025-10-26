@@ -43,6 +43,7 @@
   ],
   "devDependencies": {
     "@types/node": "catalog:",
+    "bunup": "^0.15.7",
     "typescript": "catalog:",
     "vitest": "^4.0.3"
   },
@@ -52,8 +53,6 @@
     "@clack/prompts": "^0.11.0",
     "@trpc/server": "^11.7.0",
     "ai": "^5.0.80",
-    "arg": "^5.0.2",
-    "bunup": "^0.15.7",
     "clipboardy": "^5.0.0",
     "dedent": "^1.7.0",
     "picocolors": "^1.1.1",
