@@ -1,7 +1,8 @@
+import { withContentCollections } from "@content-collections/next";
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  typedRoutes: true,
   async redirects() {
     return [
       {
@@ -18,4 +19,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withContentCollections(nextConfig);
