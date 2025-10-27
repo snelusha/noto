@@ -104,7 +104,7 @@ noto prev --amend --edit # or simply: noto prev --amend -e
 
 > Note: When using the `--amend` flag with the noto prev command, the `--edit` (`-e`) flag is also required. This combination will allow you to modify (amend) the previous commit message before applying it.
 
-Note: All of the flags shown above (`--apply`, `--copy`, `--type`, `--edit`) can also be used with the `noto prev` command to work with the previously generated commit message.
+Note: All of the flags shown above (`--apply`, `--copy`, `--edit`) can also be used with the `noto prev` command to work with the previously generated commit message.
 
 Switch between branches in your git repo with an interactive prompt:
 
@@ -124,11 +124,11 @@ noto checkout -b new-branch-name
 
 ## Contributing
 
-We welcome contributions and suggestions! If you have ideas or improvements, feel free to reach out or open a pull request.
+We welcome contributions and suggestions! If you have ideas or improvements, feel free to open a pull request or reach out with feedback. ✨
 
-Thank you for using `noto`! If you have any feedback or suggestions, feel free to reach out or contribute to the project. ✨
+Thank you for using noto!
 
 ## License
 
 This project is licensed under the MIT License.
-© 2024 [Sithija Nelusha Silva](https://github.com/snelusha)
+© 2025 [Sithija Nelusha Silva](https://github.com/snelusha)
