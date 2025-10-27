@@ -229,7 +229,6 @@
 
 .prose
   :where(h1 strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  /* font-weight: 900; */
   color: inherit;
 }
 
@@ -244,7 +243,6 @@
 
 .prose
   :where(h2 strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  /* font-weight: 800; */
   color: inherit;
 }
 
@@ -259,7 +257,6 @@
 
 .prose
   :where(h3 strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  /* font-weight: 700; */
   color: inherit;
 }
 
@@ -274,7 +271,6 @@
 
 .prose
   :where(h4 strong):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  /* font-weight: 700; */
   color: inherit;
 }
 
@@ -307,7 +303,8 @@
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   color: var(--tw-prose-code);
   font-size: var(--text-sm);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-geist-mono);
 }
 
 .prose
