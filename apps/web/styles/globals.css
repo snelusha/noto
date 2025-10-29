@@ -45,6 +45,11 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+::selection {
+  background-color: #edf2fe;
+  color: #3a5bc7;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -96,4 +101,3 @@
 
   --radius: 0;
 }
-
