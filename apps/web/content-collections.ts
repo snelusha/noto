@@ -53,7 +53,7 @@ const docs = defineCollection({
             rehypePrettyCode,
             {
               defaultLang: "plaintext",
-              theme: "vitesse-light",
+              theme: "github-light",
               keepBackground: false,
             } as RehypePrettyCodeOptions,
           ],
