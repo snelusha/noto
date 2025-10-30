@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/docs",
+        destination: "/docs/introduction",
+        permanent: true,
+      },
+
+      {
         source: "/gh",
         destination: "https://github.com/snelusha/noto",
         permanent: true,
