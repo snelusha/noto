@@ -1,21 +1,22 @@
 .prose {
-  --tw-prose-body: #374151;
-  --tw-prose-headings: #111827;
-  --tw-prose-lead: #4b5563;
-  --tw-prose-links: #111827;
-  --tw-prose-bold: #111827;
-  --tw-prose-counters: #6b7280;
-  --tw-prose-bullets: #d1d5db;
-  --tw-prose-hr: #e5e7eb;
-  --tw-prose-quotes: #111827;
-  --tw-prose-quote-borders: #e5e7eb;
-  --tw-prose-captions: #6b7280;
-  --tw-prose-kbd: #111827;
-  --tw-prose-code: #111827;
-  --tw-prose-pre-code: #e5e7eb;
-  --tw-prose-pre-bg: #f5f4f4;
-  --tw-prose-th-borders: #d1d5db;
-  --tw-prose-td-borders: #e5e7eb;
+  --tw-prose-body: oklch(0.44 0.02 285.78);
+  --tw-prose-headings: oklch(0.21 0.01 0);
+  --tw-prose-lead: oklch(0.45 0.03 256.84);
+  --tw-prose-links: oklch(0.21 0.03 264.68);
+  --tw-prose-bold: oklch(0.21 0.03 264.68);
+  --tw-prose-counters: oklch(0.44 0.02 285.78 / 0.8);
+  --tw-prose-bullets: oklch(0.44 0.02 285.78 / 0.8);
+  --tw-prose-hr: oklch(0.93 0.01 0);
+  --tw-prose-quotes: oklch(0.21 0.03 264.68);
+  --tw-prose-quote-borders: oklch(0.93 0.01 0);
+  --tw-prose-captions: oklch(0.55 0.02 264.42);
+  --tw-prose-kbd: oklch(0.21 0.03 264.68);
+  --tw-prose-code: oklch(0.44 0.02 285.78);
+  --tw-prose-code-bg: oklch(0 0 0 / 0.04);
+  --tw-prose-pre-code: oklch(0.93 0.01 0);
+  --tw-prose-pre-bg: oklch(0 0 0 / 0.03);
+  --tw-prose-th-borders: oklch(0.87 0.01 0);
+  --tw-prose-td-borders: oklch(0.93 0.01 0);
 
   --tw-prose-kbd-shadows: 17 24 39;
 
@@ -304,9 +305,12 @@
 
 .prose :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   color: var(--tw-prose-code);
-  font-size: var(--text-sm);
-  font-weight: var(--font-weight-semibold);
+  font-size: calc(var(--text-sm) * 0.9);
+  font-weight: var(--font-weight-normal);
   font-family: var(--font-geist-mono);
+  background-color: var(--tw-prose-code-bg);
+  padding-inline: 0.3rem;
+  padding-block: 0.2rem;
 }
 
 .prose
