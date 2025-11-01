@@ -30,11 +30,11 @@ export function CodeBlockCommand({
 
   return (
     <div className="-my-3.5 overflow-x-auto">
-      <Tabs className="gap-0">
+      <Tabs className="gap-0" defaultValue="npm">
         <div className="border-border/60 flex items-center gap-2.5 border-b px-4 py-1 font-mono">
           <Terminal className="text-muted-foreground size-4" />
           <div className="flex-grow">
-            <TabsList>
+            <TabsList className="bg-transparent">
               {Object.entries(tabs).map(([key]) => (
                 <TabsTrigger
                   key={key}
