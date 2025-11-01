@@ -10,6 +10,8 @@ import remarkFlexibleToc from "remark-flexible-toc";
 import rehypeSlug from "rehype-slug";
 import rehypePrettyCode from "rehype-pretty-code";
 
+import { transformers } from "~/lib/transformers";
+
 import type { Options as MDXOptions } from "@content-collections/mdx";
 import type { TocItem, FlexibleTocOptions } from "remark-flexible-toc";
 import type { Options as RehypePrettyCodeOptions } from "rehype-pretty-code";
@@ -55,6 +57,7 @@ const docs = defineCollection({
               defaultLang: "plaintext",
               theme: "github-light",
               keepBackground: false,
+              transformers: transformers,
             } as RehypePrettyCodeOptions,
           ],
         ],
