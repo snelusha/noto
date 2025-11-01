@@ -12,6 +12,7 @@
   "dependencies": {
     "@content-collections/mdx": "^0.2.2",
     "@openpanel/nextjs": "^1.0.8",
+    "@radix-ui/react-tabs": "^1.1.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "geist": "^1.5.1",
