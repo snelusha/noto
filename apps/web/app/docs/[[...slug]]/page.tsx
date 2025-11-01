@@ -30,7 +30,7 @@ export default async function Page({ params }: PageProps) {
     <AnchorProvider toc={doc.toc}>
       <div className="flex w-full min-w-0 flex-col">
         <TOCMobile />
-        <div className="flex w-full max-w-[860px] min-w-0 flex-grow flex-col gap-6 px-6 pt-8 pb-20 md:pt-12 xl:mx-auto xl:px-12">
+        <div className="flex w-full max-w-[860px] min-w-0 flex-grow flex-col gap-6 px-6 pt-8 pb-20 xl:mx-auto xl:px-12 xl:pt-10">
           <h1 className="text-3xl font-medium">{doc.title}</h1>
           <article className="prose">
             <MDXContent code={doc.mdx} components={components} />

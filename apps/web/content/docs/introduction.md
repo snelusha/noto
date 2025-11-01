@@ -44,7 +44,3 @@ noto -a
 noto was born from a simple need: keeping commit messages clean on a university project with colleagues. As someone who values a well-maintained Git history, I built noto to make writing commit messages effortless and consistent. It worked so well that I decided to share it with the world.
 
 **Ready to upgrade your commits?** Let's get you started with [installation](/docs/installation) and setup.
-
-```bash
-npm install -g @snelusha/noto
-```

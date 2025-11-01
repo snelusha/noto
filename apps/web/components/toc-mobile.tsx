@@ -36,7 +36,7 @@ export function TOCMobile() {
   return (
     <div
       ref={outsideRef}
-      className="sticky top-16 z-10 h-12 overflow-visible xl:hidden"
+      className="sticky top-16 z-10 h-10 overflow-visible xl:hidden"
     >
       <header className="bg-background/90 border-b px-6 backdrop-blur-md">
         <button
