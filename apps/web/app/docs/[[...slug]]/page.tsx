@@ -31,7 +31,15 @@ export default async function Page({ params }: PageProps) {
         <div className="flex w-full max-w-[860px] min-w-0 flex-grow flex-col gap-6 px-6 pt-8 pb-20 md:pt-12 xl:mx-auto xl:px-12">
           <h1 className="text-3xl font-medium">{doc.title}</h1>
           <article className="prose">
-            <MDXContent code={doc.mdx} />
+            <MDXContent
+              code={doc.mdx}
+              components={{
+                pre: (props) => {
+                  console.log(props);
+                  return <pre {...props} />;
+                },
+              }}
+            />
           </article>
         </div>
       </div>
