@@ -2,6 +2,8 @@
 
 import * as React from "react";
 
+import Link from "next/link";
+
 import scrollIntoView from "scroll-into-view-if-needed";
 
 import { useAnchorObserver } from "~/hooks/use-anchor-observer";
@@ -109,13 +111,13 @@ export function TOCItem({ href, onActiveChange, ...props }: TOCItemProps) {
   });
 
   return (
-    <a
+    <Link
       ref={anchorRef}
       data-active={isActive || undefined}
       href={href}
       {...props}
     >
       {props.children}
-    </a>
+    </Link>
   );
 }
