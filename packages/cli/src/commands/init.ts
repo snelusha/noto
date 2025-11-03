@@ -7,7 +7,7 @@ import color from "picocolors";
 
 import dedent from "dedent";
 
-import { gitProcedure } from "~/trpc";
+import { authedGitProcedure } from "~/trpc";
 
 import { getPromptFile } from "~/utils/prompt";
 import { exit } from "~/utils/process";
@@ -20,7 +20,7 @@ const EMPTY_TEMPLATE = dedent`
   # Add your custom guidelines here.
   # When no guidelines are present, noto will use conventional commits format by default.`;
 
-export const init = gitProcedure
+export const init = authedGitProcedure
   .meta({
     description: "initialize noto in the repository",
   })
