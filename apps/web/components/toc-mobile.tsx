@@ -45,7 +45,7 @@ export function TOCMobile() {
         >
           <div className="text-muted-foreground flex items-center gap-2">
             <Text className="size-3.5 shrink-0" />
-            <span>On this page</span>
+            <span className="shrink-0">On this page</span>
             <ChevronRight
               className={cn(
                 open ? "rotate-90" : "-ms-1.5",
@@ -54,7 +54,7 @@ export function TOCMobile() {
             />
             <span
               className={cn(
-                "text-fd-muted-foreground -ms-1.5 truncate transition-opacity",
+                "text-muted-foreground -ms-1.5 truncate transition-opacity",
                 (!current || open) && "opacity-0",
               )}
             >

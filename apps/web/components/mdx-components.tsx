@@ -16,7 +16,6 @@ export const components = {
     }
 
     const isNpmCommand = npm && yarn && pnpm && bun;
-    console.log("isNpmCommand:", isNpmCommand);
     if (isNpmCommand) {
       return (
         <CodeBlockCommand

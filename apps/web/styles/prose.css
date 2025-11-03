@@ -187,27 +187,12 @@
   :where(blockquote):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   color: var(--tw-prose-quotes);
   font-weight: var(--font-weight-medium);
-  font-style: italic;
   border-left-width: 0.25rem;
   border-left-color: var(--tw-prose-quote-borders);
   quotes: "\201C" "\201D" "\2018" "\2019";
   padding-left: calc(var(--spacing) * 4);
   margin-top: calc(var(--spacing) * 6);
   margin-bottom: calc(var(--spacing) * 6);
-}
-
-.prose
-  :where(blockquote p:first-of-type):not(
-    :where([class~="not-prose"], [class~="not-prose"] *)
-  )::before {
-  content: open-quote;
-}
-
-.prose
-  :where(blockquote p:last-of-type):not(
-    :where([class~="not-prose"], [class~="not-prose"] *)
-  )::after {
-  content: close-quote;
 }
 
 .prose
