@@ -16,7 +16,7 @@ export function TOCDesktop() {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   return (
-    <div className="sticky top-28 flex w-[286px] max-w-full shrink-0 flex-col gap-3 self-start pe-2 pt-12 pb-2 max-xl:hidden">
+    <div className="sticky top-28 flex w-[286px] max-w-full shrink-0 flex-col gap-3 self-start pe-4 pt-12 pb-2 max-xl:hidden">
       <div className="text-muted-foreground flex items-center gap-2">
         <Text className="size-3.5 shrink-0" />
         <span>On this page</span>

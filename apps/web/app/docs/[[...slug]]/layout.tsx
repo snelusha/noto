@@ -11,10 +11,10 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="font-calling-code">
+    <div className="font-calling-code pt-16">
       <NavbarMobileProvider>
         <Navbar />
-        <main className="relative flex flex-grow flex-row">
+        <main className="relative flex grow flex-row">
           <div className="md:mr-[268px] lg:mr-[286px]">
             <Sidebar />
           </div>

@@ -5,7 +5,7 @@ import { Logo } from "~/components/logo";
 
 export function Navbar() {
   return (
-    <div className="bg-background/90 sticky top-0 z-50 flex flex-col backdrop-blur-md">
+    <div className="bg-background/90 fixed top-0 z-50 flex flex-col backdrop-blur-md">
       <nav className="top-0 flex h-16 grid-cols-12 items-center justify-between md:grid md:border-b">
         <div className="flex h-full shrink-0 items-center px-6 md:col-span-2 md:w-[268px] md:border-r lg:w-[286px]">
           <Link href="/" className="text-muted-foreground text-lg">
