@@ -12,7 +12,7 @@ export function AsideLink({
   className,
   href,
   children,
-}: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
+}: Omit<React.ComponentProps<typeof Link>, "href"> & {
   href: string;
 }) {
   const pathname = usePathname();

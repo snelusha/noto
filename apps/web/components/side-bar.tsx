@@ -14,18 +14,16 @@ import { config } from "~/config";
 export function Sidebar() {
   const pathname = usePathname();
 
-  const [currentOpen, setCurrentOpen] = React.useState<number>(0);
-
-  const getDefaultValue = () => {
+  const getDefaultValue = React.useCallback(() => {
     const defaultValue = config.docs.contents.findIndex((content) =>
       content.list.some((item) => item.href === pathname),
     );
     return defaultValue === -1 ? 0 : defaultValue;
-  };
-
-  React.useEffect(() => {
-    setCurrentOpen(getDefaultValue());
   }, [pathname]);
+
+  const [currentOpen, setCurrentOpen] = React.useState<number>(() =>
+    getDefaultValue(),
+  );
 
   return (
     <div className="fixed start-0 top-0">

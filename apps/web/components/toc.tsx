@@ -9,6 +9,8 @@ import scrollIntoView from "scroll-into-view-if-needed";
 import { useAnchorObserver } from "~/hooks/use-anchor-observer";
 import { useOnChange } from "~/hooks/use-on-change";
 
+import type { Route } from "next";
+
 export type TOCItem = {
   title: string;
   url: string;
@@ -114,7 +116,7 @@ export function TOCItem({ href, onActiveChange, ...props }: TOCItemProps) {
     <Link
       ref={anchorRef}
       data-active={isActive || undefined}
-      href={href}
+      href={href as Route}
       {...props}
     >
       {props.children}

@@ -28,11 +28,11 @@ export const docsConfig = {
       ],
     },
     {
-      title: "Commands",
+      title: "Usage",
       list: [
         {
-          title: "noto",
-          href: "/docs/commands/noto",
+          title: "Basic Usage",
+          href: "/docs/usage/basic-usage",
         },
       ],
     },
