@@ -1,9 +1,14 @@
 "use client";
 
-import { Copy, Terminal } from "lucide-react";
 import * as React from "react";
 
+import { Terminal } from "lucide-react";
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
+
+import { CopyButton } from "~/components/copy-button";
+
+type PackageManager = "npm" | "yarn" | "pnpm" | "bun";
 
 export interface CodeBlockCommandProps extends React.ComponentProps<"pre"> {
   __npm__?: string;
@@ -19,6 +24,9 @@ export function CodeBlockCommand({
 }: CodeBlockCommandProps) {
   const { __npm__: npm, __yarn__: yarn, __pnpm__: pnpm, __bun__: bun } = props;
 
+  const [packageManager, setPackageManager] =
+    React.useState<PackageManager>("npm");
+
   const tabs = React.useMemo(() => {
     return {
       npm: npm,
@@ -30,7 +38,11 @@ export function CodeBlockCommand({
 
   return (
     <div className="-my-3.5 overflow-x-auto">
-      <Tabs className="gap-0" defaultValue="npm">
+      <Tabs
+        className="gap-0"
+        defaultValue={packageManager}
+        onValueChange={(value) => setPackageManager(value as PackageManager)}
+      >
         <div className="border-border/60 flex items-center gap-2.5 border-b px-4 py-1 font-mono">
           <Terminal className="text-muted-foreground size-4" />
           <div className="flex-grow">
@@ -46,7 +58,7 @@ export function CodeBlockCommand({
               ))}
             </TabsList>
           </div>
-          <Copy className="text-muted-foreground size-4" />
+          <CopyButton content={tabs[packageManager] as string} />
         </div>
         <div className="no-scrollbar overflow-x-auto">
           {Object.entries(tabs).map(([key, value]) => (
