@@ -25,14 +25,9 @@ export const docsConfig = {
           title: "Configuration",
           href: "/docs/configuration",
         },
-      ],
-    },
-    {
-      title: "Usage",
-      list: [
         {
-          title: "Basic Usage",
-          href: "/docs/usage/basic-usage",
+          title: "Usage",
+          href: "/docs/usage",
         },
       ],
     },

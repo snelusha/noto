@@ -14,7 +14,7 @@ Getting noto up and running takes less than a minute. Let's walk through it.
 
 Install noto globally using package manager of your choice.
 
-```bash homebrew="something"
+```bash
 npm install -g @snelusha/noto
 ```
 
