@@ -1,14 +1,10 @@
 import "~/styles/globals.css";
 
-import { OpenPanelComponent } from "@openpanel/nextjs";
-
-import { geistMono, geistSans } from "~/styles/fonts";
+import { callingCode, geistMono, geistSans } from "~/styles/fonts";
 
 import { cn } from "~/styles/utils";
 
 import { config } from "~/config";
-
-import { isProd } from "~/lib/constants";
 
 import type { Metadata, Viewport } from "next";
 
@@ -55,13 +51,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(geistSans.variable, geistMono.variable)}>
+      <body
+        className={cn(
+          callingCode.variable,
+          geistSans.variable,
+          geistMono.variable,
+        )}
+      >
         {children}
-        <OpenPanelComponent
-          clientId={process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID!}
-          trackScreenViews={true}
-          disabled={!isProd}
-        />
       </body>
     </html>
   );

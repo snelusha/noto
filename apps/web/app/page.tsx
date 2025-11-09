@@ -10,6 +10,8 @@ import { NpmDownloads } from "~/components/npm-downloads";
 
 import { cn } from "~/styles/utils";
 
+import type { Route } from "next";
+
 export default function Page() {
   const variants = {
     initial: { opacity: 0, filter: "blur(8px)" },
@@ -28,7 +30,7 @@ export default function Page() {
               variants={variants}
               transition={{ duration: 0.6, delay: 2.5 }}
             >
-              v1.2 is out!
+              v1.3 is out!
             </motion.p>
             <motion.div
               className="flex items-center gap-4"
@@ -87,7 +89,7 @@ export default function Page() {
           variants={variants}
           transition={{ duration: 0.6, delay: 2.5 }}
         >
-          <Link href="https://github.com/snelusha/noto#readme">[docs]</Link>
+          <Link href={"/docs" as Route}>[docs]</Link>
           <div className="flex items-center gap-2">
             <Link href="https://github.com/snelusha/noto">[github]</Link>
             <Link href="https://www.npmjs.com/package/@snelusha/noto">

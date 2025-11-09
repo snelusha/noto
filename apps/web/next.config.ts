@@ -1,9 +1,16 @@
+import { withContentCollections } from "@content-collections/next";
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  typedRoutes: true,
   async redirects() {
     return [
+      {
+        source: "/docs",
+        destination: "/docs/introduction",
+        permanent: true,
+      },
+
       {
         source: "/gh",
         destination: "https://github.com/snelusha/noto",
@@ -18,4 +25,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withContentCollections(nextConfig);
