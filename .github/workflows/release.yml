@@ -8,6 +8,9 @@ on:
 permissions:
   contents: write
 
+env:
+  NOTO_VERSION: ${{ github.ref_name }}
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -42,8 +45,7 @@ jobs:
         id: determine_npm_tag
         shell: bash
         run: |
-          TAG="${GITHUB_REF#refs/tags/}"
-          if [[ "$TAG" =~ -(next|canary|beta|rc) ]]; then
+          if [[ "${{ env.NOTO_VERSION }}" =~ -(next|canary|beta|rc) ]]; then
             NPM_TAG=${BASH_REMATCH[1]}
           else
             git fetch origin main
@@ -63,3 +65,40 @@ jobs:
         run: bun publish --provenance --access public --tag ${{ steps.determine_npm_tag.outputs.npm_tag }}
         env:
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  homebrew:
+    needs: release
+    runs-on: ubuntu-latest
+    if: "!contains(github.ref, 'next') && !contains(github.ref, 'canary') && !contains(github.ref, 'beta') && !contains(github.ref, 'rc')"
+    steps:
+      - name: Checkout homebrew-noto
+        uses: actions/checkout@v4
+        with:
+          repository: snelusha/homebrew-noto
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup GPG
+        id: gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+
+      - name: Update Tap
+        run: ruby scripts/release.rb "${{ env.NOTO_VERSION }}"
+
+      - name: Commit Tap
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_options: --gpg-sign=${{ steps.gpg.outputs.keyid }}
+          commit_message: "chore: release ${{ env.NOTO_VERSION }}"
+          commit_user_name: "snelusha"
+          commit_user_email: "hello@snelusha.dev"
+          commit_author: "Sithija Nelusha Silva <hello@snelusha.dev>"
