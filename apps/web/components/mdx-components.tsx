@@ -9,13 +9,15 @@ import type { Route } from "next";
 
 export const components = {
   a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-    const isExternal = props.href?.startsWith("http");
+    if (!props.href) return <a {...props} />;
 
-    if (isExternal) {
-      return <a target="_blank" rel="noopener noreferrer" {...props} />;
-    }
+    const isExternal = props.href.startsWith("http");
 
-    return <Link href={props.href as Route} {...props} />;
+    return isExternal ? (
+      <a target="_blank" rel="noopener noreferrer" {...props} />
+    ) : (
+      <Link href={props.href as Route} {...props} />
+    );
   },
   code: ({ className, ...props }: CodeBlockCommandProps) => {
     const {
