@@ -1,9 +1,22 @@
+import Link from "next/link";
+
 import {
   CodeBlockCommand,
   CodeBlockCommandProps,
 } from "~/components/code-block-command";
 
+import type { Route } from "next";
+
 export const components = {
+  a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+    const isExternal = props.href?.startsWith("http");
+
+    if (isExternal) {
+      return <a target="_blank" rel="noopener noreferrer" {...props} />;
+    }
+
+    return <Link href={props.href as Route} {...props} />;
+  },
   code: ({ className, ...props }: CodeBlockCommandProps) => {
     const {
       __npm__: npm,
