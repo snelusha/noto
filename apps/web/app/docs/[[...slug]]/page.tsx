@@ -14,6 +14,30 @@ interface PageProps {
   params: Promise<{ slug?: string[] }>;
 }
 
+export async function generateStaticParams() {
+  return allDocs.map((doc) => ({
+    slug: doc.slugs,
+  }));
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
+
+  if (!slug) return notFound();
+
+  const doc = allDocs.find(
+    (doc) =>
+      doc.slugs.length === slug.length &&
+      doc.slugs.every((value, index) => value === slug[index]),
+  );
+  if (!doc) return notFound();
+
+  return {
+    title: doc.title,
+    description: doc.description,
+  };
+}
+
 export default async function Page({ params }: PageProps) {
   const { slug } = await params;
 

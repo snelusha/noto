@@ -9,7 +9,10 @@ import { config } from "~/config";
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: config.site.title,
+  title: {
+    template: `%s · ${config.site.title}`,
+    default: config.site.title,
+  },
   description: config.site.description,
   creator: config.site.creator,
   keywords: config.site.keywords,
