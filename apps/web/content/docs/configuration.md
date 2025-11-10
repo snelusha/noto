@@ -1,5 +1,6 @@
 ---
 title: Configuration
+description: Configure noto for your workflow.
 ---
 
 noto is designed to work great out of the box, but it's also highly configurable. Here's how to tailor noto to your workflow.

@@ -1,5 +1,6 @@
 ---
 title: Usage
+description: Use noto's commands and features.
 ---
 
 noto makes generating commit messages effortless. Here's everything you need to know.

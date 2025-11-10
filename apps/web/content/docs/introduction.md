@@ -1,5 +1,6 @@
 ---
 title: Introduction
+description: Learn what noto is and why you should use it.
 ---
 
 noto (/nōto/, meaning "notebook" in Japanese) is a tool that generates commit messages for your Git projects. It analyzes your staged changes and uses [Gemini](https://gemini.google/about/) to create clean, context-aware commit messages instantly.
