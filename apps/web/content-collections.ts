@@ -24,6 +24,7 @@ const docs = defineCollection({
   include: "**/*.md",
   schema: z.object({
     title: z.string(),
+    description: z.string(),
   }),
   transform: async (doc, { cache }) => {
     const filePath = doc._meta.filePath.replace(/\.mdx?$/, "");
