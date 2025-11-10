@@ -1,5 +1,6 @@
 ---
 title: Installation
+description: Install and set up noto.
 ---
 
 Getting noto up and running takes less than a minute. Let's walk through it.
