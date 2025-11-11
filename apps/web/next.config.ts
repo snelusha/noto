@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
         destination: "/docs/introduction",
         permanent: true,
       },
-
       {
         source: "/gh",
         destination: "https://github.com/snelusha/noto",
