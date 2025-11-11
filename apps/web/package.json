@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@content-collections/mdx": "^0.2.2",
+    "@databuddy/sdk": "^2.2.1",
     "@openpanel/nextjs": "^1.0.8",
     "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-tabs": "^1.1.13",

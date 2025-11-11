@@ -12,6 +12,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@content-collections/mdx": "^0.2.2",
+        "@databuddy/sdk": "^2.2.1",
         "@openpanel/nextjs": "^1.0.8",
         "@radix-ui/react-scroll-area": "^1.2.10",
         "@radix-ui/react-tabs": "^1.1.13",
@@ -143,6 +144,8 @@
     "@content-collections/mdx": ["@content-collections/mdx@0.2.2", "", { "dependencies": { "esbuild": "^0.25.0", "mdx-bundler": "^10.0.3", "unified": "^11.0.5" }, "peerDependencies": { "@content-collections/core": "0.x", "react": ">= 18", "react-dom": ">= 18" } }, "sha512-7Xx8AohrSuq1jn/k44qWIq1s666KnksGPk64nnoY/T9mFZ7fZkdEtYezBsNpzkDMMKTnf65CNIvyFHtwTD2muA=="],
 
     "@content-collections/next": ["@content-collections/next@0.2.8", "", { "dependencies": { "@content-collections/integrations": "0.3.0" }, "peerDependencies": { "@content-collections/core": "0.x", "next": "^12 || ^13 || ^14 || ^15" } }, "sha512-66phtKBPjx5Uz4dDCrjB5wtW+skzd7Jk5AXC9fqTk1wqUdZwb6qs6d3/td4LcZI8ZMN0SPyls8N04k8xAcHm9A=="],
+
+    "@databuddy/sdk": ["@databuddy/sdk@2.2.1", "", { "peerDependencies": { "@ai-sdk/provider": "^2.0.0", "ai": "^5.0.51", "jotai": ">=2.0.0", "msw": "^2.11.5", "react": ">=18", "tokenlens": "^2.0.0-alpha.3", "vue": ">=3" }, "optionalPeers": ["@ai-sdk/provider", "ai", "jotai", "msw", "react", "tokenlens", "vue"] }, "sha512-3dPN/CuCJz7LxN5skuFib0MrDHCL1b2U1+ocGVb/Wi3pmeuaB86j334p+ZuP56HpU3ANgsvzK+XTiUkHNtiHdA=="],
 
     "@emnapi/core": ["@emnapi/core@1.6.0", "", { "dependencies": { "@emnapi/wasi-threads": "1.1.0", "tslib": "^2.4.0" } }, "sha512-zq/ay+9fNIJJtJiZxdTnXS20PllcYMX3OE23ESc4HK/bdYu3cOWYVhsOhVnXALfU/uqJIxn5NBPd9z4v+SfoSg=="],
 
