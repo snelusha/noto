@@ -87,7 +87,7 @@ export const init = authedGitProcedure
       if (!shouldUseRoot) promptFile = cwd;
     }
 
-    const commits = await getCommits();
+    const commits = await getCommits(20, true);
     let generate = input.generate;
 
     if (generate) {
