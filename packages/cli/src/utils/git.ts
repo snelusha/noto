@@ -32,9 +32,16 @@ export const isFirstCommit = async () => {
   return count === 0;
 };
 
-export const getCommits = async (limit: number = 10) => {
+export const getCommits = async (
+  limit: number = 10,
+  excludeMerges: boolean = false,
+) => {
   try {
-    const log = await git.log({ maxCount: limit });
+    const options = excludeMerges
+      ? { maxCount: limit, "--no-merges": null }
+      : { maxCount: limit };
+
+    const log = await git.log(options);
     return log.all.map((c) => c.message);
   } catch {
     return null;
