@@ -33,7 +33,7 @@ export const isFirstCommit = async () => {
 };
 
 export const getCommits = async (
-  limit: number = 10,
+  limit: number = 20,
   excludeMerges: boolean = false,
 ) => {
   try {
