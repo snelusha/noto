@@ -5,15 +5,30 @@ on:
     tags:
       - "v*"
 
+  workflow_dispatch:
+    inputs:
+      use-npm:
+        description: Should npm packages be published?
+        type: boolean
+        default: true
+      use-homebrew:
+        description: Should the Homebrew tap be updated?
+        type: boolean
+        default: true
+      version:
+        description: The release version (e.g., v1.2.3)
+        required: false
+
 permissions:
   contents: write
 
 env:
-  NOTO_VERSION: ${{ github.ref_name }}
+  NOTO_VERSION: ${{ inputs.version || github.ref_name }}
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' || inputs.use-npm == true }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -67,9 +82,16 @@ jobs:
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   homebrew:
-    needs: release
     runs-on: ubuntu-latest
-    if: "!contains(github.ref, 'next') && !contains(github.ref, 'canary') && !contains(github.ref, 'beta') && !contains(github.ref, 'rc')"
+    if: >
+      (
+        github.event_name == 'push' ||
+        inputs.use-homebrew == true
+      ) &&
+      !contains(github.ref, 'next') &&
+      !contains(github.ref, 'canary') &&
+      !contains(github.ref, 'beta') &&
+      !contains(github.ref, 'rc')
     steps:
       - name: Checkout homebrew-noto
         uses: actions/checkout@v4
