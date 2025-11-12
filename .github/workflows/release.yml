@@ -25,7 +25,7 @@ jobs:
 
       - run: npx changelogithub
         env:
-          GITHUB_TOKEN: ${{secrets.HOMEBREW_TAP_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: oven-sh/setup-bun@v2
 
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: snelusha/homebrew-noto
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
 
       - name: Setup GPG
         id: gpg
