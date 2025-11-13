@@ -7,9 +7,9 @@ import color from "picocolors";
 
 import dedent from "dedent";
 
-import { getStagedDiff, isGitRepository } from "~/utils/git";
+import { getCurrentBranch, getStagedDiff, isGitRepository } from "~/utils/git";
 import { StorageManager } from "~/utils/storage";
-import { getPromptFile } from "~/utils/prompt";
+import { getPromptFile, parsePromptFile } from "~/utils/prompt";
 import { exit } from "~/utils/process";
 
 import type { TrpcCliMeta } from "trpc-cli";
@@ -77,7 +77,13 @@ export const gitMiddleware = t.middleware(async (opts) => {
 
     if (promptPath) {
       try {
-        prompt = await fs.readFile(promptPath, "utf-8");
+        const promptContent = await fs.readFile(promptPath, "utf-8");
+        const currentBranch = await getCurrentBranch();
+        prompt = parsePromptFile(promptContent, {
+          branch: currentBranch,
+        });
+
+        if (process.env.NOTO_DEBUG) console.log(prompt);
       } catch {}
     }
   }
