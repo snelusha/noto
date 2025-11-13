@@ -110,8 +110,12 @@ noto checkout -b feat/new-feature
 
 - **`-a, --apply`** - Apply the commit message and commit
 - **`-c, --copy`** - Copy the message to clipboard
+- **`-m, --message`** - Provide context for the commit message
+- **`-f, --force`** - Bypass cache and force regeneration of commit message
+- **`-p, --push`** - Commit and push the changes
 - **`-e, --edit`** - Required with `--amend`
 - **`--amend`** - Amend the previous commit
+- **`--manual`** - Write a custom commit message manually
 
 **Initialization:**
 
@@ -125,12 +129,19 @@ noto checkout -b feat/new-feature
 git add .
 noto -a
 
-# Review before committing
-git add .
-noto
+# Commit and push
+noto -a -p
+
+# Provide context for the commit
+noto -m "fixing authentication bug"
+
+# Force regenerate (bypass cache)
+noto -f
+
+# Write manual commit message
+noto --manual
 
 # Copy for manual use
-git add .
 noto -c
 
 # Reuse previous
@@ -144,3 +155,5 @@ noto init --root --generate
 ```
 
 > **Tip:** Need to configure API keys or models? Check out [Configuration](/docs/configuration) for setup instructions. Using custom commit prompts? noto automatically uses your `.noto/commit-prompt.md` file.
+
+> **Note:** noto caches generated commit messages based on your git diff. If you run `noto` multiple times with the same staged changes, it will reuse the cached response to save time and API costs. Use the `-f` or `--force` flag to bypass the cache and force regeneration.
