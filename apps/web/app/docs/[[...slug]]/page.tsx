@@ -5,6 +5,7 @@ import { MDXContent } from "@content-collections/mdx/react";
 import { AnchorProvider } from "~/components/toc";
 import { TOCMobile } from "~/components/toc-mobile";
 import { TOCDesktop } from "~/components/toc-desktop";
+import { ScrollToAnchor } from "~/components/scroll-to-anchor";
 
 import { components } from "~/components/mdx-components";
 
@@ -62,6 +63,7 @@ export default async function Page({ params }: PageProps) {
         </div>
       </div>
       <TOCDesktop />
+      <ScrollToAnchor />
     </AnchorProvider>
   );
 }
