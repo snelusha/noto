@@ -21,14 +21,23 @@ npm install -g @snelusha/noto
 
 That's it! You can now use `noto` from anywhere in your terminal.
 
+## Homebrew Install
+
+Homebrew can be used to install noto on macOS and Linux.
+
+To install noto with Homebrew, aka. `brew`, run the following command:
+
+```bash
+brew install snelusha/noto/noto
+```
+
 > **Coming Soon**
 >
-> We're working on additional installation methods:
+> We're working on an additional method for installation:
 >
-> - **Homebrew** support for macOS/Linux users
 > - **Single native executable** for zero-dependency installation
 >
-> Track progress: [Homebrew support](https://github.com/snelusha/noto/issues/171) · [Native executable](https://github.com/snelusha/noto/issues/158)
+> Track progress: [Native executable](https://github.com/snelusha/noto/issues/158)
 
 ## API Key Setup
 
