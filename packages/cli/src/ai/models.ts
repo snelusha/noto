@@ -7,7 +7,10 @@ import type { LanguageModelV2 } from "@ai-sdk/provider";
 import type { AvailableModels } from "~/ai/types";
 
 const google = createGoogleGenerativeAI({
-  apiKey: (await StorageManager.get()).llm?.apiKey ?? "api-key",
+  apiKey:
+    process.env.NOTO_API_KEY ||
+    (await StorageManager.get()).llm?.apiKey ||
+    "api-key",
 });
 
 export const DEFAULT_MODEL: AvailableModels = "gemini-2.0-flash";
