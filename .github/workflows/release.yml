@@ -26,7 +26,7 @@ env:
   NOTO_VERSION: ${{ inputs.version || github.ref_name }}
 
 jobs:
-  release:
+  npm:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || inputs.use-npm == true }}
     steps:
@@ -83,7 +83,10 @@ jobs:
 
   homebrew:
     runs-on: ubuntu-latest
+    needs: npm
     if: >
+      always() &&
+      (needs.npm.result == 'success' || needs.npm.result == 'skipped') &&
       (
         github.event_name == 'push' ||
         inputs.use-homebrew == true
@@ -93,6 +96,33 @@ jobs:
       !contains(github.ref, 'beta') &&
       !contains(github.ref, 'rc')
     steps:
+      - name: Wait for npm package availability
+        if: needs.npm.result == 'success'
+        run: |
+          PACKAGE_NAME="@snelusha/noto"
+          VERSION="${{ env.NOTO_VERSION }}"
+          MAX_ATTEMPTS=30
+          SLEEP_TIME=10
+          
+          echo "Waiting for $PACKAGE_NAME@$VERSION to be available on npm..."
+          
+          for i in $(seq 1 $MAX_ATTEMPTS); do
+            echo "Attempt $i/$MAX_ATTEMPTS..."
+            
+            if npm view "$PACKAGE_NAME@$VERSION" version 2>/dev/null; then
+              echo "Package is available!"
+              exit 0
+            fi
+            
+            if [ $i -lt $MAX_ATTEMPTS ]; then
+              echo "Package not yet available, waiting ${SLEEP_TIME}s..."
+              sleep $SLEEP_TIME
+            fi
+          done
+          
+          echo "Package did not become available after $((MAX_ATTEMPTS * SLEEP_TIME)) seconds"
+          exit 1
+
       - name: Checkout homebrew-noto
         uses: actions/checkout@v4
         with:
