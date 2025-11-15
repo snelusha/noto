@@ -1,5 +1,17 @@
 import type { ShikiTransformer } from "shiki";
 
+function parseMetaAttributes(metaString: string) {
+  const attributes: Record<string, string> = {};
+  const attributeRegex = /(\w+)=(?:"([^"]*)"|'([^']*)'|(\S+))/g;
+
+  for (const match of metaString.matchAll(attributeRegex)) {
+    const [, key, doubleQuoted, singleQuoted, unquoted] = match;
+    attributes[key] = doubleQuoted ?? singleQuoted ?? unquoted ?? "";
+  }
+
+  return attributes;
+}
+
 export const transformers = [
   {
     code(node) {
@@ -7,6 +19,15 @@ export const transformers = [
 
       const raw = this.source;
       node.properties["__raw__"] = raw;
+
+      const meta = this.options.meta?.__raw;
+
+      if (meta) {
+        const metaAttributes = parseMetaAttributes(meta);
+        Object.entries(metaAttributes).forEach(([key, value]) => {
+          node.properties[`__${key}__`] = value;
+        });
+      }
 
       const packageManagerMappings = [
         {

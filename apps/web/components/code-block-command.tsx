@@ -8,13 +8,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 
 import { CopyButton } from "~/components/copy-button";
 
-type PackageManager = "npm" | "yarn" | "pnpm" | "bun";
+type PackageManager = "npm" | "yarn" | "pnpm" | "bun" | "brew";
 
 export interface CodeBlockCommandProps extends React.ComponentProps<"pre"> {
   __npm__?: string;
   __yarn__?: string;
   __pnpm__?: string;
   __bun__?: string;
+  __brew__?: string;
 }
 
 export function CodeBlockCommand({
@@ -22,7 +23,13 @@ export function CodeBlockCommand({
   children,
   ...props
 }: CodeBlockCommandProps) {
-  const { __npm__: npm, __yarn__: yarn, __pnpm__: pnpm, __bun__: bun } = props;
+  const {
+    __npm__: npm,
+    __yarn__: yarn,
+    __pnpm__: pnpm,
+    __bun__: bun,
+    __brew__: brew,
+  } = props;
 
   const [packageManager, setPackageManager] =
     React.useState<PackageManager>("npm");
@@ -33,8 +40,9 @@ export function CodeBlockCommand({
       yarn: yarn,
       pnpm: pnpm,
       bun: bun,
+      brew: brew,
     };
-  }, [npm, yarn, pnpm, bun]);
+  }, [npm, yarn, pnpm, bun, brew]);
 
   return (
     <div className="-my-3.5 overflow-x-auto">
@@ -47,15 +55,17 @@ export function CodeBlockCommand({
           <Terminal className="text-muted-foreground size-4" />
           <div className="flex-grow">
             <TabsList className="bg-transparent">
-              {Object.entries(tabs).map(([key]) => (
-                <TabsTrigger
-                  key={key}
-                  value={key}
-                  className="text-muted-foreground data-[state=active]:text-foreground text-xs"
-                >
-                  {key}
-                </TabsTrigger>
-              ))}
+              {Object.entries(tabs)
+                .filter(([, value]) => value !== undefined)
+                .map(([key]) => (
+                  <TabsTrigger
+                    key={key}
+                    value={key}
+                    className="text-muted-foreground data-[state=active]:text-foreground text-xs"
+                  >
+                    {key}
+                  </TabsTrigger>
+                ))}
             </TabsList>
           </div>
           <CopyButton content={tabs[packageManager] as string} />
