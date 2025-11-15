@@ -15,29 +15,13 @@ Getting noto up and running takes less than a minute. Let's walk through it.
 
 Install noto globally using package manager of your choice.
 
-```bash
+```bash brew="brew install @snelusha/noto/noto"
 npm install -g @snelusha/noto
 ```
 
 That's it! You can now use `noto` from anywhere in your terminal.
 
-## Homebrew Install
-
-Homebrew can be used to install noto on macOS and Linux.
-
-To install noto with Homebrew, aka. `brew`, run the following command:
-
-```bash
-brew install snelusha/noto/noto
-```
-
-> **Coming Soon**
->
-> We're working on an additional method for installation:
->
-> - **Single native executable** for zero-dependency installation
->
-> Track progress: [Native executable](https://github.com/snelusha/noto/issues/158)
+> **Coming Soon:** Single native executable for zero-dependency installation ([track progress](https://github.com/snelusha/noto/issues/158))
 
 ## API Key Setup
 
