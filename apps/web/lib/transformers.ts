@@ -1,5 +1,17 @@
 import type { ShikiTransformer } from "shiki";
 
+function parseMetaAttributes(metaString: string) {
+  const attributes: Record<string, string> = {};
+  const attributeRegex = /(\w+)=(?:"([^"]*)"|'([^']*)'|(\S+))/g;
+
+  for (const match of metaString.matchAll(attributeRegex)) {
+    const [, key, doubleQuoted, singleQuoted, unquoted] = match;
+    attributes[key] = doubleQuoted ?? singleQuoted ?? unquoted ?? "";
+  }
+
+  return attributes;
+}
+
 export const transformers = [
   {
     code(node) {
@@ -8,12 +20,20 @@ export const transformers = [
       const raw = this.source;
       node.properties["__raw__"] = raw;
 
+      const meta = this.options.meta?.__raw;
+
+      if (meta) {
+        const metaAttributes = parseMetaAttributes(meta);
+        Object.entries(metaAttributes).forEach(([key, value]) => {
+          node.properties[`__${key}__`] = value;
+        });
+      }
+
       const packageManagerMappings = [
         {
           pattern: /^npm install\s/,
           transforms: {
             __npm__: (cmd: string) => cmd,
-            __yarn__: (cmd: string) => cmd.replace("npm install", "yarn add"),
             __pnpm__: (cmd: string) => cmd.replace("npm install", "pnpm add"),
             __bun__: (cmd: string) => cmd.replace("npm install", "bun add"),
           },
@@ -22,8 +42,6 @@ export const transformers = [
           pattern: /^npx create-/,
           transforms: {
             __npm__: (cmd: string) => cmd,
-            __yarn__: (cmd: string) =>
-              cmd.replace("npx create-", "yarn create "),
             __pnpm__: (cmd: string) =>
               cmd.replace("npx create-", "pnpm create "),
             __bun__: (cmd: string) => cmd.replace("npx", "bunx --bun"),
@@ -33,7 +51,6 @@ export const transformers = [
           pattern: /^npm create\s/,
           transforms: {
             __npm__: (cmd: string) => cmd,
-            __yarn__: (cmd: string) => cmd.replace("npm create", "yarn create"),
             __pnpm__: (cmd: string) => cmd.replace("npm create", "pnpm create"),
             __bun__: (cmd: string) => cmd.replace("npm create", "bun create"),
           },
@@ -42,7 +59,6 @@ export const transformers = [
           pattern: /^npx\s/,
           transforms: {
             __npm__: (cmd: string) => cmd,
-            __yarn__: (cmd: string) => cmd.replace("npx", "yarn dlx"),
             __pnpm__: (cmd: string) => cmd.replace("npx", "pnpm dlx"),
             __bun__: (cmd: string) => cmd.replace("npx", "bunx --bun"),
           },
@@ -51,7 +67,6 @@ export const transformers = [
           pattern: /^npm run\s/,
           transforms: {
             __npm__: (cmd: string) => cmd,
-            __yarn__: (cmd: string) => cmd.replace("npm run", "yarn"),
             __pnpm__: (cmd: string) => cmd.replace("npm run", "pnpm"),
             __bun__: (cmd: string) => cmd.replace("npm run", "bun"),
           },
