@@ -8,11 +8,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 
 import { CopyButton } from "~/components/copy-button";
 
-type PackageManager = "npm" | "yarn" | "pnpm" | "bun" | "brew";
+type PackageManager = "npm" | "pnpm" | "bun" | "brew";
 
 export interface CodeBlockCommandProps extends React.ComponentProps<"pre"> {
   __npm__?: string;
-  __yarn__?: string;
   __pnpm__?: string;
   __bun__?: string;
   __brew__?: string;
@@ -23,13 +22,7 @@ export function CodeBlockCommand({
   children,
   ...props
 }: CodeBlockCommandProps) {
-  const {
-    __npm__: npm,
-    __yarn__: yarn,
-    __pnpm__: pnpm,
-    __bun__: bun,
-    __brew__: brew,
-  } = props;
+  const { __npm__: npm, __pnpm__: pnpm, __bun__: bun, __brew__: brew } = props;
 
   const [packageManager, setPackageManager] =
     React.useState<PackageManager>("npm");
@@ -37,12 +30,11 @@ export function CodeBlockCommand({
   const tabs = React.useMemo(() => {
     return {
       npm: npm,
-      yarn: yarn,
       pnpm: pnpm,
       bun: bun,
       brew: brew,
     };
-  }, [npm, yarn, pnpm, bun, brew]);
+  }, [npm, pnpm, bun, brew]);
 
   return (
     <div className="-my-3.5 overflow-x-auto">
