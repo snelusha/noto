@@ -2,7 +2,8 @@
 
 import * as React from "react";
 
-import { Copy, Check } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Copy01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 
 import { FigmaWrapper } from "~/components/figma-wrapper";
 
@@ -43,7 +44,11 @@ export function InstallCommand() {
               copied ? "scale-0 opacity-0" : "scale-100 opacity-100",
             )}
           >
-            <Copy className="text-muted-foreground/50 size-4" />
+            <HugeiconsIcon
+              className="text-muted-foreground/50 size-4"
+              icon={Copy01Icon}
+              strokeWidth={1.5}
+            />
           </div>
           <div
             className={cn(
@@ -51,7 +56,11 @@ export function InstallCommand() {
               copied ? "scale-100 opacity-100" : "scale-0 opacity-0",
             )}
           >
-            <Check className="text-muted-foreground/50 size-4" />
+            <HugeiconsIcon
+              className="text-muted-foreground/50 size-4"
+              icon={Tick02Icon}
+              strokeWidth={1.5}
+            />
           </div>
         </span>
       </h1>

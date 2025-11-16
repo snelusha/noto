@@ -3,7 +3,12 @@
 import * as React from "react";
 
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ChevronRight, Text } from "lucide-react";
+
+import { HugeiconsIcon } from "@hugeicons/react";
+import {
+  ArrowRight01Icon,
+  TextAlignLeftIcon,
+} from "@hugeicons/core-free-icons";
 
 import { ScrollArea, ScrollViewport } from "~/components/ui/scroll-area";
 
@@ -44,13 +49,19 @@ export function TOCMobile() {
           onClick={() => setOpen(!open)}
         >
           <div className="text-muted-foreground flex items-center gap-2">
-            <Text className="size-3.5 shrink-0" />
+            <HugeiconsIcon
+              className="size-3.5 shrink-0"
+              icon={TextAlignLeftIcon}
+              strokeWidth={1.5}
+            />
             <span className="shrink-0">On this page</span>
-            <ChevronRight
+            <HugeiconsIcon
               className={cn(
                 open ? "rotate-90" : "-ms-1.5",
-                "size-3.5 shrink-0 transition-all",
+                "size-4 shrink-0 transition-all",
               )}
+              icon={ArrowRight01Icon}
+              strokeWidth={1.5}
             />
             <span
               className={cn(
