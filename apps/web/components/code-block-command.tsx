@@ -2,7 +2,8 @@
 
 import * as React from "react";
 
-import { Terminal } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ComputerTerminal02Icon } from "@hugeicons/core-free-icons";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 
@@ -44,7 +45,11 @@ export function CodeBlockCommand({
         onValueChange={(value) => setPackageManager(value as PackageManager)}
       >
         <div className="border-border/60 flex items-center gap-2.5 border-b px-4 py-1 font-mono">
-          <Terminal className="text-muted-foreground size-4" />
+          <HugeiconsIcon
+            className="text-muted-foreground size-4"
+            icon={ComputerTerminal02Icon}
+            strokeWidth={1.5}
+          />
           <div className="flex-grow">
             <TabsList className="bg-transparent">
               {Object.entries(tabs)

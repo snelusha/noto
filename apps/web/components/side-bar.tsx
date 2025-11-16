@@ -5,7 +5,9 @@ import * as React from "react";
 import { usePathname } from "next/navigation";
 
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ChevronDown } from "lucide-react";
+
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
 
 import { AsideLink } from "~/components/aside-link";
 
@@ -42,7 +44,11 @@ export function Sidebar() {
                   <motion.div
                     animate={{ rotate: currentOpen === index ? 180 : 0 }}
                   >
-                    <ChevronDown className="size-4 shrink-0 transition-transform" />
+                    <HugeiconsIcon
+                      className="size-4 shrink-0 transition-transform"
+                      icon={ArrowDown01Icon}
+                      strokeWidth={1.5}
+                    />
                   </motion.div>
                 </button>
                 <AnimatePresence initial={false}>

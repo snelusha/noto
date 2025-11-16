@@ -4,7 +4,8 @@ import * as React from "react";
 
 import { motion } from "motion/react";
 
-import { Check, Copy } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Copy01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 
 import { cn } from "~/styles/utils";
 import { AnimatePresence } from "motion/react";
@@ -33,7 +34,7 @@ export function CopyButton({
       .catch(() => {});
   }, [content, delay]);
 
-  const Icon = isCopied ? Check : Copy;
+  const Icon = isCopied ? Tick02Icon : Copy01Icon;
 
   return (
     <button
@@ -52,7 +53,7 @@ export function CopyButton({
           exit={{ scale: 0, opacity: 0.4, filter: "blur(4px)" }}
           transition={{ duration: 0.25 }}
         >
-          <Icon />
+          <HugeiconsIcon icon={Icon} strokeWidth={1.5} />
         </motion.span>
       </AnimatePresence>
     </button>

@@ -3,7 +3,9 @@
 import * as React from "react";
 
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ChevronDown, Menu } from "lucide-react";
+
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowDown01Icon, Menu11Icon } from "@hugeicons/core-free-icons";
 
 import { usePathname } from "next/navigation";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -56,7 +58,7 @@ export function NavbarMobileButton() {
       className="block overflow-hidden outline-none md:hidden"
       onClick={toggle}
     >
-      <Menu className="size-4" />
+      <HugeiconsIcon className="size-4" icon={Menu11Icon} strokeWidth={1.5} />
     </button>
   );
 }
@@ -113,7 +115,11 @@ export function NavbarMobile() {
                   <motion.div
                     animate={{ rotate: openSections.has(index) ? 180 : 0 }}
                   >
-                    <ChevronDown className="size-4 shrink-0 transition-transform" />
+                    <HugeiconsIcon
+                      className="size-4 shrink-0 transition-transform"
+                      icon={ArrowDown01Icon}
+                      strokeWidth={1.5}
+                    />
                   </motion.div>
                 </button>
                 <AnimatePresence initial={false}>
