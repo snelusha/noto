@@ -15,6 +15,8 @@ import { commit, push } from "~/utils/git";
 import { StorageManager } from "~/utils/storage";
 import { exit } from "~/utils/process";
 
+console.log(process.argv.slice(2));
+
 export const noto = authedGitProcedure
   .meta({
     description: "generate a commit message",
