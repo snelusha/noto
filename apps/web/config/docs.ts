@@ -31,5 +31,14 @@ export const docsConfig = {
         },
       ],
     },
+    {
+      title: "Reference",
+      list: [
+        {
+          title: "FAQ",
+          href: "/docs/reference/faq",
+        },
+      ],
+    },
   ],
 };
