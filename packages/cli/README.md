@@ -20,6 +20,14 @@ Install noto globally using npm:
 npm install -g @snelusha/noto
 ```
 
+Install via Homebrew (macOS and Linux)
+
+If you provide a Homebrew formula (or host a tap), users can install via Homebrew. Example patterns:
+
+```bash
+brew install snelusha/noto/noto
+```
+
 After installation, you can run `noto` from any terminal.
 
 ## Prerequisites
