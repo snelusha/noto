@@ -3,6 +3,8 @@ import Link from "next/link";
 import { NavbarMobile, NavbarMobileButton } from "~/components/nav-mobile";
 import { Logo } from "~/components/logo";
 
+import { version } from "~/package";
+
 export function Navbar() {
   return (
     <div className="bg-background/90 fixed inset-x-0 top-0 z-50 flex flex-col backdrop-blur-md">
@@ -18,7 +20,11 @@ export function Navbar() {
           </Link>
         </div>
         <div className="relative flex w-full items-center justify-end px-6 md:col-span-10">
-          <ul className="hidden w-max shrink-0 items-center divide-x md:flex"></ul>
+          <ul className="hidden w-max shrink-0 items-center gap-6 md:flex">
+            <li>
+              <p className="text-muted-foreground">v{version}</p>
+            </li>
+          </ul>
           <NavbarMobileButton />
         </div>
       </nav>
