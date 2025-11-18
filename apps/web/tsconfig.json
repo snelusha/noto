@@ -28,6 +28,9 @@
       ],
       "content-collections": [
         "./.content-collections/generated"
+      ],
+      "~/package": [
+        "./package.json"
       ]
     }
   },
