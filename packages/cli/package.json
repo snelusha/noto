@@ -23,7 +23,7 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "noto": "./bin/noto.mjs"
+    "noto": "dist/index.js"
   },
   "scripts": {
     "build": "bunup --clean",
