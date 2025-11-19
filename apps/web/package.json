@@ -36,6 +36,7 @@
     "@types/node": "catalog:",
     "@types/react": "^19.2.6",
     "@types/react-dom": "^19.2.3",
+    "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.3",
     "postcss": "^8.5.6",
