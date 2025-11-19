@@ -15,6 +15,8 @@ const StorageSchema = z.object({
     .optional(),
   lastGeneratedMessage: z.string().optional(),
   cache: z.record(z.string(), z.string()).optional(),
+  lastUpdateCheck: z.number().optional(),
+  lastKnownVersion: z.string().optional(),
 });
 
 export type Storage = z.infer<typeof StorageSchema>;
