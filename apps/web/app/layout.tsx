@@ -43,6 +43,18 @@ export const metadata: Metadata = {
     creator: config.site.creator,
     images: [config.site.ogImage],
   },
+  icons: [
+    {
+      rel: "icon",
+      url: "/favicon-light.ico",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      rel: "icon",
+      url: "/favicon-dark.ico",
+      media: "(prefers-color-scheme: dark)",
+    },
+  ],
 };
 
 export const viewport: Viewport = {
