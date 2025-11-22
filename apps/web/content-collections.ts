@@ -23,6 +23,7 @@ const docs = defineCollection({
   directory: "content/docs",
   include: "**/*.md",
   schema: z.object({
+    content: z.string(),
     title: z.string(),
     description: z.string(),
   }),
