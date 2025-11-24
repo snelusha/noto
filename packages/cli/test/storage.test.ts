@@ -3,7 +3,7 @@ import path from "path";
 import { promises as fs } from "fs";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
-import { StorageManager } from "../src/utils/storage";
+import { StorageManager } from "~/utils/storage";
 
 const storageFileName = "storage.test.sithi";
 const tempDir = path.resolve(os.tmpdir(), ".noto");

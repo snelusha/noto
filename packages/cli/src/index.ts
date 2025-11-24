@@ -16,6 +16,8 @@ if (args.includes("--version") || args.includes("-v")) {
   process.exit(0);
 }
 
+console.log(process.argv[1]);
+
 // Check for updates asynchronously (non-blocking)
 void (async () => {
   try {
