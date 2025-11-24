@@ -27,7 +27,7 @@
   },
   "scripts": {
     "build": "bunup --clean",
-    "test": "bunup --clean && vitest",
+    "test": "bunup --clean && vitest run",
     "clean": "git clean -xdf .cache .turbo node_modules"
   },
   "files": [
