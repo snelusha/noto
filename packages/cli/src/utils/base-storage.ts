@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import { dirname } from "path";
+
 import { z } from "zod";
 
 export function createStorage<TSchema extends z.ZodTypeAny>(options: {
@@ -39,6 +40,7 @@ export function createStorage<TSchema extends z.ZodTypeAny>(options: {
       updater: (current: Schema) => Schema | Promise<Schema>,
     ): Promise<Schema> {
       try {
+        await this.load();
         const updated = await updater(this.storage);
         const result = schema.safeParse(updated);
         if (result.success) {
