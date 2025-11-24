@@ -6,7 +6,7 @@ import superjson from "superjson";
 
 import { getModel } from "~/ai/models";
 import { hashString } from "~/utils/hash";
-import { StorageManager } from "~/utils/storage";
+import { CacheManager } from "~/utils/cache";
 
 import type { LanguageModelV2Middleware } from "@ai-sdk/provider";
 
@@ -319,22 +319,17 @@ const cacheMiddleware: LanguageModelV2Middleware = {
   wrapGenerate: async ({ doGenerate, params }) => {
     const key = hashString(JSON.stringify(params));
 
-    const cache = (await StorageManager.get()).cache;
-    if (cache && key in cache) {
-      const cached = cache[key];
-      return superjson.parse(cached);
-    }
+    const cache = (await CacheManager.get()).commitGenerationCache;
+    if (cache && key in cache) return superjson.parse(cache[key]);
 
     const result = await doGenerate();
 
-    await StorageManager.update((current) => {
-      return {
-        ...current,
-        cache: {
-          [key]: superjson.stringify(result),
-        },
-      };
-    });
+    await CacheManager.update((current) => ({
+      ...current,
+      commitGenerationCache: {
+        [key]: superjson.stringify(result),
+      },
+    }));
 
     return result;
   },
