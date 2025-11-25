@@ -15,7 +15,7 @@ describe("StorageManager", () => {
 
   beforeEach(async () => {
     StorageManager.storagePath = path.resolve(tempDir, storageFileName);
-    (StorageManager as any).storage = {};
+    StorageManager.storage = {};
     try {
       await fs.unlink(StorageManager.storagePath);
     } catch {}
