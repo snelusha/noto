@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 
-import { getStagedDiff, git } from "../src/utils/git";
+import { getStagedDiff, git } from "~/utils/git";
 
 vi.mock("simple-git", () => {
   return {

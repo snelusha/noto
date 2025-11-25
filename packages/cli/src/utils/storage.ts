@@ -21,3 +21,10 @@ export const StorageManager = createStorage({
   path: resolve(join(os.homedir(), ".config", "noto"), ".notorc"),
   schema: ConfigSchema,
 });
+
+export async function cleanupLegacyStorage(): Promise<void> {
+  try {
+    const current = await StorageManager.get();
+    await StorageManager.update(() => current);
+  } catch {}
+}
