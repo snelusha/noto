@@ -13,7 +13,7 @@ export async function displayUpdateNotice() {
     const ins = installationInfo.updateMessage;
     p.log.warn(
       dedent`A new version of noto is available: ${color.dim(update.current)} → ${color.green(update.latest)}
-      ${ins ?? ins}`.trim(),
+      ${ins ?? ""}`.trim(),
     );
   }
 }
