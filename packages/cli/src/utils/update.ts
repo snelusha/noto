@@ -64,13 +64,11 @@ export async function markUpdateChecked(update: UpdateInfo | null) {
   if (!update) return;
   await CacheManager.update((current) => ({
     ...current,
-    update: update
-      ? {
-          timestamp: update.timestamp,
-          latest: update.latest,
-          current: update.current,
-        }
-      : undefined,
+    update: update && {
+      timestamp: update.timestamp,
+      latest: update.latest,
+      current: update.current,
+    },
   }));
 }
 
