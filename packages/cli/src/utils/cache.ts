@@ -5,7 +5,14 @@ import { z } from "zod";
 import { createStorage } from "~/utils/base-storage";
 
 const CacheSchema = z.object({
-  commitGenerationCache: z.record(z.string(), z.string()).default({}),
+  commitGenerationCache: z.record(z.string(), z.string()).optional(),
+  update: z
+    .object({
+      timestamp: z.number(),
+      current: z.string(),
+      latest: z.string(),
+    })
+    .optional(),
 });
 
 export type Cache = z.infer<typeof CacheSchema>;

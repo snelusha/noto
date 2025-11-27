@@ -3,7 +3,9 @@ import { createCli } from "trpc-cli";
 import { version as packageVersion } from "package";
 
 import { router } from "~/router";
+
 import { cleanupLegacyStorage } from "~/utils/storage";
+import { checkForUpdate } from "~/utils/update";
 
 const args = process.argv.slice(2);
 
@@ -15,6 +17,7 @@ if (args.includes("--version") || args.includes("-v")) {
 }
 
 void cleanupLegacyStorage();
+void checkForUpdate(true);
 
 void createCli({
   name: "noto",

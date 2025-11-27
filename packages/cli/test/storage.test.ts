@@ -5,7 +5,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 import { StorageManager, cleanupLegacyStorage } from "~/utils/storage";
 
-const storageFileName = "storage.test.sithi";
+const storageFileName = ".notorc";
 const tempDir = path.resolve(os.tmpdir(), ".noto");
 
 describe("StorageManager", () => {

@@ -43,6 +43,7 @@
   ],
   "devDependencies": {
     "@types/node": "catalog:",
+    "@types/semver": "^7.7.1",
     "bunup": "^0.15.7",
     "typescript": "catalog:",
     "vitest": "^4.0.3"
@@ -55,7 +56,9 @@
     "ai": "^5.0.80",
     "clipboardy": "^5.0.0",
     "dedent": "^1.7.0",
+    "latest-version": "^9.0.0",
     "picocolors": "^1.1.1",
+    "semver": "^7.7.3",
     "simple-git": "^3.28.0",
     "superjson": "^2.2.3",
     "tinyexec": "^1.0.1",
