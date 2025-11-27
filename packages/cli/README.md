@@ -118,6 +118,14 @@ Create and switch to a new branch:
 noto checkout -b new-branch-name
 ```
 
+Update noto to the latest version:
+
+```bash
+noto upgrade
+```
+
+> noto will automatically detect your installation method and update itself accordingly.
+
 ## Pro Tips
 
 - 🚀 Get fast commits on the fly with `noto -a` to streamline your workflow!
