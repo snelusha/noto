@@ -73,7 +73,10 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       } catch {}
     }
 
-    if (realPath.includes("/dlx")) {
+    if (
+      realPath.includes("/pnpm/dlx") ||
+      realPath.includes("/pnpm-cache/dlx")
+    ) {
       return {
         packageManager: PackageManager.PNPX,
         isGlobal: false,
