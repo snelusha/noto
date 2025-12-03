@@ -33,12 +33,10 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
   const root = process.cwd();
 
   try {
-    // Normalize path separators to forward slashes for consistent matching.
     const realPath = fs.realpathSync(cliPath).replace(/\\/g, "/");
     const normalizedRoot = root.replace(/\\/g, "/");
     const isGit = await isGitRepository();
 
-    // Check for local git clone first
     if (
       isGit &&
       normalizedRoot &&
@@ -46,14 +44,13 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       !realPath.includes("/node_modules/")
     ) {
       return {
-        packageManager: PackageManager.UNKNOWN, // Not managed by a package manager in this sense
+        packageManager: PackageManager.UNKNOWN,
         isGlobal: false,
         updateMessage:
           'Running from a local git clone. Please update with "git pull".',
       };
     }
 
-    // Check for npx/pnpx
     if (realPath.includes("/.npm/_npx") || realPath.includes("/npm/_npx")) {
       return {
         packageManager: PackageManager.NPX,
@@ -61,18 +58,9 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
         updateMessage: "Running via npx, update not applicable.",
       };
     }
-    if (realPath.includes("/.pnpm/_pnpx")) {
-      return {
-        packageManager: PackageManager.PNPX,
-        isGlobal: false,
-        updateMessage: "Running via pnpx, update not applicable.",
-      };
-    }
 
-    // Check for Homebrew
     if (process.platform === "darwin") {
       try {
-        // The package name in homebrew is noto
         childProcess.execSync('brew list -1 | grep -q "^noto$"', {
           stdio: "ignore",
         });
@@ -82,14 +70,21 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
           updateMessage:
             'Installed via Homebrew. Please update with "brew upgrade".',
         };
-      } catch {
-        // Brew is not installed or noto is not installed via brew.
-        // Continue to the next check.
-      }
+      } catch {}
     }
 
-    // Check for pnpm
-    if (realPath.includes("/.pnpm/global")) {
+    if (
+      realPath.includes("/pnpm/dlx") ||
+      realPath.includes("/pnpm-cache/dlx")
+    ) {
+      return {
+        packageManager: PackageManager.PNPX,
+        isGlobal: false,
+        updateMessage: "Running via pnpx, update not applicable.",
+      };
+    }
+
+    if (realPath.includes("/pnpm/global")) {
       const updateCommand = "pnpm add -g @snelusha/noto@latest";
       return {
         packageManager: PackageManager.PNPM,
@@ -99,7 +94,6 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       };
     }
 
-    // Check for yarn
     if (realPath.includes("/.yarn/global")) {
       const updateCommand = "yarn global add @snelusha/noto@latest";
       return {
@@ -110,8 +104,7 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       };
     }
 
-    // Check for bun
-    if (realPath.includes("/.bun/install/cache")) {
+    if (realPath.includes("/bunx")) {
       return {
         packageManager: PackageManager.BUNX,
         isGlobal: false,
@@ -128,7 +121,6 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       };
     }
 
-    // Check for local install
     if (
       normalizedRoot &&
       realPath.startsWith(`${normalizedRoot}/node_modules`)
@@ -152,7 +144,6 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       };
     }
 
-    // Assume global npm
     const updateCommand = "npm install -g @snelusha/noto@latest";
     return {
       packageManager: PackageManager.NPM,
