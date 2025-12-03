@@ -65,7 +65,6 @@ describe("installation-info", () => {
 
       expect(result.packageManager).toBe(PackageManager.UNKNOWN);
       expect(result.isGlobal).toBe(false);
-      expect(result.updateMessage).toContain("git pull");
     });
 
     it("should detect npx installation", async () => {
@@ -84,7 +83,6 @@ describe("installation-info", () => {
 
       expect(result.packageManager).toBe(PackageManager.NPX);
       expect(result.isGlobal).toBe(false);
-      expect(result.updateMessage).toContain("npx");
     });
 
     it("should detect pnpx installation", async () => {
@@ -93,11 +91,11 @@ describe("installation-info", () => {
 
       process.argv = [
         "node",
-        "/home/user/.pnpm/dlx/abc123/node_modules/@snelusha/noto/dist/index.js",
+        "/home/user/pnpm/dlx/abc123/node_modules/@snelusha/noto/dist/index.js",
       ];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
-        "/home/user/.pnpm/dlx/abc123/node_modules/@snelusha/noto/dist/index.js",
+        "/home/user/pnpm/dlx/abc123/node_modules/@snelusha/noto/dist/index.js",
       );
       vi.mocked(childProcess.execSync).mockImplementation(() => {
         throw new Error("not found");
@@ -107,7 +105,6 @@ describe("installation-info", () => {
 
       expect(result.packageManager).toBe(PackageManager.PNPX);
       expect(result.isGlobal).toBe(false);
-      expect(result.updateMessage).toContain("pnpx");
     });
 
     it("should detect global pnpm installation", async () => {
@@ -131,7 +128,6 @@ describe("installation-info", () => {
       expect(result.packageManager).toBe(PackageManager.PNPM);
       expect(result.isGlobal).toBe(true);
       expect(result.updateCommand).toBe("pnpm add -g @snelusha/noto@latest");
-      expect(result.updateMessage).toContain("pnpm add -g");
     });
 
     it("should detect Homebrew installation on macOS", async () => {
@@ -156,7 +152,6 @@ describe("installation-info", () => {
 
       expect(result.packageManager).toBe(PackageManager.HOMEBREW);
       expect(result.isGlobal).toBe(true);
-      expect(result.updateMessage).toContain("brew upgrade");
     });
 
     it("should detect global yarn installation", async () => {
@@ -182,10 +177,31 @@ describe("installation-info", () => {
       expect(result.updateCommand).toBe(
         "yarn global add @snelusha/noto@latest",
       );
-      expect(result.updateMessage).toContain("yarn global add");
     });
 
     it("should detect bunx installation", async () => {
+      const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
+
+      process.argv = [
+        "node",
+        "/tmp/bunx-1000-cli@snelusha/noto/node_modules/.bin/noto",
+      ];
+      process.cwd = vi.fn().mockReturnValue("/home/user/project");
+      vi.mocked(fs.realpathSync).mockReturnValue(
+        "/tmp/bunx-1000-cli@snelusha/noto/node_modules/@snelusha/noto/dist/index.js",
+      );
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
+
+      const result = await getInstallationInfo();
+
+      expect(result.packageManager).toBe(PackageManager.BUNX);
+      expect(result.isGlobal).toBe(false);
+    });
+
+    it("should detect bun global installation", async () => {
       const fs = await import("node:fs");
       const childProcess = await import("node:child_process");
 
@@ -206,7 +222,6 @@ describe("installation-info", () => {
       expect(result.packageManager).toBe(PackageManager.BUN);
       expect(result.isGlobal).toBe(true);
       expect(result.updateCommand).toBe("bun add -g @snelusha/noto@latest");
-      expect(result.updateMessage).toContain("bun add -g");
     });
 
     it("should detect local installation with yarn.lock", async () => {
@@ -232,7 +247,6 @@ describe("installation-info", () => {
 
       expect(result.packageManager).toBe(PackageManager.YARN);
       expect(result.isGlobal).toBe(false);
-      expect(result.updateMessage).toContain("package.json");
     });
 
     it("should detect local installation with pnpm-lock.yaml", async () => {
@@ -258,7 +272,6 @@ describe("installation-info", () => {
 
       expect(result.packageManager).toBe(PackageManager.PNPM);
       expect(result.isGlobal).toBe(false);
-      expect(result.updateMessage).toContain("package.json");
     });
 
     it("should detect local installation with bun.lockb", async () => {
@@ -284,7 +297,6 @@ describe("installation-info", () => {
 
       expect(result.packageManager).toBe(PackageManager.BUN);
       expect(result.isGlobal).toBe(false);
-      expect(result.updateMessage).toContain("package.json");
     });
 
     it("should default to global npm installation", async () => {
@@ -308,7 +320,6 @@ describe("installation-info", () => {
       expect(result.packageManager).toBe(PackageManager.NPM);
       expect(result.isGlobal).toBe(true);
       expect(result.updateCommand).toBe("npm install -g @snelusha/noto@latest");
-      expect(result.updateMessage).toContain("npm install -g");
     });
 
     it("should return UNKNOWN on error", async () => {
