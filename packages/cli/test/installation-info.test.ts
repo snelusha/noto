@@ -150,6 +150,8 @@ describe("installation-info", () => {
         return Buffer.from("noto");
       });
 
+      Object.defineProperty(process, "platform", { value: "darwin" });
+
       const result = await getInstallationInfo();
 
       expect(result.packageManager).toBe(PackageManager.HOMEBREW);
