@@ -89,15 +89,19 @@ describe("installation-info", () => {
 
     it("should detect pnpx installation", async () => {
       const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
 
       process.argv = [
         "node",
-        "/home/user/.pnpm/_pnpx/abc123/node_modules/@snelusha/noto/dist/index.js",
+        "/home/user/.pnpm/dlx/abc123/node_modules/@snelusha/noto/dist/index.js",
       ];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
-        "/home/user/.pnpm/_pnpx/abc123/node_modules/@snelusha/noto/dist/index.js",
+        "/home/user/.pnpm/dlx/abc123/node_modules/@snelusha/noto/dist/index.js",
       );
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
 
       const result = await getInstallationInfo();
 
@@ -106,17 +110,21 @@ describe("installation-info", () => {
       expect(result.updateMessage).toContain("pnpx");
     });
 
-    it("should detect Homebrew installation on macOS", async () => {
+    it("should detect global pnpm installation", async () => {
       const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
 
       process.argv = [
         "node",
-        "/home/user/.pnpm/global/5/node_modules/@snelusha/noto/dist/index.js",
+        "/home/user/.local/share/pnpm/global/5/node_modules/@snelusha/noto/dist/index.js",
       ];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
-        "/home/user/.pnpm/global/5/node_modules/@snelusha/noto/dist/index.js",
+        "/home/user/.local/share/pnpm/global/5/node_modules/@snelusha/noto/dist/index.js",
       );
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
 
       const result = await getInstallationInfo();
 
@@ -126,8 +134,32 @@ describe("installation-info", () => {
       expect(result.updateMessage).toContain("pnpm add -g");
     });
 
+    it("should detect Homebrew installation on macOS", async () => {
+      const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
+
+      process.argv = [
+        "node",
+        "/opt/homebrew/lib/node_modules/@snelusha/noto/dist/index.js",
+      ];
+      process.cwd = vi.fn().mockReturnValue("/home/user/project");
+      vi.mocked(fs.realpathSync).mockReturnValue(
+        "/opt/homebrew/lib/node_modules/@snelusha/noto/dist/index.js",
+      );
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        return Buffer.from("noto");
+      });
+
+      const result = await getInstallationInfo();
+
+      expect(result.packageManager).toBe(PackageManager.HOMEBREW);
+      expect(result.isGlobal).toBe(true);
+      expect(result.updateMessage).toContain("brew upgrade");
+    });
+
     it("should detect global yarn installation", async () => {
       const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
 
       process.argv = [
         "node",
@@ -137,6 +169,9 @@ describe("installation-info", () => {
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/home/user/.yarn/global/node_modules/@snelusha/noto/dist/index.js",
       );
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
 
       const result = await getInstallationInfo();
 
@@ -150,6 +185,7 @@ describe("installation-info", () => {
 
     it("should detect bunx installation", async () => {
       const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
 
       process.argv = [
         "node",
@@ -159,6 +195,9 @@ describe("installation-info", () => {
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/home/user/.bun/install/global/node_modules/@snelusha/noto/dist/index.js",
       );
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
 
       const result = await getInstallationInfo();
 
@@ -170,6 +209,7 @@ describe("installation-info", () => {
 
     it("should detect local installation with yarn.lock", async () => {
       const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
 
       process.argv = [
         "node",
@@ -182,6 +222,9 @@ describe("installation-info", () => {
       vi.mocked(fs.existsSync).mockImplementation((p) => {
         return p.toString().includes("yarn.lock");
       });
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
 
       const result = await getInstallationInfo();
 
@@ -192,6 +235,7 @@ describe("installation-info", () => {
 
     it("should detect local installation with pnpm-lock.yaml", async () => {
       const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
 
       process.argv = [
         "node",
@@ -204,6 +248,9 @@ describe("installation-info", () => {
       vi.mocked(fs.existsSync).mockImplementation((p) => {
         return p.toString().includes("pnpm-lock.yaml");
       });
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
 
       const result = await getInstallationInfo();
 
@@ -214,6 +261,7 @@ describe("installation-info", () => {
 
     it("should detect local installation with bun.lockb", async () => {
       const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
 
       process.argv = [
         "node",
@@ -226,6 +274,9 @@ describe("installation-info", () => {
       vi.mocked(fs.existsSync).mockImplementation((p) => {
         return p.toString().includes("bun.lockb");
       });
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
 
       const result = await getInstallationInfo();
 
@@ -236,6 +287,7 @@ describe("installation-info", () => {
 
     it("should default to global npm installation", async () => {
       const fs = await import("node:fs");
+      const childProcess = await import("node:child_process");
 
       process.argv = [
         "node",
@@ -245,6 +297,9 @@ describe("installation-info", () => {
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/usr/local/lib/node_modules/@snelusha/noto/dist/index.js",
       );
+      vi.mocked(childProcess.execSync).mockImplementation(() => {
+        throw new Error("not found");
+      });
 
       const result = await getInstallationInfo();
 
