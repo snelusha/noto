@@ -13,6 +13,19 @@ export interface UpdateInfo {
   timestamp: number;
 }
 
+function getBestAvailableUpdate(beta?: string, stable?: string): string | null {
+  if (!beta || !stable) return beta || stable || null;
+
+  const stableVersion = semver.coerce(stable)?.version;
+  const betaVersion = semver.coerce(beta)?.version;
+
+  if (!stableVersion || !betaVersion) return beta || stable || null;
+
+  return stableVersion === betaVersion || semver.gt(betaVersion, stableVersion)
+    ? beta
+    : stable;
+}
+
 export async function checkForUpdate(
   mark: boolean = false,
   force: boolean = false,
@@ -34,7 +47,17 @@ export async function checkForUpdate(
   }
 
   try {
-    const latest = await latestVersion(name);
+    const isBeta = currentVersion.includes("beta");
+
+    const latest = isBeta
+      ? getBestAvailableUpdate(
+          ...(await Promise.all([
+            latestVersion(name, { version: "beta" }),
+            latestVersion(name),
+          ])),
+        )!
+      : await latestVersion(name);
+
     const update = {
       latest,
       current: currentVersion,
