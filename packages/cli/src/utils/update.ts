@@ -14,13 +14,16 @@ export interface UpdateInfo {
 }
 
 function getBestAvailableUpdate(beta?: string, stable?: string): string | null {
-  if (!beta) return stable || null;
-  if (!stable) return beta || null;
+  if (!beta || !stable) return beta || stable || null;
 
-  if (semver.coerce(stable)?.version === semver.coerce(beta)?.version)
-    return beta;
+  const stableVersion = semver.coerce(stable)?.version;
+  const betaVersion = semver.coerce(beta)?.version;
 
-  return semver.gt(stable, beta) ? stable : beta;
+  if (!stableVersion || !betaVersion) return beta || stable || null;
+
+  return stableVersion === betaVersion || semver.gt(betaVersion, stableVersion)
+    ? beta
+    : stable;
 }
 
 export async function checkForUpdate(
