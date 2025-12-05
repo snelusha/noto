@@ -5,6 +5,10 @@ import process from "node:process";
 
 import { isGitRepository } from "~/utils/git";
 
+import { version } from "package";
+
+export const isPrelease = version.includes("beta");
+
 export enum PackageManager {
   NPM = "npm",
   YARN = "yarn",
