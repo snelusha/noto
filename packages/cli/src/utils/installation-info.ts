@@ -3,11 +3,13 @@ import * as path from "node:path";
 import * as childProcess from "node:child_process";
 import process from "node:process";
 
+import semver from "semver";
+
 import { isGitRepository } from "~/utils/git";
 
 import { version } from "package";
 
-export const isPrerelease = version.includes("beta");
+export const isPrerelease = semver.prerelease(version) !== null;
 
 export enum PackageManager {
   NPM = "npm",

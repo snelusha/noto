@@ -3,6 +3,8 @@ import { spawn } from "node:child_process";
 import * as p from "@clack/prompts";
 import color from "picocolors";
 
+import semver from "semver";
+
 import { baseProcedure } from "~/trpc";
 
 import { exit } from "~/utils/process";
@@ -41,7 +43,7 @@ export const upgrade = baseProcedure
       return await exit(1, false);
     }
 
-    const isPrerelease = update.latest.includes("beta");
+    const isPrerelease = semver.prerelease(update.latest) !== null;
 
     const updateCommand = isPrerelease
       ? installationInfo.updateCommand.replace("@latest", "@beta")
