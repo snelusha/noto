@@ -6,7 +6,7 @@ import { isPrerelease } from "~/utils/installation-info";
 
 import { name, version as currentVersion } from "package";
 
-const UPDATE_CHECK_INTERVAL = 12 * 60 * 60 * 1000;
+const UPDATE_CHECK_INTERVAL = 24 * 60 * 60 * 1000;
 
 export interface UpdateInfo {
   latest: string;
