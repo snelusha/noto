@@ -8,7 +8,7 @@ import color from "picocolors";
 import dedent from "dedent";
 
 import { getStagedDiff, isGitRepository } from "~/utils/git";
-import { isPrelease } from "./utils/installation-info";
+import { isPrerelease } from "./utils/installation-info";
 import { StorageManager } from "~/utils/storage";
 import { getPromptFile } from "~/utils/prompt";
 import { exit } from "~/utils/process";
@@ -101,8 +101,8 @@ export const baseProcedure = t.procedure.use((opts) => {
 
   if (meta?.intro) {
     console.log();
-    if (isPrelease)
-      p.intro(`${color.bgGreen(color.black(" @snelusha/noto [Prelease] "))}`);
+    if (isPrerelease)
+      p.intro(`${color.bgGreen(color.black(" @snelusha/noto [Prerelease] "))}`);
     else p.intro(`${color.bgCyan(color.black(" @snelusha/noto "))}`);
   }
 

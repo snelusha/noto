@@ -2,7 +2,7 @@ import semver from "semver";
 import latestVersion from "latest-version";
 
 import { CacheManager } from "~/utils/cache";
-import { isPrelease } from "~/utils/installation-info";
+import { isPrerelease } from "~/utils/installation-info";
 
 import { name, version as currentVersion } from "package";
 
@@ -48,7 +48,7 @@ export async function checkForUpdate(
   }
 
   try {
-    const latest = isPrelease
+    const latest = isPrerelease
       ? getBestAvailableUpdate(
           ...(await Promise.all([
             latestVersion(name, { version: "beta" }),
