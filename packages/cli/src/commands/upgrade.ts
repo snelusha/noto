@@ -41,7 +41,13 @@ export const upgrade = baseProcedure
       return await exit(1, false);
     }
 
-    const updateProcess = spawn(installationInfo.updateCommand, {
+    const isPrerelease = update.latest.includes("beta");
+
+    const updateCommand = isPrerelease
+      ? installationInfo.updateCommand.replace("@latest", "@beta")
+      : installationInfo.updateCommand;
+
+    const updateProcess = spawn(updateCommand, {
       stdio: "pipe",
       shell: true,
     });
