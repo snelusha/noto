@@ -1,6 +1,6 @@
 <h1 align="center">noto ✨</h1>
 <p align="center"><sup>(/nōto/, <em>notebook</em> in Japanese)</sup></p>
-<img src="https://github.com/snelusha/static/blob/main/noto/banner-sharp.png?raw=true" align="center"></img>
+<img src="https://github.com/snelusha/static/blob/main/noto/banner-lts.png?raw=true" align="center"></img>
 
 ## Features
 
