@@ -2,12 +2,12 @@ import { spawn } from "node:child_process";
 
 import * as p from "@clack/prompts";
 import color from "picocolors";
-
 import semver from "semver";
 
 import { baseProcedure } from "~/trpc";
 
 import { exit } from "~/utils/process";
+import { CacheManager } from "~/utils/cache";
 import { getAvailableUpdate } from "~/utils/update";
 import { getInstallationInfo } from "~/utils/installation-info";
 
@@ -69,5 +69,11 @@ export const upgrade = baseProcedure
       );
       return await exit(1, false);
     }
+
+    await CacheManager.update((current) => ({
+      ...current,
+      update: undefined,
+    }));
+
     return await exit(0, false);
   });
