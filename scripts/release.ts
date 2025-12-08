@@ -38,10 +38,14 @@ async function isGitClean() {
   return status.trim().length === 0;
 }
 
-async function updatePackageVersions(version: string) {
+async function updatePackageVersions(
+  version: string,
+  type: semver.ReleaseType | string,
+) {
   const changedFiles: string[] = [];
 
   for (const pkg of packages) {
+    if (type === "prerelease" && pkg === "apps/web") continue;
     const pkgJsonPath = `${pkg}/package.json`;
     const pkgJson = await Bun.file(pkgJsonPath).json();
     pkgJson.version = version;
@@ -75,7 +79,7 @@ async function release() {
     }
   }
 
-  const files = await updatePackageVersions(newVersion);
+  const files = await updatePackageVersions(newVersion, type);
   await $`git add ${files}`;
 
   const commit = `chore(release): v${newVersion}`;
