@@ -45,9 +45,10 @@ export const upgrade = baseProcedure
 
     const isPrerelease = semver.prerelease(update.latest) !== null;
 
-    const updateCommand = isPrerelease
-      ? installationInfo.updateCommand.replace("@latest", "@beta")
-      : installationInfo.updateCommand;
+    const updateCommand = installationInfo.updateCommand.replace(
+      "@latest",
+      isPrerelease ? "@beta" : `@${update.latest}`,
+    );
 
     const updateProcess = spawn(updateCommand, {
       stdio: "pipe",
