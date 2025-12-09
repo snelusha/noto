@@ -25,7 +25,8 @@
       "@types/node": "^24.10.1",
       "@types/semver": "^7.7.1",
       "semver": "^7.7.3",
-      "typescript": "^5.9.3"
+      "typescript": "^5.9.3",
+      "zod": "^4.1.13"
     }
   }
 }

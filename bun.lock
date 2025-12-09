@@ -30,6 +30,7 @@
         "react-hotkeys-hook": "^5.2.1",
         "scroll-into-view-if-needed": "^3.1.0",
         "tailwind-merge": "^3.4.0",
+        "zod": "catalog:",
       },
       "devDependencies": {
         "@content-collections/core": "^0.12.0",
@@ -73,7 +74,7 @@
         "superjson": "^2.2.6",
         "tinyexec": "^1.0.2",
         "trpc-cli": "^0.12.1",
-        "zod": "^4.1.13",
+        "zod": "catalog:",
       },
       "devDependencies": {
         "@types/node": "catalog:",
@@ -90,6 +91,7 @@
     "@types/semver": "^7.7.1",
     "semver": "^7.7.3",
     "typescript": "^5.9.3",
+    "zod": "^4.1.13",
   },
   "packages": {
     "@ai-sdk/gateway": ["@ai-sdk/gateway@2.0.18", "", { "dependencies": { "@ai-sdk/provider": "2.0.0", "@ai-sdk/provider-utils": "3.0.18", "@vercel/oidc": "3.0.5" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-sDQcW+6ck2m0pTIHW6BPHD7S125WD3qNkx/B8sEzJp/hurocmJ5Cni0ybExg6sQMGo+fr/GWOwpHF1cmCdg5rQ=="],
