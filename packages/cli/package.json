@@ -44,7 +44,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@types/semver": "catalog:",
-    "bunup": "^0.15.7",
+    "bunup": "^0.16.10",
     "typescript": "catalog:",
     "vitest": "^4.0.15"
   },
@@ -63,6 +63,6 @@
     "superjson": "^2.2.6",
     "tinyexec": "^1.0.2",
     "trpc-cli": "^0.12.1",
-    "zod": "^4.1.13"
+    "zod": "catalog:"
   }
 }
