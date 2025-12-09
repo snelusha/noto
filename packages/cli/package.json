@@ -44,7 +44,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@types/semver": "catalog:",
-    "bunup": "^0.15.7",
+    "bunup": "^0.16.10",
     "typescript": "catalog:",
     "vitest": "^4.0.15"
   },
