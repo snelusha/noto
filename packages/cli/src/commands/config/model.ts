@@ -29,18 +29,6 @@ export const model = baseProcedure
       return await exit(1);
     }
 
-    if (model === "gemini-2.5-pro-preview-05-06") {
-      const confirm = await p.confirm({
-        message:
-          "this model does not have free quota tier, do you want to continue?",
-      });
-
-      if (p.isCancel(confirm) || !confirm) {
-        p.log.error(color.red("nothing changed!"));
-        return await exit(1);
-      }
-    }
-
     await StorageManager.update((current) => ({
       ...current,
       llm: {
