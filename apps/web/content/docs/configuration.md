@@ -19,7 +19,7 @@ noto config key "your-gemini-api-key-here"
 
 ## Model Selection
 
-noto uses `gemini-2.0-flash` by default. To change the model:
+noto uses `gemini-2.5-flash-lite` by default. To change the model:
 
 ```bash
 noto config model

@@ -55,4 +55,16 @@ noto --version
 
 You should see the current version number. If you do, you're all set!
 
-**Having trouble?** Check out our [troubleshooting guide](/docs/troubleshooting) or [open an issue](https://github.com/snelusha/noto/issues) on GitHub.
+## Upgrading noto
+
+Keep noto up to date with the latest features and improvements:
+
+```bash
+noto upgrade
+```
+
+noto will automatically check for available updates and install the latest version. If you're already on the latest version, you'll be notified.
+
+> **Note:** The upgrade command automatically handles both stable and prerelease versions. If a prerelease version is available, it will be offered accordingly.
+
+**Having trouble?** Check out our [troubleshooting guide](/docs/reference/faq) or [open an issue](https://github.com/snelusha/noto/issues) on GitHub.
