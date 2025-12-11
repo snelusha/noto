@@ -36,6 +36,7 @@ export function Sidebar() {
               <div key={content.title}>
                 <button
                   className="flex w-full items-center gap-2 border-b px-5 py-2.5 text-start hover:underline"
+                  type="button"
                   onClick={() =>
                     setCurrentOpen(currentOpen === index ? -1 : index)
                   }

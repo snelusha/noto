@@ -49,12 +49,12 @@ export async function checkForUpdate(
 
   try {
     const latest = isPrerelease
-      ? getBestAvailableUpdate(
+      ? (getBestAvailableUpdate(
           ...(await Promise.all([
             latestVersion(name, { version: "beta" }),
             latestVersion(name),
           ])),
-        )!
+        ) ?? currentVersion)
       : await latestVersion(name);
 
     const update = {

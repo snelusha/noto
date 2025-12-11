@@ -1,10 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 
-import {
-  PackageManager,
-  type InstallationInfo,
-  getInstallationInfo,
-} from "~/utils/installation-info";
+import { PackageManager, getInstallationInfo } from "~/utils/installation-info";
 
 vi.mock("node:fs");
 vi.mock("node:child_process");

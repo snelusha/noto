@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "biome check",
     "clean": "git clean -xdf .cache .turbo node_modules"
   },
   "dependencies": {
@@ -30,6 +30,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@biomejs/biome": "catalog:",
     "@content-collections/core": "^0.12.0",
     "@content-collections/next": "^0.2.9",
     "@tailwindcss/postcss": "^4.1.17",

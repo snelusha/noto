@@ -46,6 +46,7 @@ export function TOCMobile() {
       <header className="bg-background/90 border-b px-6 backdrop-blur-md">
         <button
           className="w-full py-2.5 text-start"
+          type="button"
           onClick={() => setOpen(!open)}
         >
           <div className="text-muted-foreground flex items-center gap-2">
@@ -96,7 +97,7 @@ export function TOCMobile() {
                               href={item.url}
                               className={cn(
                                 item.depth !== 2 && "ml-4",
-                                "text-muted-foreground data-[active]:text-secondary-foreground",
+                                "text-muted-foreground data-active:text-secondary-foreground",
                               )}
                             >
                               {item.title}

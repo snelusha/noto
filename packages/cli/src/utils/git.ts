@@ -17,7 +17,7 @@ export const getGitRoot = async () => {
 export const getCommitCount = async () => {
   try {
     const count = await git.raw(["rev-list", "--all", "--count"]);
-    return parseInt(count);
+    return parseInt(count, 10);
   } catch (error) {
     const message = (error as Error).message;
     const regex = /(ambiguous argument.*HEAD|unknown revision or path.*HEAD)/;

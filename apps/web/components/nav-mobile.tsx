@@ -56,6 +56,7 @@ export function NavbarMobileButton() {
   return (
     <button
       className="block overflow-hidden outline-none md:hidden"
+      type="button"
       onClick={toggle}
     >
       <HugeiconsIcon className="size-4" icon={Menu11Icon} strokeWidth={1.5} />
@@ -72,16 +73,16 @@ export function NavbarMobile() {
     new Set(),
   );
 
-  const getDefaultValue = (): Set<number> => {
+  const getDefaultValue = React.useEffectEvent((): Set<number> => {
     const defaultValue = config.docs.contents.findIndex((content) =>
       content.list.some((item) => item.href === pathname),
     );
     return defaultValue === -1 ? new Set() : new Set([defaultValue]);
-  };
+  });
 
   React.useEffect(() => {
     setOpenSections(getDefaultValue());
-  }, [pathname]);
+  }, []);
 
   const toggleSection = (index: number) =>
     setOpenSections((prev) => {
@@ -93,13 +94,13 @@ export function NavbarMobile() {
   return (
     <div
       className={cn(
-        "bg-background fixed inset-x-0 top-[50px] z-[100] grid transform-gpu grid-rows-[0fr] transition-all duration-300 md:hidden",
+        "bg-background fixed inset-x-0 top-[50px] z-100 grid transform-gpu grid-rows-[0fr] transition-all duration-300 md:hidden",
         isOpen && "grid-rows-[1fr] border-b shadow-lg",
       )}
     >
       <div
         className={cn(
-          "no-scrollbar flex max-h-[80vh] min-h-0 flex-col gap-4 overflow-y-auto [mask-image:linear-gradient(to_top,transparent,white_40px)] transition-all duration-300",
+          "no-scrollbar flex max-h-[80vh] min-h-0 flex-col gap-4 overflow-y-auto mask-[linear-gradient(to_top,transparent,white_40px)] transition-all duration-300",
           isOpen ? "pt-5 pb-2" : "invisible",
         )}
       >
@@ -109,6 +110,7 @@ export function NavbarMobile() {
               <div key={content.title} className="px-6 py-4">
                 <button
                   className="flex w-full items-center text-start hover:underline"
+                  type="button"
                   onClick={() => toggleSection(index)}
                 >
                   <span className="grow">{content.title}</span>

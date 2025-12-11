@@ -26,8 +26,9 @@ export function InstallCommand() {
 
   return (
     <FigmaWrapper>
-      <h1
+      <button
         className="text-muted-foreground/60 group relative inline-flex w-full cursor-pointer items-center p-2 pr-8 font-mono text-sm tracking-tight"
+        type="button"
         onClick={handleCopy}
       >
         npm install -g&nbsp;
@@ -63,7 +64,7 @@ export function InstallCommand() {
             />
           </div>
         </span>
-      </h1>
+      </button>
     </FigmaWrapper>
   );
 }

@@ -28,6 +28,7 @@
   "scripts": {
     "build": "bunup --clean",
     "test": "bunup --clean && vitest run",
+    "lint": "biome check .",
     "clean": "git clean -xdf .cache .turbo node_modules"
   },
   "files": [
@@ -42,6 +43,7 @@
     "cli"
   ],
   "devDependencies": {
+    "@biomejs/biome": "catalog:",
     "@types/node": "catalog:",
     "@types/semver": "catalog:",
     "bunup": "^0.16.10",

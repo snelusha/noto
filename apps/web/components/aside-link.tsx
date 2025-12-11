@@ -1,12 +1,12 @@
 "use client";
 
-import * as React from "react";
-
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
 
 import { cn } from "~/styles/utils";
+
+import type * as React from "react";
 
 export function AsideLink({
   className,
@@ -21,7 +21,7 @@ export function AsideLink({
   return (
     <Link
       className={cn(
-        "text-muted-foreground hover:text-foreground data-[active]:text-foreground flex w-full items-center gap-2 transition-colors",
+        "text-muted-foreground hover:text-foreground data-active:text-foreground flex w-full items-center gap-2 transition-colors",
         className,
       )}
       href={{ pathname: href }}

@@ -1,6 +1,6 @@
-import os from "os";
-import path from "path";
-import { promises as fs } from "fs";
+import os from "node:os";
+import path from "node:path";
+import fs from "node:fs/promises";
 import {
   afterAll,
   beforeAll,
@@ -109,7 +109,7 @@ describe("update utilities", () => {
     });
 
     it("should fetch new version when cache is old", async () => {
-      const oldTimestamp = Date.now() - 13 * 60 * 60 * 1000; // 13 hours ago
+      const oldTimestamp = Date.now() - 2 * 24 * 60 * 60 * 1000; // 2 days ago
       await CacheManager.update((current) => ({
         ...current,
         update: {

@@ -54,10 +54,10 @@ export default function Page() {
             transition={{ staggerChildren: 0.18 }}
           >
             {["No more overthinking,", "commit in seconds!"].map((line, i) => (
-              <motion.p key={`line-${i}`} className="flex">
+              <motion.p key={line} className="flex">
                 {line.split(" ").map((word, j) => (
                   <motion.span
-                    key={`word-${j}`}
+                    key={word}
                     className={cn(
                       i === 1 && j === 0 && "text-secondary-foreground",
                     )}

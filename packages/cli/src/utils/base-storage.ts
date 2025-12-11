@@ -1,38 +1,41 @@
-import { promises as fs } from "fs";
-import { dirname } from "path";
+import fs from "node:fs/promises";
+import path from "node:path";
 
-import { z } from "zod";
+import type { z } from "zod";
 
 export function createStorage<TSchema extends z.ZodTypeAny>(options: {
   schema: TSchema;
   path: string;
 }) {
   type Schema = z.infer<TSchema>;
-  const { schema, path } = options;
+  const { schema, path: storagePath } = options;
 
+  // biome-ignore lint/complexity/noStaticOnlyClass: This class serves as a namespace for file-based storage utilities
   return class GenericStorageClass {
-    static storagePath: string = path;
+    static storagePath: string = storagePath;
     static storage: Schema = {} as Schema;
 
     public static async load(): Promise<Schema> {
       try {
-        await fs.access(this.storagePath);
-        const raw = await fs.readFile(this.storagePath, "utf-8");
+        await fs.access(GenericStorageClass.storagePath);
+        const raw = await fs.readFile(GenericStorageClass.storagePath, "utf-8");
         const json = raw ? JSON.parse(raw) : {};
         const result = schema.safeParse(json);
-        this.storage = result.success ? result.data : ({} as Schema);
+        GenericStorageClass.storage = result.success
+          ? result.data
+          : ({} as Schema);
       } catch {
-        this.storage = {} as Schema;
+        GenericStorageClass.storage = {} as Schema;
       }
-      return this.storage;
+      return GenericStorageClass.storage;
     }
 
     public static async save(): Promise<void> {
       try {
-        const directory = dirname(this.storagePath);
+        const directory = path.dirname(GenericStorageClass.storagePath);
         await fs.mkdir(directory, { recursive: true });
-        const data = JSON.stringify(this.storage, null, 2);
-        await fs.writeFile(this.storagePath, data, "utf-8");
+        const data = JSON.stringify(GenericStorageClass.storage, null, 2);
+        await fs.writeFile(GenericStorageClass.storagePath, data, "utf-8");
       } catch {}
     }
 
@@ -40,37 +43,37 @@ export function createStorage<TSchema extends z.ZodTypeAny>(options: {
       updater: (current: Schema) => Schema | Promise<Schema>,
     ): Promise<Schema> {
       try {
-        await this.load();
-        const updated = await updater(this.storage);
+        await GenericStorageClass.load();
+        const updated = await updater(GenericStorageClass.storage);
         const result = schema.safeParse(updated);
         if (result.success) {
-          this.storage = result.data;
-          await this.save();
+          GenericStorageClass.storage = result.data;
+          await GenericStorageClass.save();
         }
       } catch {}
-      return this.storage;
+      return GenericStorageClass.storage;
     }
 
     public static async get(): Promise<Schema> {
-      await this.load();
-      return JSON.parse(JSON.stringify(this.storage));
+      await GenericStorageClass.load();
+      return JSON.parse(JSON.stringify(GenericStorageClass.storage));
     }
 
     public static async clear(): Promise<void> {
-      this.storage = {} as Schema;
-      await this.save();
+      GenericStorageClass.storage = {} as Schema;
+      await GenericStorageClass.save();
     }
 
     public static get path() {
-      return this.storagePath;
+      return GenericStorageClass.storagePath;
     }
 
     public static set path(p: string) {
-      this.storagePath = p;
+      GenericStorageClass.storagePath = p;
     }
 
     public static get raw() {
-      return this.storage;
+      return GenericStorageClass.storage;
     }
   };
 }
