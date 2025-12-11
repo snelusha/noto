@@ -1,5 +1,5 @@
-import os from "os";
-import { join, resolve } from "path";
+import os from "node:os";
+import path from "node:path";
 import { z } from "zod";
 
 import { createStorage } from "~/utils/base-storage";
@@ -18,7 +18,7 @@ const ConfigSchema = z.object({
 export type Storage = z.infer<typeof ConfigSchema>;
 
 export const StorageManager = createStorage({
-  path: resolve(join(os.homedir(), ".config", "noto"), ".notorc"),
+  path: path.resolve(path.join(os.homedir(), ".config", "noto"), ".notorc"),
   schema: ConfigSchema,
 });
 

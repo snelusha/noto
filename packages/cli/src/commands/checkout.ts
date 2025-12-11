@@ -154,7 +154,7 @@ export const checkout = gitProcedure
       return await exit(1);
     }
 
-    const result = await checkoutBranch(branch!);
+    const result = await checkoutBranch(branch);
     if (!result) {
       p.log.error(`failed to checkout ${color.bold(branch)}`);
       return await exit(1);
