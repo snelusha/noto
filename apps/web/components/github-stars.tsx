@@ -26,6 +26,7 @@ const getCookie = (name: string): string | null => {
 
 const setCookie = (name: string, value: string) => {
   const expires = new Date(Date.now() + ONE_HOUR).toUTCString();
+  // biome-ignore lint: cookie assignment is intentional
   document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
 };
 

@@ -1,10 +1,10 @@
-import path from "path";
-import { readFile } from "fs/promises";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const content = await readFile(
+  const content = await fs.readFile(
     path.join(process.cwd(), "app", "llms.txt", "llms.txt"),
     "utf-8",
   );

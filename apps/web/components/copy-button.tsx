@@ -42,6 +42,7 @@ export function CopyButton({
         "text-muted-foreground flex shrink-0 items-center justify-center transition-colors outline-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
       )}
+      type="button"
       onClick={handleCopy}
     >
       <AnimatePresence mode="popLayout">

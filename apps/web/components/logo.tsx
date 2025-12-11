@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 
 export function Logo({ ...props }: React.SVGProps<SVGSVGElement>) {
   return (
@@ -8,6 +8,8 @@ export function Logo({ ...props }: React.SVGProps<SVGSVGElement>) {
       width={68}
       height={50}
       fill="none"
+      aria-label="noto logo"
+      role="img"
       {...props}
     >
       <path

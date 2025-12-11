@@ -18,7 +18,7 @@ export const transformers = [
       if (node.tagName !== "code") return;
 
       const raw = this.source;
-      node.properties["__raw__"] = raw;
+      node.properties.__raw__ = raw;
 
       const meta = this.options.meta?.__raw;
 

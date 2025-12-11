@@ -1,11 +1,10 @@
 import Link from "next/link";
 
-import {
-  CodeBlockCommand,
-  CodeBlockCommandProps,
-} from "~/components/code-block-command";
+import { CodeBlockCommand } from "~/components/code-block-command";
 
 import type { Route } from "next";
+
+import type { CodeBlockCommandProps } from "~/components/code-block-command";
 
 export const components = {
   a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
