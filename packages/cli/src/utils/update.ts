@@ -14,6 +14,11 @@ export interface UpdateInfo {
   timestamp: number;
 }
 
+export interface UpdateOptions {
+  forceStable?: boolean;
+  forcePrerelease?: boolean;
+}
+
 function getBestAvailableUpdate(beta?: string, stable?: string): string | null {
   if (!beta || !stable) return beta || stable || null;
 
@@ -30,9 +35,10 @@ function getBestAvailableUpdate(beta?: string, stable?: string): string | null {
 export async function checkForUpdate(
   mark: boolean = false,
   force: boolean = false,
+  options?: UpdateOptions,
 ): Promise<UpdateInfo> {
   const cached = (await CacheManager.get()).update;
-  if (!force && cached) {
+  if (!force && cached && !options?.forceStable && !options?.forcePrerelease) {
     const isValid = semver.valid(cached.current) && semver.valid(cached.latest);
     if (isValid) {
       const isUpToDate = semver.gte(cached.current, cached.latest);
@@ -48,14 +54,25 @@ export async function checkForUpdate(
   }
 
   try {
-    const latest = isPrerelease
-      ? (getBestAvailableUpdate(
-          ...(await Promise.all([
-            latestVersion(name, { version: "beta" }),
-            latestVersion(name),
-          ])),
-        ) ?? currentVersion)
-      : await latestVersion(name);
+    let latest: string;
+
+    if (options?.forceStable) {
+      // Force to latest stable version
+      latest = await latestVersion(name);
+    } else if (options?.forcePrerelease) {
+      // Force to latest prerelease version
+      latest = await latestVersion(name, { version: "beta" });
+    } else {
+      // Default behavior: if currently on prerelease, stay on prerelease
+      latest = isPrerelease
+        ? (getBestAvailableUpdate(
+            ...(await Promise.all([
+              latestVersion(name, { version: "beta" }),
+              latestVersion(name),
+            ])),
+          ) ?? currentVersion)
+        : await latestVersion(name);
+    }
 
     const update = {
       latest,
@@ -97,8 +114,9 @@ export async function markUpdateChecked(update: UpdateInfo | null) {
 export async function getAvailableUpdate(
   mark: boolean = false,
   force: boolean = false,
+  options?: UpdateOptions,
 ): Promise<UpdateInfo | null> {
-  const update = await checkForUpdate(mark, force);
+  const update = await checkForUpdate(mark, force, options);
   const isValid = semver.valid(update.current) && semver.valid(update.latest);
   if (isValid) {
     const isUpToDate = semver.gte(update.current, update.latest);

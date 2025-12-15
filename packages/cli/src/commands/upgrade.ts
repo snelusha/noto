@@ -3,6 +3,7 @@ import { spawn } from "node:child_process";
 import * as p from "@clack/prompts";
 import color from "picocolors";
 import semver from "semver";
+import { z } from "zod";
 
 import { baseProcedure } from "~/trpc";
 
@@ -17,10 +18,24 @@ export const upgrade = baseProcedure
   .meta({
     description: "upgrade noto",
   })
-  .mutation(async () => {
+  .input(
+    z.object({
+      stable: z.boolean().optional().meta({
+        description: "upgrade to the latest stable version",
+      }),
+      prerelease: z.boolean().optional().meta({
+        description: "upgrade to the latest prerelease version",
+      }),
+    }),
+  )
+  .mutation(async (opts) => {
+    const { input } = opts;
     const spin = p.spinner();
     spin.start("fetching latest version");
-    const update = await getAvailableUpdate(true, true);
+    const update = await getAvailableUpdate(true, true, {
+      forceStable: input?.stable,
+      forcePrerelease: input?.prerelease,
+    });
     if (!update) {
       spin.stop(
         `You're already on the latest version of noto (${color.dim(`which is ${version}`)})`,
