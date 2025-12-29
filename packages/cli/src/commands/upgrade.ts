@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
 
+import { z } from "zod";
 import * as p from "@clack/prompts";
 import color from "picocolors";
 import semver from "semver";
@@ -8,7 +9,7 @@ import { baseProcedure } from "~/trpc";
 
 import { exit } from "~/utils/process";
 import { CacheManager } from "~/utils/cache";
-import { getAvailableUpdate } from "~/utils/update";
+import { getAvailableUpdate, type Channel } from "~/utils/update";
 import { getInstallationInfo } from "~/utils/installation-info";
 
 import { version } from "package";
@@ -17,10 +18,34 @@ export const upgrade = baseProcedure
   .meta({
     description: "upgrade noto",
   })
-  .mutation(async () => {
+  .input(
+    z.object({
+      stable: z.boolean().optional().meta({
+        description: "force upgrade to the latest stable version",
+      }),
+      beta: z.boolean().optional().meta({
+        description: "force upgrade to the latest beta version",
+      }),
+    }),
+  )
+  .mutation(async (opts) => {
+    const { input } = opts;
+
+    // Validate that only one channel flag is used at a time
+    if (input.stable && input.beta) {
+      p.log.error("cannot use both --stable and --beta flags at the same time");
+      return await exit(1, false);
+    }
+
+    const channel: Channel = input.stable
+      ? "stable"
+      : input.beta
+        ? "beta"
+        : "auto";
+
     const spin = p.spinner();
     spin.start("fetching latest version");
-    const update = await getAvailableUpdate(true, true);
+    const update = await getAvailableUpdate(true, true, channel);
     if (!update) {
       spin.stop(
         `You're already on the latest version of noto (${color.dim(`which is ${version}`)})`,
@@ -45,9 +70,19 @@ export const upgrade = baseProcedure
 
     const isPrerelease = semver.prerelease(update.latest) !== null;
 
+    let versionTag: string;
+    if (channel === "beta") {
+      versionTag = "@beta";
+    } else if (channel === "stable") {
+      versionTag = `@${update.latest}`;
+    } else {
+      // auto mode: use existing logic based on the fetched version
+      versionTag = isPrerelease ? "@beta" : `@${update.latest}`;
+    }
+
     const updateCommand = installationInfo.updateCommand.replace(
       "@latest",
-      isPrerelease ? "@beta" : `@${update.latest}`,
+      versionTag,
     );
 
     const updateProcess = spawn(updateCommand, {
