@@ -32,7 +32,7 @@ function getBestAvailableUpdate(beta?: string, stable?: string): string | null {
 export async function checkForUpdate(
   mark: boolean = false,
   force: boolean = false,
-  tag: UpdateTag = "stable",
+  tag: UpdateTag = "auto",
 ): Promise<UpdateInfo> {
   const cached = (await CacheManager.get()).update;
   if (!force && cached) {
@@ -108,7 +108,7 @@ export async function markUpdateChecked(update: UpdateInfo | null) {
 export async function getAvailableUpdate(
   mark: boolean = false,
   force: boolean = false,
-  tag: UpdateTag = "stable",
+  tag: UpdateTag = "auto",
 ): Promise<UpdateInfo | null> {
   const update = await checkForUpdate(mark, force, tag);
   const isValid = semver.valid(update.current) && semver.valid(update.latest);
