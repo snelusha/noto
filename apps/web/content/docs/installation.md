@@ -65,6 +65,15 @@ noto upgrade
 
 noto will automatically check for available updates and install the latest version. If you're already on the latest version, you'll be notified.
 
-> **Note:** The upgrade command automatically handles both stable and prerelease versions. If a prerelease version is available, it will be offered accordingly.
+### Upgrade Options
+
+Control which version to upgrade to:
+
+```bash
+noto upgrade --stable  # Upgrade to latest stable version
+noto upgrade --beta    # Upgrade to latest beta version
+```
+
+> **Note:** By default, the upgrade command automatically chooses the appropriate version based on your current installation. If you're on a prerelease version, it will check for the best available update (stable or beta). Use `--stable` or `--beta` to explicitly control the upgrade target.
 
 **Having trouble?** Check out our [troubleshooting guide](/docs/reference/faq) or [open an issue](https://github.com/snelusha/noto/issues) on GitHub.

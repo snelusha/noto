@@ -19,7 +19,6 @@ import {
 } from "~/utils/update";
 import { CacheManager } from "~/utils/cache";
 
-// Mock the external dependencies
 vi.mock("latest-version", () => ({
   default: vi.fn(),
 }));
@@ -313,6 +312,52 @@ describe("update utilities", () => {
       expect(result).not.toBeNull();
       expect(result?.latest).toBe("1.5.0");
       expect(latestVersion).toHaveBeenCalled();
+    });
+  });
+
+  describe("tag parameter", () => {
+    it('should fetch stable version when tag="stable"', async () => {
+      vi.mocked(latestVersion).mockResolvedValue("1.4.0");
+
+      const result = await checkForUpdate(false, false, "stable");
+
+      expect(result.latest).toBe("1.4.0");
+      expect(latestVersion).toHaveBeenCalledWith("@snelusha/noto");
+    });
+
+    it('should fetch beta version when tag="beta"', async () => {
+      vi.mocked(latestVersion).mockResolvedValue("1.5.0-beta.1");
+
+      const result = await checkForUpdate(false, false, "beta");
+
+      expect(result.latest).toBe("1.5.0-beta.1");
+      expect(latestVersion).toHaveBeenCalledWith("@snelusha/noto", {
+        version: "beta",
+      });
+    });
+
+    it('should return stable update when tag="stable"', async () => {
+      vi.mocked(latestVersion).mockResolvedValue("1.4.0");
+
+      const result = await getAvailableUpdate(false, false, "stable");
+
+      expect(result).toEqual({
+        latest: "1.4.0",
+        current: "1.3.2",
+        timestamp: expect.any(Number),
+      });
+    });
+
+    it('should return beta update when tag="beta"', async () => {
+      vi.mocked(latestVersion).mockResolvedValue("1.5.0-beta.1");
+
+      const result = await getAvailableUpdate(false, false, "beta");
+
+      expect(result).toEqual({
+        latest: "1.5.0-beta.1",
+        current: "1.3.2",
+        timestamp: expect.any(Number),
+      });
     });
   });
 });

@@ -8,6 +8,8 @@ import { name, version as currentVersion } from "package";
 
 const UPDATE_CHECK_INTERVAL = 24 * 60 * 60 * 1000;
 
+export type UpdateTag = "stable" | "beta" | "auto";
+
 export interface UpdateInfo {
   latest: string;
   current: string;
@@ -30,6 +32,7 @@ function getBestAvailableUpdate(beta?: string, stable?: string): string | null {
 export async function checkForUpdate(
   mark: boolean = false,
   force: boolean = false,
+  tag: UpdateTag = "auto",
 ): Promise<UpdateInfo> {
   const cached = (await CacheManager.get()).update;
   if (!force && cached) {
@@ -48,14 +51,22 @@ export async function checkForUpdate(
   }
 
   try {
-    const latest = isPrerelease
-      ? (getBestAvailableUpdate(
-          ...(await Promise.all([
-            latestVersion(name, { version: "beta" }),
-            latestVersion(name),
-          ])),
-        ) ?? currentVersion)
-      : await latestVersion(name);
+    let latest: string;
+
+    if (tag === "stable") {
+      latest = await latestVersion(name);
+    } else if (tag === "beta") {
+      latest = await latestVersion(name, { version: "beta" });
+    } else {
+      latest = isPrerelease
+        ? (getBestAvailableUpdate(
+            ...(await Promise.all([
+              latestVersion(name, { version: "beta" }),
+              latestVersion(name),
+            ])),
+          ) ?? currentVersion)
+        : await latestVersion(name);
+    }
 
     const update = {
       latest,
@@ -97,8 +108,9 @@ export async function markUpdateChecked(update: UpdateInfo | null) {
 export async function getAvailableUpdate(
   mark: boolean = false,
   force: boolean = false,
+  tag: UpdateTag = "auto",
 ): Promise<UpdateInfo | null> {
-  const update = await checkForUpdate(mark, force);
+  const update = await checkForUpdate(mark, force, tag);
   const isValid = semver.valid(update.current) && semver.valid(update.latest);
   if (isValid) {
     const isUpToDate = semver.gte(update.current, update.latest);

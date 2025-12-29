@@ -1,5 +1,7 @@
 import { spawn } from "node:child_process";
 
+import { z } from "zod";
+
 import * as p from "@clack/prompts";
 import color from "picocolors";
 import semver from "semver";
@@ -13,14 +15,39 @@ import { getInstallationInfo } from "~/utils/installation-info";
 
 import { version } from "package";
 
+import type { UpdateTag } from "~/utils/update";
+
 export const upgrade = baseProcedure
   .meta({
     description: "upgrade noto",
   })
-  .mutation(async () => {
+  .input(
+    z.object({
+      stable: z.boolean().optional().meta({
+        description: "upgrade to the latest stable version",
+      }),
+      beta: z.boolean().optional().meta({
+        description: "upgrade to the latest beta version",
+      }),
+    }),
+  )
+  .mutation(async (opts) => {
+    const { input } = opts;
+
+    if (input.stable && input.beta) {
+      p.log.error("please choose either --stable or --beta option, not both.");
+      return await exit(1, false);
+    }
+
+    const tag: UpdateTag = input.stable
+      ? "stable"
+      : input.beta
+        ? "beta"
+        : "auto";
+
     const spin = p.spinner();
     spin.start("fetching latest version");
-    const update = await getAvailableUpdate(true, true);
+    const update = await getAvailableUpdate(true, true, tag);
     if (!update) {
       spin.stop(
         `You're already on the latest version of noto (${color.dim(`which is ${version}`)})`,
@@ -47,7 +74,7 @@ export const upgrade = baseProcedure
 
     const updateCommand = installationInfo.updateCommand.replace(
       "@latest",
-      isPrerelease ? "@beta" : `@${update.latest}`,
+      isPrerelease || tag === "beta" ? "@beta" : `@${update.latest}`,
     );
 
     const updateProcess = spawn(updateCommand, {
