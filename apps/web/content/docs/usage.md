@@ -104,6 +104,25 @@ noto checkout
 noto checkout -b feat/new-feature
 ```
 
+## Upgrading noto
+
+### Check for Updates
+
+Upgrade to the latest version:
+
+```bash
+noto upgrade
+```
+
+### Specific Version Types
+
+Upgrade to stable or beta versions:
+
+```bash
+noto upgrade --stable  # Latest stable version
+noto upgrade --beta    # Latest beta version
+```
+
 ## All Available Flags
 
 **Commit generation:**
@@ -121,6 +140,11 @@ noto checkout -b feat/new-feature
 
 - **`--root`** - Create prompt file in git root
 - **`--generate`** - Generate prompt from existing commits
+
+**Upgrade:**
+
+- **`--stable`** - Upgrade to the latest stable version
+- **`--beta`** - Upgrade to the latest beta version
 
 ## Quick Examples
 
