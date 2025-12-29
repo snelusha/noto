@@ -113,6 +113,8 @@ export async function getAvailableUpdate(
   const update = await checkForUpdate(mark, force, tag);
   const isValid = semver.valid(update.current) && semver.valid(update.latest);
   if (isValid) {
+    if (isPrerelease && tag === "stable" && update.current !== update.latest)
+      return update;
     const isUpToDate = semver.gte(update.current, update.latest);
     if (!isUpToDate) return update;
   }
