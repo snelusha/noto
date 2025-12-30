@@ -17,6 +17,53 @@ import { version } from "package";
 
 import type { UpdateTag } from "~/utils/update";
 
+async function performUpgrade(targetVersion: string): Promise<void> {
+  const installationInfo = await getInstallationInfo();
+  if (!installationInfo.updateCommand) {
+    if (installationInfo.updateMessage) {
+      p.log.warn(installationInfo.updateMessage);
+      return await exit(0, false);
+    }
+
+    p.log.error("unable to determine update command for your installation.");
+    return await exit(1, false);
+  }
+
+  const updateCommand = installationInfo.updateCommand.replace(
+    "@latest",
+    `@${targetVersion}`,
+  );
+
+  const updateProcess = spawn(updateCommand, {
+    stdio: "pipe",
+    shell: true,
+  });
+
+  const spin = p.spinner();
+  spin.start("upgrading noto");
+  try {
+    await new Promise<void>((resolve, reject) => {
+      updateProcess.on("close", (code) => {
+        if (code === 0) resolve();
+        else reject();
+      });
+    });
+    spin.stop(color.green("noto has been updated successfully!"));
+  } catch {
+    p.log.error(
+      `automatic update failed. please try updating manually by running: ${installationInfo.updateCommand}`,
+    );
+    return await exit(1, false);
+  }
+
+  await CacheManager.update((current) => ({
+    ...current,
+    update: undefined,
+  }));
+
+  return await exit(0, false);
+}
+
 export const upgrade = baseProcedure
   .meta({
     description: "upgrade noto",
@@ -59,49 +106,9 @@ export const upgrade = baseProcedure
       `noto ${color.green(update.latest)} is out! You are on ${color.dim(update.current)}.`,
     );
 
-    const installationInfo = await getInstallationInfo();
-    if (!installationInfo.updateCommand) {
-      if (installationInfo.updateMessage) {
-        p.log.warn(installationInfo.updateMessage);
-        return await exit(0, false);
-      }
-
-      p.log.error("unable to determine update command for your installation.");
-      return await exit(1, false);
-    }
-
     const isPrerelease = semver.prerelease(update.latest) !== null;
+    const upgradeVersion =
+      isPrerelease || tag === "beta" ? "beta" : update.latest;
 
-    const updateCommand = installationInfo.updateCommand.replace(
-      "@latest",
-      isPrerelease || tag === "beta" ? "@beta" : `@${update.latest}`,
-    );
-
-    const updateProcess = spawn(updateCommand, {
-      stdio: "pipe",
-      shell: true,
-    });
-
-    spin.start("upgrading noto");
-    try {
-      await new Promise<void>((resolve, reject) => {
-        updateProcess.on("close", (code) => {
-          if (code === 0) resolve();
-          else reject();
-        });
-      });
-      spin.stop(color.green("noto has been updated successfully!"));
-    } catch {
-      p.log.error(
-        `automatic update failed. please try updating manually by running: ${installationInfo.updateCommand}`,
-      );
-      return await exit(1, false);
-    }
-
-    await CacheManager.update((current) => ({
-      ...current,
-      update: undefined,
-    }));
-
-    return await exit(0, false);
+    return await performUpgrade(upgradeVersion);
   });
