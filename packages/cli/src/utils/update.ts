@@ -19,14 +19,12 @@ export interface UpdateInfo {
 function getBestAvailableUpdate(beta?: string, stable?: string): string | null {
   if (!beta || !stable) return beta || stable || null;
 
-  const stableVersion = semver.coerce(stable)?.version;
-  const betaVersion = semver.coerce(beta)?.version;
+  const stableParsed = semver.parse(stable);
+  const betaParsed = semver.parse(beta);
 
-  if (!stableVersion || !betaVersion) return beta || stable || null;
+  if (!stableParsed || !betaParsed) return beta || stable || null;
 
-  return stableVersion === betaVersion || semver.gt(betaVersion, stableVersion)
-    ? beta
-    : stable;
+  return semver.gt(beta, stable) ? beta : stable;
 }
 
 export async function checkForUpdate(
