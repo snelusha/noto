@@ -353,6 +353,7 @@
   margin-bottom: calc(var(--spacing) * 6);
   padding-top: calc(var(--spacing) * 3.5);
   padding-bottom: calc(var(--spacing) * 3.5);
+  outline: none;
 }
 
 .prose
