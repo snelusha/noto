@@ -1,168 +1,378 @@
 # noto
 
-noto is a command-line tool designed to streamline your Git commit process by generating clear, context-aware commit messages using the Google Generative API. It integrates seamlessly with your Git workflow, allowing you to focus on coding while it handles the commit message generation.
+noto (/nōto/, meaning "notebook" in Japanese) is a command-line tool that generates commit messages for your Git projects. It analyzes your staged changes and uses Gemini to create clean, context-aware commit messages instantly.
+
+## Why noto?
+
+Writing good commit messages is hard. We've all been there:
+
+- Staring at a blank commit message box, unsure what to write
+- Defaulting to vague messages like "fix bug" or "update stuff"
+- Struggling to maintain consistency across team commits
+- Spending more time writing commit messages than actually coding
+
+noto solves this by doing the thinking for you. It analyzes your actual code changes and generates meaningful, professional commit messages in seconds—so you can focus on what matters: writing great code.
 
 ## Features
 
-- **Instant Commit Messages**: Generate clear, context-aware messages based on staged changes.
-
-- **Seamless Git Integration**: Apply messages directly, skip the copy-paste.
-
-- **Interactive Editing:** Easily refine your commit message with the new `--edit` flag.
-
-- **Enhanced Configuration:** Manage your LLM model preferences with an improved configuration interface.
+- **Lightning Fast** - Generate messages in seconds, not minutes
+- **Context-Aware** - Analyzes actual code changes, not just file names
+- **Customizable Guidelines** - Define your own commit message style with `noto init`
+- **Git Integration** - Apply, edit, or copy messages directly
+- **Smart Defaults** - Works great out of the box, customizable when you need it
+- **Message Caching** - Reuses cached messages for the same changes to save time and API costs
+- **Branch Management** - Switch, create, and manage branches with ease
+- **Auto Upgrades** - Keep noto up to date with the latest features
 
 ## Installation
 
-Install noto globally using npm:
+### Prerequisites
+
+- Node.js (v18 or higher)
+- Git installed and configured
+- A Gemini API key from Google AI Studio (https://aistudio.google.com/app/apikey)
+
+### Quick Install
+
+Install noto globally using your package manager of choice:
 
 ```bash
 npm install -g @snelusha/noto
 ```
 
-After installation, you can run `noto` from any terminal.
-
-## Prerequisites
-
-Before using noto, you must configure your [Google Generative API](https://aistudio.google.com/app/apikey) key. You can now provide your API key in two ways:
-
-### 1. Using an environment variable (recommended)
-
-Set the `NOTO_API_KEY` environment variable globally os it's available across your system.
-
-#### macOS/Linux (eg., in .bashrc, .zshrc or .profile)
+Or using Homebrew:
 
 ```bash
-export NOTO_API_KEY=your_api_key_here
+brew install snelusha/noto/noto
 ```
 
-Then reload your terminal or run:
+Verify installation:
 
 ```bash
-source ~/.zshrc # or ~/.bashrc or ~/.profile
+noto --version
 ```
 
-#### Windows (Command Prompt or PowerShell):
+### API Key Setup
+
+noto needs a Gemini API key to generate commit messages. You have two options:
+
+#### Option 1: Environment Variable (Recommended)
+
+Add your API key to your shell configuration:
 
 ```bash
-setx NOTO_API_KEY "your_api_key_here"
+export NOTO_API_KEY="your-gemini-api-key-here"
 ```
 
-> Note: You may need to restart your terminal (or system) for changes to take effect.
-
-### 2. Using the built-in configuration command
+For macOS/Linux, add to `.bashrc`, `.zshrc`, or `.profile`:
 
 ```bash
-noto config key # or simply noto config key YOUR_API_KEY
+export NOTO_API_KEY="your-gemini-api-key-here"
 ```
 
-> noto will first look for the `NOTO_API_KEY` environment variable. If it's not found, it will fall back to the local configuration.
+Then reload your terminal:
 
-You can also configure a specific Gemini mode (optional):
+```bash
+source ~/.zshrc  # or ~/.bashrc or ~/.profile
+```
+
+For Windows (PowerShell):
+
+```bash
+setx NOTO_API_KEY "your-gemini-api-key-here"
+```
+
+#### Option 2: Local Configuration
+
+Set your API key using noto's config command:
+
+```bash
+noto config key "your-gemini-api-key-here"
+```
+
+This stores the key in `~/.config/noto/.notorc` following XDG standards.
+
+> noto first checks for the NOTO_API_KEY environment variable. If not found, it falls back to the local configuration.
+
+## Configuration
+
+### Model Selection
+
+noto uses `gemini-2.5-flash-lite` by default. To change the model:
 
 ```bash
 noto config model
 ```
 
-If you ever need to reset your configuration, you can now run:
+### Reset Configuration
+
+Reset all noto configurations to defaults:
 
 ```bash
 noto config reset
 ```
 
-## Usage
+### Custom Commit Prompts
 
-Generate a new commit message:
+Every project has its own commit style. The `noto init` command analyzes your existing commit history and generates a custom prompt that matches your project's style:
 
 ```bash
+noto init
+```
+
+Available flags:
+- `--root` - Create the prompt file in the git root
+- `--generate` - Generate prompt from existing commits (requires 5+ commits)
+
+Examples:
+
+```bash
+noto init --root              # Create in git root
+noto init --generate          # Generate from commits
+noto init --root --generate   # Both options
+```
+
+noto will create a `.noto/commit-prompt.md` file that defines your commit message style. Commit this file to version control so your entire team uses consistent commit messages.
+
+#### Multiple Commit Prompts
+
+Working on a monorepo? noto supports multiple commit prompt files based on your current working directory:
+
+```
+monorepo/
+├── .noto/commit-prompt.md          # Root-level prompt
+├── packages/
+│   ├── frontend/
+│   │   └── .noto/commit-prompt.md  # Frontend-specific prompt
+│   └── backend/
+│       └── .noto/commit-prompt.md  # Backend-specific prompt
+```
+
+noto picks the closest `.noto/commit-prompt.md` file relative to your current directory.
+
+## Usage
+
+### Basic Commit Generation
+
+Stage your changes and run noto:
+
+```bash
+git add .
 noto
 ```
 
-Apply the generated commit message to your current commit:
+noto analyzes your staged changes and generates a commit message in an interactive editor.
+
+### Apply Commit
+
+Apply the generated message and commit:
 
 ```bash
-noto --apply # or simply noto -a
+git add .
+noto -a  # or --apply
 ```
 
-Copy the generated commit message to your clipboard:
+### Copy to Clipboard
+
+Copy the message without committing:
 
 ```bash
-noto --copy # or simply noto -c
+git add .
+noto -c  # or --copy
 ```
 
-Specify the commit type for your commit message:
+### Commit and Push
+
+Commit and push the changes:
 
 ```bash
-noto --type # or simply noto -t
-
-noto --type chore # or simply noto -t chore
+noto -a -p  # or --apply --push
 ```
 
-Combine all flags to specify the commit type, and apply the generated commit message in one go:
+### Provide Context
+
+Provide additional context for the commit message:
 
 ```bash
-noto --type feat --apply  # or simply: noto -t feat -a
+noto -m "fixing authentication bug"  # or --message
 ```
 
-This command will generate a commit message for a "feat" commit, let you refine it interactively, and then apply it directly to your current commit.
+### Force Regeneration
 
-Retrieve the previously generated commit message:
+Bypass cache and force regeneration:
+
+```bash
+noto -f  # or --force
+```
+
+### Manual Commit Message
+
+Write a custom commit message manually:
+
+```bash
+noto --manual
+```
+
+### Working with Previous Messages
+
+Retrieve the last generated commit message:
 
 ```bash
 noto prev
 ```
 
-Amend the previously generated commit message:
+Use with flags:
 
 ```bash
-noto prev --amend --edit # or simply: noto prev --amend -e
+noto prev -a  # Apply previous message
+noto prev -c  # Copy previous message
 ```
 
-> Note: When using the `--amend` flag with the noto prev command, the `--edit` (`-e`) flag is also required. This combination will allow you to modify (amend) the previous commit message before applying it.
+### Amend Previous Commit
 
-Note: All of the flags shown above (`--apply`, `--copy`, `--type`, `--edit`) can also be used with the `noto prev` command to work with the previously generated commit message.
+Modify your last commit message:
 
-Switch between branches in you git repo with an interactive prompt:
+```bash
+noto prev --amend -e  # or --edit
+```
+
+> When using `--amend`, the `--edit` flag is required.
+
+### Branch Management
+
+Switch between branches:
 
 ```bash
 noto checkout
 ```
 
-To copy the selected branch to your clipboard immediately after choosing it, use the new `-c` flag:
+Create a new branch:
 
 ```bash
-noto branch
+noto checkout -b feat/new-feature
 ```
 
-To list all branches, including remote branches, use the -r flag
+### Upgrading noto
+
+Keep noto up to date with the latest features:
 
 ```bash
-noto branch -r
+noto upgrade
 ```
 
-Delete local branches:
+Upgrade to specific version types:
 
 ```bash
-noto branch delete
+noto upgrade --stable  # Latest stable version
+noto upgrade --beta    # Latest beta version
 ```
 
-If you need to force delete a branch, you can use the force flag:
+## All Available Flags
+
+### Commit Generation
+- `-a, --apply` - Apply the commit message and commit
+- `-c, --copy` - Copy the message to clipboard
+- `-m, --message` - Provide context for the commit message
+- `-f, --force` - Bypass cache and force regeneration
+- `-p, --push` - Commit and push the changes
+- `-e, --edit` - Required with `--amend`
+- `--amend` - Amend the previous commit
+- `--manual` - Write a custom commit message manually
+
+### Initialization
+- `--root` - Create prompt file in git root
+- `--generate` - Generate prompt from existing commits
+
+### Upgrade
+- `--stable` - Upgrade to the latest stable version
+- `--beta` - Upgrade to the latest beta version
+
+## Quick Examples
 
 ```bash
-noto branch delete --force # simply: noto branch delete -f
+# Quick commit
+git add .
+noto -a
+
+# Commit and push
+noto -a -p
+
+# Provide context
+noto -m "fixing authentication bug"
+
+# Force regenerate
+noto -f
+
+# Copy for manual use
+noto -c
+
+# Reuse previous
+noto prev -a
+
+# Amend last commit
+noto prev --amend -e
+
+# Set up custom prompts
+noto init --root --generate
 ```
 
-## Pro Tips
+## Common Issues
 
-- 🚀 Get fast commits on the fly with `noto -a` to streamline your workflow!
+### "noto api key is missing"
+
+Configure your API key:
+
+```bash
+noto config key
+```
+
+Or set it as an environment variable (recommended):
+
+```bash
+export NOTO_API_KEY="your-api-key-here"
+```
+
+### "no staged changes found"
+
+Stage your changes first:
+
+```bash
+git add .
+noto
+```
+
+### "not enough commits to generate a prompt file"
+
+`noto init --generate` needs at least 5 commits. Either:
+- Wait until you have 5+ commits, then try again
+- Use `noto init` without `--generate` for an empty template
+
+### "the --amend option requires the --edit option"
+
+Use both flags together:
+
+```bash
+noto prev --amend -e
+```
+
+### Why does noto show the same message repeatedly?
+
+noto caches messages to save API costs. Force regeneration with:
+
+```bash
+noto -f
+```
+
+## Privacy & Costs
+
+- **Privacy**: Only your git diff (staged changes) is sent to generate the commit message, not your entire codebase.
+- **Costs**: noto uses Gemini API's free tier, which is generous for most usage. Check Google AI Studio pricing for limits.
 
 ## Contributing
 
-We welcome contributions and suggestions! If you have ideas or improvements, feel free to reach out or open a pull request.
-
-Thank you for using `noto`! If you have any feedback or suggestions, feel free to reach out or contribute to the project. ✨
+We welcome contributions and suggestions! If you have ideas or improvements, feel free to open an issue or pull request on GitHub.
 
 ## License
 
 This project is licensed under the MIT License.
-© 2024 [Sithija Nelusha Silva](https://github.com/snelusha)
+© 2024-2026 Sithija Nelusha Silva (https://github.com/snelusha)
