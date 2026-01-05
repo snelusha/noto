@@ -139,4 +139,4 @@ Thank you for using noto!
 ## License
 
 This project is licensed under the MIT License.
-© 2025 [Sithija Nelusha Silva](https://github.com/snelusha)
+© 2024-2026 [Sithija Nelusha Silva](https://github.com/snelusha)
