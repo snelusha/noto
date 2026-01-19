@@ -16,20 +16,20 @@ git add .
 noto
 ```
 
-noto analyzes your staged changes and generates a commit message in an interactive editor.
+noto analyzes your staged changes, generates a commit message in an interactive editor, and commits the changes automatically.
 
-### Apply Commit
+### Preview Mode
 
-Apply the generated message and commit:
+Preview the generated message without committing:
 
 ```bash
 git add .
-noto -a # or --apply
+noto -p # or --preview
 ```
 
 ### Copy to Clipboard
 
-Copy the message without committing:
+Copy the message to clipboard:
 
 ```bash
 git add .
@@ -127,14 +127,17 @@ noto upgrade --beta    # Latest beta version
 
 **Commit generation:**
 
-- **`-a, --apply`** - Apply the commit message and commit
+- **`-p, --preview`** - Preview the generated message without committing
 - **`-c, --copy`** - Copy the message to clipboard
 - **`-m, --message`** - Provide context for the commit message
 - **`-f, --force`** - Bypass cache and force regeneration of commit message
-- **`-p, --push`** - Commit and push the changes
-- **`-e, --edit`** - Required with `--amend`
-- **`--amend`** - Amend the previous commit
+- **`--push`** - Commit and push the changes
 - **`--manual`** - Write a custom commit message manually
+
+**Previous message:**
+
+- **`-e, --edit`** - Required with `--amend` (for `noto prev`)
+- **`--amend`** - Amend the previous commit (with `noto prev`)
 
 **Initialization:**
 
@@ -149,12 +152,15 @@ noto upgrade --beta    # Latest beta version
 ## Quick Examples
 
 ```bash
-# Quick commit
+# Quick commit (default behavior)
 git add .
-noto -a
+noto
+
+# Preview message without committing
+noto -p
 
 # Commit and push
-noto -a -p
+noto --push
 
 # Provide context for the commit
 noto -m "fixing authentication bug"
