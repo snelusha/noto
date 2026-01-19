@@ -1,5 +1,8 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
+import * as p from "@clack/prompts";
+import color from "picocolors";
+
 import { StorageManager } from "~/utils/storage";
 
 import type { LanguageModelV2 } from "@ai-sdk/provider";
@@ -25,11 +28,49 @@ export const models: Record<AvailableModels, LanguageModelV2> = {
 
 export const availableModels = Object.keys(models) as AvailableModels[];
 
-export const getModel = async () => {
-  let model = (await StorageManager.get()).llm?.model;
+export const getModel = async (model?: string) => {
+  // Priority order: explicit parameter > NOTO_MODEL env var > storage config > default
+  let selectedModel: AvailableModels | undefined;
 
-  if (!model || !availableModels.includes(model as AvailableModels)) {
-    model = DEFAULT_MODEL;
+  if (model) {
+    // Validate explicit model from flag
+    if (availableModels.includes(model as AvailableModels)) {
+      selectedModel = model as AvailableModels;
+    } else {
+      p.log.warn(
+        color.yellow(
+          `Invalid model "${model}". Available models: ${availableModels.join(", ")}. Falling back to default.`,
+        ),
+      );
+      selectedModel = undefined; // Will fall through to next priority
+    }
+  }
+
+  if (!selectedModel && process.env.NOTO_MODEL) {
+    // Validate model from environment variable
+    if (availableModels.includes(process.env.NOTO_MODEL as AvailableModels)) {
+      selectedModel = process.env.NOTO_MODEL as AvailableModels;
+    } else {
+      p.log.warn(
+        color.yellow(
+          `Invalid model "${process.env.NOTO_MODEL}" in NOTO_MODEL. Available models: ${availableModels.join(", ")}. Falling back to config/default.`,
+        ),
+      );
+      selectedModel = undefined; // Will fall through to next priority
+    }
+  }
+
+  if (!selectedModel) {
+    // Check storage configuration
+    const storageModel = (await StorageManager.get()).llm?.model;
+    if (storageModel && availableModels.includes(storageModel as AvailableModels)) {
+      selectedModel = storageModel as AvailableModels;
+    }
+  }
+
+  // Fall back to default if no valid model found
+  if (!selectedModel || !availableModels.includes(selectedModel as AvailableModels)) {
+    selectedModel = DEFAULT_MODEL;
     await StorageManager.update((current) => ({
       ...current,
       llm: {
@@ -39,5 +80,5 @@ export const getModel = async () => {
     }));
   }
 
-  return models[model as AvailableModels];
+  return models[selectedModel as AvailableModels];
 };

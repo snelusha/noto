@@ -64,6 +64,14 @@ You can also configure a specific Gemini mode (optional):
 noto config model
 ```
 
+Alternatively, you can specify the model using the `NOTO_MODEL` environment variable:
+
+```bash
+export NOTO_MODEL=gemini-2.5-flash
+```
+
+> The model priority order is: `--model` flag > `NOTO_MODEL` environment variable > config file > default model.
+
 If you ever need to reset your configuration, you can now run:
 
 ```bash
@@ -88,6 +96,12 @@ Copy the generated commit message to your clipboard:
 
 ```bash
 noto --copy # or simply noto -c
+```
+
+Specify a model to use (overrides config file and environment variable):
+
+```bash
+noto --model gemini-2.5-flash
 ```
 
 Retrieve the previously generated commit message:

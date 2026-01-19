@@ -43,6 +43,9 @@ export const noto = authedGitProcedure
         alias: "f",
       }),
       manual: z.boolean().meta({ description: "custom commit message" }),
+      model: z.string().optional().meta({
+        description: "specify the model to use",
+      }),
     }),
   )
   .mutation(async (opts) => {
@@ -105,6 +108,7 @@ export const noto = authedGitProcedure
         ctx.noto.prompt as string,
         typeof context === "string" ? context : undefined,
         input.force,
+        input.model,
       );
 
       spin.stop(color.white(message));

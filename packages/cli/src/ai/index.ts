@@ -340,16 +340,17 @@ export const generateCommitMessage = async (
   prompt?: string,
   context?: string,
   forceCache: boolean = false,
+  model?: string,
 ) => {
-  const model = await getModel();
+  const selectedModel = await getModel(model);
 
   const { object } = await generateObject({
     model: !forceCache
       ? wrapLanguageModel({
-          model,
+          model: selectedModel,
           middleware: cacheMiddleware,
         })
-      : model,
+      : selectedModel,
     schema: z.object({
       message: z.string(),
     }),
@@ -375,11 +376,14 @@ export const generateCommitMessage = async (
   return object.message.trim();
 };
 
-export const generateCommitGuidelines = async (commits: string[]) => {
-  const model = await getModel();
+export const generateCommitGuidelines = async (
+  commits: string[],
+  model?: string,
+) => {
+  const selectedModel = await getModel(model);
 
   const { object } = await generateObject({
-    model,
+    model: selectedModel,
     schema: z.object({
       prompt: z.string(),
     }),
