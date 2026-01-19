@@ -6,9 +6,9 @@
 
 - **Instant Commit Messages**: Generate clear, context-aware messages based on staged changes.
 
-- **Seamless Git Integration**: Apply messages directly, skip the copy-paste.
+- **Seamless Git Integration**: Auto-commit by default, with a preview-only option.
 
-- **Interactive Editing:** Easily refine your commit message with the new `--edit` flag.
+- **Interactive Editing:** Edit the generated message in-line before committing (no flag needed).
 
 - **Enhanced Configuration:** Manage your LLM model preferences with an improved configuration interface.
 
@@ -72,16 +72,16 @@ noto config reset
 
 ## Usage
 
-Generate a new commit message:
+Generate and commit with a new commit message (default behavior):
 
 ```bash
 noto
 ```
 
-Apply the generated commit message to your current commit:
+Preview the generated message without committing:
 
 ```bash
-noto --apply # or simply noto -a
+noto --preview # or simply noto -p
 ```
 
 Copy the generated commit message to your clipboard:
@@ -104,7 +104,7 @@ noto prev --amend --edit # or simply: noto prev --amend -e
 
 > Note: When using the `--amend` flag with the noto prev command, the `--edit` (`-e`) flag is also required. This combination will allow you to modify (amend) the previous commit message before applying it.
 
-Note: All of the flags shown above (`--apply`, `--copy`, `--edit`) can also be used with the `noto prev` command to work with the previously generated commit message.
+Note: `--preview` and `--copy` can also be used with the `noto prev` command. `--edit` applies only when using `noto prev --amend`.
 
 Switch between branches in your git repo with an interactive prompt:
 
@@ -128,7 +128,7 @@ noto upgrade
 
 ## Pro Tips
 
-- 🚀 Get fast commits on the fly with `noto -a` to streamline your workflow!
+- 🚀 Get fast commits on the fly with `noto` - it commits by default!
 
 ## Contributing
 

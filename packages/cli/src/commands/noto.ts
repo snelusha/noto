@@ -32,12 +32,12 @@ export const noto = authedGitProcedure
         description: "copy the generated message to clipboard",
         alias: "c",
       }),
-      apply: z
+      preview: z
         .boolean()
-        .meta({ description: "commit the generated message", alias: "a" }),
+        .meta({ description: "preview the generated message without committing", alias: "p" }),
       push: z
         .boolean()
-        .meta({ description: "commit and push the changes", alias: "p" }),
+        .meta({ description: "commit and push the changes" }),
       force: z.boolean().meta({
         description: "bypass cache and force regeneration of commit message",
         alias: "f",
@@ -133,7 +133,7 @@ export const noto = authedGitProcedure
         p.log.step(color.dim("copied commit message to clipboard"));
       }
 
-      if (input.apply) {
+      if (!input.preview) {
         const success = await commit(message);
         if (success) {
           p.log.step(color.dim("commit successful"));
