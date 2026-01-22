@@ -32,6 +32,9 @@ export const init = authedGitProcedure
       generate: z.boolean().meta({
         description: "generate a prompt file based on existing commits",
       }),
+      model: z.string().optional().meta({
+        description: "specify the model to use",
+      }),
     }),
   )
   .mutation(async (opts) => {
@@ -117,7 +120,7 @@ export const init = authedGitProcedure
 
     if (commits && generate) {
       spin.start("generating commit message guidelines");
-      prompt = await generateCommitGuidelines(commits);
+      prompt = await generateCommitGuidelines(commits, input.model);
       spin.stop(color.green("generated commit message guidelines!"));
     } else {
       prompt = EMPTY_TEMPLATE;

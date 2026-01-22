@@ -29,7 +29,6 @@ export const models: Record<AvailableModels, LanguageModelV2> = {
 export const availableModels = Object.keys(models) as AvailableModels[];
 
 export const getModel = async (model?: string) => {
-  // Priority order: explicit parameter > NOTO_MODEL env var > storage config > default
   let selectedModel: AvailableModels | undefined;
 
   if (model) {
