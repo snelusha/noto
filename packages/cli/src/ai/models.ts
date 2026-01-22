@@ -29,13 +29,15 @@ export const getModel = async (model?: string) => {
   let selectedModel: AvailableModels | undefined;
 
   if (model) {
+    model = model.trim();
     if (availableModels.includes(model as AvailableModels))
       selectedModel = model as AvailableModels;
     else selectedModel = undefined;
   }
 
-  const NOTO_MODEL = process.env.NOTO_MODEL;
+  let NOTO_MODEL = process.env.NOTO_MODEL;
   if (!selectedModel && NOTO_MODEL) {
+    NOTO_MODEL = NOTO_MODEL.trim();
     if (availableModels.includes(NOTO_MODEL as AvailableModels))
       selectedModel = NOTO_MODEL as AvailableModels;
     else selectedModel = undefined;
