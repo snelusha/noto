@@ -1,8 +1,5 @@
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 
-import * as p from "@clack/prompts";
-import color from "picocolors";
-
 import { StorageManager } from "~/utils/storage";
 
 import type { LanguageModelV2 } from "@ai-sdk/provider";
@@ -34,14 +31,14 @@ export const getModel = async (model?: string) => {
   if (model) {
     if (availableModels.includes(model as AvailableModels))
       selectedModel = model as AvailableModels;
-    else selectedModel = DEFAULT_MODEL;
+    else selectedModel = undefined;
   }
 
   const NOTO_MODEL = process.env.NOTO_MODEL;
   if (!selectedModel && NOTO_MODEL) {
     if (availableModels.includes(NOTO_MODEL as AvailableModels))
       selectedModel = NOTO_MODEL as AvailableModels;
-    else selectedModel = DEFAULT_MODEL;
+    else selectedModel = undefined;
   }
 
   if (!selectedModel) {
