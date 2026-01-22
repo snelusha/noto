@@ -32,17 +32,19 @@ export const noto = authedGitProcedure
         description: "copy the generated message to clipboard",
         alias: "c",
       }),
-      preview: z
-        .boolean()
-        .meta({ description: "preview the generated message without committing", alias: "p" }),
-      push: z
-        .boolean()
-        .meta({ description: "commit and push the changes" }),
+      preview: z.boolean().meta({
+        description: "preview the generated message without committing",
+        alias: "p",
+      }),
+      push: z.boolean().meta({ description: "commit and push the changes" }),
       force: z.boolean().meta({
         description: "bypass cache and force regeneration of commit message",
         alias: "f",
       }),
       manual: z.boolean().meta({ description: "custom commit message" }),
+      model: z.string().optional().meta({
+        description: "specify the model to use",
+      }),
     }),
   )
   .mutation(async (opts) => {
@@ -105,6 +107,7 @@ export const noto = authedGitProcedure
         ctx.noto.prompt as string,
         typeof context === "string" ? context : undefined,
         input.force,
+        input.model,
       );
 
       spin.stop(color.white(message));

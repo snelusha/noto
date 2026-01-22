@@ -25,11 +25,35 @@ export const models: Record<AvailableModels, LanguageModelV2> = {
 
 export const availableModels = Object.keys(models) as AvailableModels[];
 
-export const getModel = async () => {
-  let model = (await StorageManager.get()).llm?.model;
+export const getModel = async (model?: string) => {
+  let selectedModel: AvailableModels | undefined;
 
-  if (!model || !availableModels.includes(model as AvailableModels)) {
-    model = DEFAULT_MODEL;
+  if (model) {
+    model = model.trim();
+    if (availableModels.includes(model as AvailableModels))
+      selectedModel = model as AvailableModels;
+    else selectedModel = undefined;
+  }
+
+  let NOTO_MODEL = process.env.NOTO_MODEL;
+  if (!selectedModel && NOTO_MODEL) {
+    NOTO_MODEL = NOTO_MODEL.trim();
+    if (availableModels.includes(NOTO_MODEL as AvailableModels))
+      selectedModel = NOTO_MODEL as AvailableModels;
+    else selectedModel = undefined;
+  }
+
+  if (!selectedModel) {
+    const storageModel = (await StorageManager.get()).llm?.model;
+    if (
+      storageModel &&
+      availableModels.includes(storageModel as AvailableModels)
+    )
+      selectedModel = storageModel as AvailableModels;
+  }
+
+  if (!selectedModel) {
+    selectedModel = DEFAULT_MODEL;
     await StorageManager.update((current) => ({
       ...current,
       llm: {
@@ -39,5 +63,5 @@ export const getModel = async () => {
     }));
   }
 
-  return models[model as AvailableModels];
+  return models[selectedModel as AvailableModels];
 };
