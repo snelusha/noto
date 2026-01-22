@@ -33,43 +33,28 @@ export const getModel = async (model?: string) => {
   let selectedModel: AvailableModels | undefined;
 
   if (model) {
-    // Validate explicit model from flag
-    if (availableModels.includes(model as AvailableModels)) {
+    if (availableModels.includes(model as AvailableModels))
       selectedModel = model as AvailableModels;
-    } else {
-      p.log.warn(
-        color.yellow(
-          `Invalid model "${model}". Available models: ${availableModels.join(", ")}. Falling back to default.`,
-        ),
-      );
-      selectedModel = undefined; // Will fall through to next priority
-    }
+    else selectedModel = DEFAULT_MODEL;
   }
 
-  if (!selectedModel && process.env.NOTO_MODEL) {
-    // Validate model from environment variable
-    if (availableModels.includes(process.env.NOTO_MODEL as AvailableModels)) {
-      selectedModel = process.env.NOTO_MODEL as AvailableModels;
-    } else {
-      p.log.warn(
-        color.yellow(
-          `Invalid model "${process.env.NOTO_MODEL}" in NOTO_MODEL. Available models: ${availableModels.join(", ")}. Falling back to config/default.`,
-        ),
-      );
-      selectedModel = undefined; // Will fall through to next priority
-    }
+  const NOTO_MODEL = process.env.NOTO_MODEL;
+  if (!selectedModel && NOTO_MODEL) {
+    if (availableModels.includes(NOTO_MODEL as AvailableModels))
+      selectedModel = NOTO_MODEL as AvailableModels;
+    else selectedModel = DEFAULT_MODEL;
   }
 
   if (!selectedModel) {
-    // Check storage configuration
     const storageModel = (await StorageManager.get()).llm?.model;
-    if (storageModel && availableModels.includes(storageModel as AvailableModels)) {
+    if (
+      storageModel &&
+      availableModels.includes(storageModel as AvailableModels)
+    )
       selectedModel = storageModel as AvailableModels;
-    }
   }
 
-  // Fall back to default if no valid model found
-  if (!selectedModel || !availableModels.includes(selectedModel as AvailableModels)) {
+  if (!selectedModel) {
     selectedModel = DEFAULT_MODEL;
     await StorageManager.update((current) => ({
       ...current,
