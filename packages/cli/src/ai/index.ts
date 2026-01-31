@@ -1,4 +1,4 @@
-import { generateObject, wrapLanguageModel } from "ai";
+import { generateText, Output, wrapLanguageModel } from "ai";
 
 import z from "zod";
 import dedent from "dedent";
@@ -8,7 +8,7 @@ import { getModel } from "~/ai/models";
 import { hashString } from "~/utils/hash";
 import { CacheManager } from "~/utils/cache";
 
-import type { LanguageModelV2Middleware } from "@ai-sdk/provider";
+import type { LanguageModelMiddleware } from "ai";
 
 const COMMIT_GENERATOR_PROMPT = dedent`
 # System Instruction for Noto
@@ -315,7 +315,8 @@ Start with action verb (add, implement, resolve, update, simplify). Be specific 
 Generate the markdown guidelines now based on the commit history provided.
 `;
 
-const cacheMiddleware: LanguageModelV2Middleware = {
+const cacheMiddleware: LanguageModelMiddleware = {
+  specificationVersion: "v3",
   wrapGenerate: async ({ doGenerate, params }) => {
     const key = hashString(JSON.stringify(params));
 
@@ -344,15 +345,17 @@ export const generateCommitMessage = async (
 ) => {
   const selectedModel = await getModel(model);
 
-  const { object } = await generateObject({
+  const { output } = await generateText({
     model: !forceCache
       ? wrapLanguageModel({
           model: selectedModel,
           middleware: cacheMiddleware,
         })
       : selectedModel,
-    schema: z.object({
-      message: z.string(),
+    output: Output.object({
+      schema: z.object({
+        message: z.string(),
+      }),
     }),
     messages: [
       {
@@ -373,7 +376,7 @@ export const generateCommitMessage = async (
     ],
   });
 
-  return object.message.trim();
+  return output.message.trim();
 };
 
 export const generateCommitGuidelines = async (
@@ -382,10 +385,12 @@ export const generateCommitGuidelines = async (
 ) => {
   const selectedModel = await getModel(model);
 
-  const { object } = await generateObject({
+  const { output } = await generateText({
     model: selectedModel,
-    schema: z.object({
-      prompt: z.string(),
+    output: Output.object({
+      schema: z.object({
+        prompt: z.string(),
+      }),
     }),
     messages: [
       {
@@ -401,5 +406,5 @@ export const generateCommitGuidelines = async (
     ],
   });
 
-  return object.prompt.trim();
+  return output.prompt.trim();
 };
