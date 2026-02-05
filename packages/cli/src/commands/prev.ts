@@ -23,12 +23,9 @@ export const prev = gitProcedure
       copy: z
         .boolean()
         .meta({ description: "copy the last commit to clipboard", alias: "c" }),
-      apply: z
-        .boolean()
-        .meta({ description: "commit the last generated message", alias: "a" }),
-      edit: z.boolean().meta({
-        description: "edit the last generated commit message",
-        alias: "e",
+      preview: z.boolean().meta({
+        description: "preview the last generated message without committing",
+        alias: "p",
       }),
       amend: z.boolean().meta({
         description: "amend the last commit with the last message",
@@ -46,21 +43,13 @@ export const prev = gitProcedure
       return await exit(1);
     }
 
-    const isEditMode = input.edit;
     const isAmend = input.amend;
 
-    if (isAmend && !isEditMode) {
-      p.log.error(color.red("the --amend option requires the --edit option"));
-      return await exit(1);
-    }
+    if (input.preview) {
+      p.log.step(color.green(lastGeneratedMessage));
+    } else {
+      p.log.step(color.white(lastGeneratedMessage));
 
-    p.log.step(
-      isEditMode
-        ? color.white(lastGeneratedMessage)
-        : color.green(lastGeneratedMessage),
-    );
-
-    if (isEditMode) {
       const editedMessage = await p.text({
         message: "edit the last generated commit message",
         initialValue: lastGeneratedMessage,
@@ -73,13 +62,12 @@ export const prev = gitProcedure
       }
 
       lastGeneratedMessage = editedMessage;
+      p.log.step(color.green(lastGeneratedMessage));
 
       await StorageManager.update((current) => ({
         ...current,
         lastGeneratedMessage: editedMessage,
       }));
-
-      p.log.step(color.green(lastGeneratedMessage));
     }
 
     if (input.copy) {
@@ -89,7 +77,7 @@ export const prev = gitProcedure
       );
     }
 
-    if (input.apply || isAmend) {
+    if (!input.preview) {
       if (!ctx.git.isRepository) {
         p.log.error(
           dedent`${color.red("no git repository found in cwd.")}

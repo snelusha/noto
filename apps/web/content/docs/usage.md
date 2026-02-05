@@ -40,28 +40,30 @@ noto -c # or --copy
 
 ### Reuse Previous Message
 
-Retrieve the last generated commit message:
+Retrieve and commit with the last generated commit message (default behavior):
 
 ```bash
 noto prev
 ```
 
-Use with flags:
+The command will prompt you to edit the message before committing. Use with flags:
 
 ```bash
-noto prev -a  # Apply previous message
+noto prev -p  # Preview without committing or editing
 noto prev -c  # Copy previous message
 ```
 
 ### Amend Previous Commit
 
-Modify your last commit message:
+Amend your last commit with the previously generated message:
 
 ```bash
-noto prev --amend -e # or --edit
+noto prev --amend
 ```
 
-> **Note:** When using `--amend`, the `--edit` (`-e`) flag is required.
+The command will prompt you to edit the message before amending (unless `--preview` is used).
+
+> **Note:** When using `--preview`, the message is shown without prompting for editing. Without `--preview`, the command will prompt you to edit the message before committing (or amending).
 
 ## Project Setup
 
@@ -136,7 +138,8 @@ noto upgrade --beta    # Latest beta version
 
 **Previous message:**
 
-- **`-e, --edit`** - Required with `--amend` (for `noto prev`)
+- **`-p, --preview`** - Preview the previous message without committing or editing (for `noto prev`)
+- **`-c, --copy`** - Copy the previous message to clipboard (for `noto prev`)
 - **`--amend`** - Amend the previous commit (with `noto prev`)
 
 **Initialization:**
@@ -174,11 +177,14 @@ noto --manual
 # Copy for manual use
 noto -c
 
-# Reuse previous
-noto prev -a
+# Reuse previous (commits by default)
+noto prev
+
+# Preview previous message
+noto prev -p
 
 # Amend last commit
-noto prev --amend -e
+noto prev --amend
 
 # Set up custom prompts
 noto init --root --generate

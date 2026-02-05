@@ -104,21 +104,25 @@ Specify a model to use (overrides config file and environment variable):
 noto --model gemini-2.5-flash
 ```
 
-Retrieve the previously generated commit message:
+Retrieve and commit with the previously generated commit message (default behavior):
 
 ```bash
 noto prev
 ```
 
-Amend the previously generated commit message:
+Preview the previously generated commit message without committing:
 
 ```bash
-noto prev --amend --edit # or simply: noto prev --amend -e
+noto prev --preview # or simply noto prev -p
 ```
 
-> Note: When using the `--amend` flag with the noto prev command, the `--edit` (`-e`) flag is also required. This combination will allow you to modify (amend) the previous commit message before applying it.
+Amend the last commit with the previously generated commit message:
 
-Note: `--preview` and `--copy` can also be used with the `noto prev` command. `--edit` applies only when using `noto prev --amend`.
+```bash
+noto prev --amend
+```
+
+Note: `--preview` and `--copy` can also be used with the `noto prev` command. When using `--preview`, the message is shown without prompting for editing. Without `--preview`, the command will prompt you to edit the message before committing (or amending).
 
 Switch between branches in your git repo with an interactive prompt:
 
