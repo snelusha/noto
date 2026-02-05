@@ -63,11 +63,6 @@ export const prev = gitProcedure
 
       lastGeneratedMessage = editedMessage;
       p.log.step(color.green(lastGeneratedMessage));
-
-      await StorageManager.update((current) => ({
-        ...current,
-        lastGeneratedMessage: editedMessage,
-      }));
     }
 
     if (input.copy) {
@@ -93,6 +88,12 @@ export const prev = gitProcedure
         );
         return await exit(1);
       }
+
+      // Update storage only after validation passes to prevent data loss
+      await StorageManager.update((current) => ({
+        ...current,
+        lastGeneratedMessage: lastGeneratedMessage,
+      }));
 
       const success = await commit(lastGeneratedMessage, isAmend);
       if (success) {
