@@ -89,10 +89,9 @@ export const prev = gitProcedure
         return await exit(1);
       }
 
-      // Update storage only after validation passes to prevent data loss
       await StorageManager.update((current) => ({
         ...current,
-        lastGeneratedMessage: lastGeneratedMessage,
+        lastGeneratedMessage,
       }));
 
       const success = await commit(lastGeneratedMessage, isAmend);
