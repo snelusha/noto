@@ -1,3 +1,4 @@
+import omelette from "omelette";
 import { createCli } from "trpc-cli";
 
 import { version as packageVersion } from "package";
@@ -23,4 +24,19 @@ void createCli({
   name: "noto",
   router,
   version,
-}).run();
+}).run({
+  completion: async () => {
+    const completion = omelette("noto");
+
+    completion.on("complete", function (fragment, { reply }) {
+      reply(["your-command-1", "your-command-2", "--your-flag"]);
+    });
+
+    if (process.argv.includes("--setup-completion")) {
+      completion.setupShellInitFile();
+    } else if (process.argv.includes("--remove-completion")) {
+      completion.cleanupShellInitFile();
+    }
+    return completion;
+  },
+});

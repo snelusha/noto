@@ -45,6 +45,7 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@types/node": "catalog:",
+    "@types/omelette": "^0.4.5",
     "@types/semver": "catalog:",
     "bunup": "^0.16.22",
     "typescript": "catalog:",
@@ -59,6 +60,7 @@
     "clipboardy": "^5.1.0",
     "dedent": "^1.7.1",
     "latest-version": "^9.0.0",
+    "omelette": "^0.4.17",
     "picocolors": "^1.1.1",
     "semver": "catalog:",
     "simple-git": "^3.30.0",

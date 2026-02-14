@@ -156,6 +156,7 @@ export const noto = authedGitProcedure
 
       return await exit(0);
     } catch (e) {
+      console.error(e);
       let msg: string | undefined;
 
       if (RetryError.isInstance(e) && APICallError.isInstance(e.lastError)) {
