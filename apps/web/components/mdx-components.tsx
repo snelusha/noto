@@ -19,19 +19,20 @@ export const components = {
     );
   },
   code: ({ className, ...props }: CodeBlockCommandProps) => {
-    const { __npm__: npm, __pnpm__: pnpm, __bun__: bun } = props;
+    const { __npm__: npm, __pnpm__: pnpm, __bun__: bun, __brew__: brew } = props;
     if (typeof props.children === "string") {
-      <code className={className} {...props} />;
+      return <code className={className} {...props} />;
     }
 
-    const isNpmCommand = npm && pnpm && bun;
-    if (isNpmCommand) {
+    const isCommandBlock = Boolean(npm || pnpm || bun || brew);
+    if (isCommandBlock) {
       return (
         <CodeBlockCommand
           className={className}
           __npm__={npm}
           __pnpm__={pnpm}
           __bun__={bun}
+          __brew__={brew}
           {...props}
         />
       );
