@@ -39,6 +39,15 @@ export const transformers = [
           },
         },
         {
+          pattern: /^npm uninstall\s/,
+          transforms: {
+            __npm__: (cmd: string) => cmd,
+            __pnpm__: (cmd: string) =>
+              cmd.replace("npm uninstall", "pnpm remove"),
+            __bun__: (cmd: string) => cmd.replace("npm uninstall", "bun remove"),
+          },
+        },
+        {
           pattern: /^npx create-/,
           transforms: {
             __npm__: (cmd: string) => cmd,

@@ -13,13 +13,23 @@ Getting noto up and running takes less than a minute. Let's walk through it.
 
 ## Quick Install
 
-Install noto globally using package manager of your choice.
+Install noto globally using the package manager of your choice.
 
 ```bash brew="brew install snelusha/noto/noto"
 npm install -g @snelusha/noto
 ```
 
 That's it! You can now use `noto` from anywhere in your terminal.
+
+## Uninstall
+
+If you ever want to remove noto, use the matching uninstall command for how you installed it:
+
+```bash brew="brew uninstall snelusha/noto/noto"
+npm uninstall -g @snelusha/noto
+```
+
+This will completely remove the `noto` binary from your system. You can safely delete any leftover config at `~/.config/noto/.notorc` if you no longer need it.
 
 > **Coming Soon:** Single native executable for zero-dependency installation ([track progress](https://github.com/snelusha/noto/issues/158))
 
