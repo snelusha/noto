@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import * as p from "@clack/prompts";
+import * as p from "~/prompts";
 import color from "picocolors";
 
 import { baseProcedure } from "~/trpc";

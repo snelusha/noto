@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 
 import { initTRPC } from "@trpc/server";
 
-import * as p from "@clack/prompts";
+import * as p from "~/prompts";
 import color from "picocolors";
 
 import dedent from "dedent";

@@ -53,7 +53,7 @@
   "dependencies": {
     "@ai-sdk/google": "^3.0.18",
     "@ai-sdk/provider": "^3.0.6",
-    "@clack/prompts": "^1.0.0",
+    "@opentui/core": "^0.1.92",
     "@trpc/server": "^11.9.0",
     "ai": "^6.0.64",
     "clipboardy": "^5.1.0",

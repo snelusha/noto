@@ -2,7 +2,7 @@ import { spawn } from "node:child_process";
 
 import { z } from "zod";
 
-import * as p from "@clack/prompts";
+import * as p from "~/prompts";
 import color from "picocolors";
 import semver from "semver";
 
@@ -48,7 +48,7 @@ async function performUpgrade(targetVersion: string): Promise<void> {
         else reject();
       });
     });
-    spin.stop(color.green("noto has been updated successfully!"));
+    await spin.stop(color.green("noto has been updated successfully!"));
   } catch {
     p.log.error(
       `automatic update failed. please try updating manually by running: ${installationInfo.updateCommand}`,
@@ -96,13 +96,13 @@ export const upgrade = baseProcedure
     spin.start("fetching latest version");
     const update = await getAvailableUpdate(true, true, tag);
     if (!update) {
-      spin.stop(
+      await spin.stop(
         `You're already on the latest version of noto (${color.dim(`which is ${version}`)})`,
       );
       return await exit(0, false);
     }
 
-    spin.stop(
+    await spin.stop(
       `noto ${color.green(update.latest)} is out! You are on ${color.dim(update.current)}.`,
     );
 

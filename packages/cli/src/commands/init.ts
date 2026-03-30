@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 
 import { z } from "zod";
 
-import * as p from "@clack/prompts";
+import * as p from "~/prompts";
 import color from "picocolors";
 
 import dedent from "dedent";
@@ -121,7 +121,7 @@ export const init = authedGitProcedure
     if (commits && generate) {
       spin.start("generating commit message guidelines");
       prompt = await generateCommitGuidelines(commits, input.model);
-      spin.stop(color.green("generated commit message guidelines!"));
+      await spin.stop(color.green("generated commit message guidelines!"));
     } else {
       prompt = EMPTY_TEMPLATE;
     }

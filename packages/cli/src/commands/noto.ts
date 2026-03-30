@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import * as p from "@clack/prompts";
+import * as p from "~/prompts";
 import color from "picocolors";
 
 import clipboard from "clipboardy";
@@ -110,7 +110,7 @@ export const noto = authedGitProcedure
         input.model,
       );
 
-      spin.stop(color.white(message));
+      await spin.stop(color.white(message));
 
       const editedMessage = await p.text({
         message: "edit the generated commit message",
@@ -163,7 +163,10 @@ export const noto = authedGitProcedure
       }
 
       const suffix = msg ? `\n${msg}` : "";
-      spin.stop(color.red(`failed to generate commit message${suffix}`), 1);
+      await spin.stop(
+        color.red(`failed to generate commit message${suffix}`),
+        1,
+      );
       await exit(1);
     }
   });
