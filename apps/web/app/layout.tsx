@@ -71,7 +71,6 @@ export default function RootLayout({
       <Databuddy
         clientId="reT8eU-VUrTZIcCJMddD_"
         trackHashChanges={true}
-        trackScrollDepth={true}
         trackPerformance={false}
         enableBatching={true}
       />
