@@ -46,25 +46,25 @@
     "@biomejs/biome": "catalog:",
     "@types/node": "catalog:",
     "@types/semver": "catalog:",
-    "bunup": "^0.16.22",
+    "bunup": "^0.16.31",
     "typescript": "catalog:",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.5"
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.18",
-    "@ai-sdk/provider": "^3.0.6",
-    "@clack/prompts": "^1.0.0",
-    "@trpc/server": "^11.9.0",
-    "ai": "^6.0.64",
-    "clipboardy": "^5.1.0",
-    "dedent": "^1.7.1",
+    "@ai-sdk/google": "^3.0.64",
+    "@ai-sdk/provider": "^3.0.8",
+    "@clack/prompts": "^1.2.0",
+    "@trpc/server": "^11.16.0",
+    "ai": "^6.0.168",
+    "clipboardy": "^5.3.1",
+    "dedent": "^1.7.2",
     "latest-version": "^9.0.0",
     "picocolors": "^1.1.1",
     "semver": "catalog:",
-    "simple-git": "^3.30.0",
+    "simple-git": "^3.36.0",
     "superjson": "^2.2.6",
-    "tinyexec": "^1.0.2",
-    "trpc-cli": "^0.12.2",
+    "tinyexec": "^1.1.1",
+    "trpc-cli": "^0.12.4",
     "zod": "catalog:"
   }
 }
