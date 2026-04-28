@@ -75,11 +75,15 @@ jobs:
           echo "npm_tag=$NPM_TAG" >> $GITHUB_OUTPUT
           echo "Using npm tag: $NPM_TAG"
 
+      - name: Pack
+        working-directory: packages/cli
+        run: bun pm pack
+
       - name: Publish to npm
         working-directory: packages/cli
-        run: bun publish --provenance --access public --tag ${{ steps.determine_npm_tag.outputs.npm_tag }}
+        run: npm publish --access public --provenance --tag ${{ steps.determine_npm_tag.outputs.npm_tag }} *.tgz
         env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   homebrew:
     runs-on: ubuntu-latest
