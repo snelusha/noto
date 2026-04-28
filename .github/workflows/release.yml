@@ -19,9 +19,6 @@ on:
         description: The release version (e.g., v1.2.3)
         required: false
 
-permissions:
-  contents: write
-
 env:
   NOTO_VERSION: ${{ inputs.version || github.ref_name }}
 
@@ -30,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || inputs.use-npm == true }}
     permissions:
+      contents: write
       id-token: write
 
     steps:
@@ -102,6 +100,9 @@ jobs:
       !contains(github.ref, 'canary') &&
       !contains(github.ref, 'beta') &&
       !contains(github.ref, 'rc')
+    permissions:
+      contents: write
+
     steps:
       - name: Wait for npm package availability
         if: needs.npm.result == 'success'
