@@ -29,6 +29,9 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || inputs.use-npm == true }}
+    permissions:
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
         with:
