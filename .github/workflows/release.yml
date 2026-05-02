@@ -15,6 +15,10 @@ on:
         description: Should the Homebrew tap be updated?
         type: boolean
         default: true
+      force-branch:
+        description: Allow releasing 'latest' from a non-main branch?
+        type: boolean
+        default: false
       version:
         description: The release version (e.g., v1.2.3)
         required: false
@@ -63,13 +67,16 @@ jobs:
         run: |
           if [[ "${{ env.NOTO_VERSION }}" =~ -(next|canary|beta|rc) ]]; then
             NPM_TAG=${BASH_REMATCH[1]}
+          elif [[ "${{ inputs.force-branch }}" == "true" ]]; then
+            echo "force-branch is enabled — skipping main branch check."
+            NPM_TAG="latest"
           else
             git fetch origin main
             if git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
               NPM_TAG="latest"
             else
               echo "The tagged commit is not on the main branch."
-              echo "::error ::Releases with the 'latest' npm tag must be on the main branch."
+              echo "::error ::Releases with the 'latest' npm tag must be on the main branch. Use 'force-branch' to override."
               exit 1
             fi
           fi
