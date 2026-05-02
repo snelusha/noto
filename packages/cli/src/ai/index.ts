@@ -374,6 +374,7 @@ export const generateCommitMessage = async (
       `,
       },
     ],
+    allowSystemInMessages: true,
   });
 
   return output.message.trim();
@@ -404,6 +405,7 @@ export const generateCommitGuidelines = async (
         ${commits.join("\n")}`,
       },
     ],
+    allowSystemInMessages: true,
   });
 
   return output.prompt.trim();
