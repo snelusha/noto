@@ -87,8 +87,8 @@ jobs:
         working-directory: packages/cli
         id: pack
         run: |
-          TARBALL=$(bun pm pack --quiet 2>/dev/null)
-          echo "tarball=$TARBALL" >> $GITHUB_OUTPUT
+          bun pm pack
+          echo "tarball=$(ls *.tgz)" >> $GITHUB_OUTPUT
 
       - name: Publish to npm
         working-directory: packages/cli
