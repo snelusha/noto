@@ -134,7 +134,7 @@ noto upgrade --beta    # Latest beta version
 - **`-m, --message`** - Provide context for the commit message
 - **`-f, --force`** - Bypass cache and force regeneration of commit message
 - **`--push`** - Commit and push the changes
-- **`--manual`** - Write a custom commit message manually
+- **`--manual`** - Write a custom commit message manually (accepts an optional message string)
 
 **Previous message:**
 
@@ -171,8 +171,11 @@ noto -m "fixing authentication bug"
 # Force regenerate (bypass cache)
 noto -f
 
-# Write manual commit message
+# Write manual commit message (interactive)
 noto --manual
+
+# Provide manual commit message inline
+noto --manual "chore: init repo"
 
 # Copy for manual use
 noto -c

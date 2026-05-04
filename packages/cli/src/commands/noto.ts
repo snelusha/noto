@@ -41,7 +41,10 @@ export const noto = authedGitProcedure
         description: "bypass cache and force regeneration of commit message",
         alias: "f",
       }),
-      manual: z.boolean().meta({ description: "custom commit message" }),
+      manual: z
+        .string()
+        .or(z.boolean())
+        .meta({ description: "custom commit message" }),
       model: z.string().optional().meta({
         description: "specify the model to use",
       }),
@@ -54,14 +57,21 @@ export const noto = authedGitProcedure
     try {
       const manual = input.manual;
       if (manual) {
-        const message = await p.text({
-          message: "edit the generated commit message",
-          placeholder: "chore: init repo",
-        });
+        let message: string;
+        if (typeof manual === "string") {
+          message = manual.trim();
+        } else {
+          const enteredMessage = await p.text({
+            message: "enter the commit message",
+            placeholder: "chore: init repo",
+          });
 
-        if (p.isCancel(message)) {
-          p.log.error(color.red("nothing changed!"));
-          return await exit(1);
+          if (p.isCancel(enteredMessage)) {
+            p.log.error(color.red("nothing changed!"));
+            return await exit(1);
+          }
+
+          message = enteredMessage as string;
         }
 
         p.log.step(color.green(message));
@@ -163,7 +173,7 @@ export const noto = authedGitProcedure
       }
 
       const suffix = msg ? `\n${msg}` : "";
-      spin.stop(color.red(`failed to generate commit message${suffix}`), 1);
+      spin.stop(color.red(`failed to generate commit message${suffix}`));
       await exit(1);
     }
   });

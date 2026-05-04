@@ -207,10 +207,16 @@ noto -f  # or --force
 
 ### Manual Commit Message
 
-Write a custom commit message manually:
+Write a custom commit message manually (interactive prompt):
 
 ```bash
 noto --manual
+```
+
+Or pass the commit message inline as a string:
+
+```bash
+noto --manual "chore: init repo"
 ```
 
 ### Working with Previous Messages
@@ -275,7 +281,7 @@ noto upgrade --beta    # Latest beta version
 - `-m, --message` - Provide context for the commit message
 - `-f, --force` - Bypass cache and force regeneration
 - `--push` - Commit and push the changes
-- `--manual` - Write a custom commit message manually
+- `--manual` - Write a custom commit message manually (accepts an optional message string)
 
 ### Previous Message
 - `-e, --edit` - Required with `--amend` (for `noto prev`)
