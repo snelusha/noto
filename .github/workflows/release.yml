@@ -92,7 +92,7 @@ jobs:
 
       - name: Publish to npm
         working-directory: packages/cli
-        run: npm publish --access public --provenance --tag ${{ steps.determine_npm_tag.outputs.npm_tag }} ${{ steps.pack.outputs.tarball }}
+        run: npm publish ${{ steps.pack.outputs.tarball }} --access public --provenance --tag ${{ steps.determine_npm_tag.outputs.npm_tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
