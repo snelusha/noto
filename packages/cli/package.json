@@ -1,6 +1,6 @@
 {
   "name": "@snelusha/noto",
-  "version": "2.0.0-beta.7",
+  "version": "2.0.0-beta.8",
   "description": "Generate clean commit messages in a snap! ✨",
   "license": "MIT",
   "type": "module",
