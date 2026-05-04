@@ -85,11 +85,12 @@ jobs:
 
       - name: Pack
         working-directory: packages/cli
-        run: bun pm pack
+        id: pack
+        run: echo "tarball=$(bun pm pack --quiet)" >> $GITHUB_OUTPUT
 
       - name: Publish to npm
         working-directory: packages/cli
-        run: npm publish --access public --provenance --tag ${{ steps.determine_npm_tag.outputs.npm_tag }} *.tgz
+        run: npm publish --access public --provenance --tag ${{ steps.determine_npm_tag.outputs.npm_tag }} ${{ steps.pack.outputs.tarball }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
