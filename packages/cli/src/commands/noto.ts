@@ -60,6 +60,10 @@ export const noto = authedGitProcedure
         let message: string;
         if (typeof manual === "string") {
           message = manual.trim();
+          if (!message) {
+            p.log.error(color.red("commit message cannot be empty!"));
+            return await exit(1);
+          }
         } else {
           const enteredMessage = await p.text({
             message: "enter the commit message",
