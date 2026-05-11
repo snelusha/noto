@@ -15,13 +15,12 @@ on:
         description: Should the Homebrew tap be updated?
         type: boolean
         default: true
-      force-branch:
-        description: Allow releasing 'latest' from a non-main branch?
-        type: boolean
-        default: false
       version:
         description: The release version (e.g., v1.2.3)
         required: false
+
+permissions:
+  contents: write
 
 env:
   NOTO_VERSION: ${{ inputs.version || github.ref_name }}
@@ -30,10 +29,6 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || inputs.use-npm == true }}
-    permissions:
-      contents: write
-      id-token: write
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -67,34 +62,24 @@ jobs:
         run: |
           if [[ "${{ env.NOTO_VERSION }}" =~ -(next|canary|beta|rc) ]]; then
             NPM_TAG=${BASH_REMATCH[1]}
-          elif [[ "${{ inputs.force-branch }}" == "true" ]]; then
-            echo "force-branch is enabled — skipping main branch check."
-            NPM_TAG="latest"
           else
             git fetch origin main
             if git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
               NPM_TAG="latest"
             else
               echo "The tagged commit is not on the main branch."
-              echo "::error ::Releases with the 'latest' npm tag must be on the main branch. Use 'force-branch' to override."
+              echo "::error ::Releases with the 'latest' npm tag must be on the main branch."
               exit 1
             fi
           fi
           echo "npm_tag=$NPM_TAG" >> $GITHUB_OUTPUT
           echo "Using npm tag: $NPM_TAG"
 
-      - name: Pack
-        working-directory: packages/cli
-        id: pack
-        run: |
-          bun pm pack
-          echo "tarball=$(ls *.tgz)" >> $GITHUB_OUTPUT
-
       - name: Publish to npm
         working-directory: packages/cli
-        run: npm publish ${{ steps.pack.outputs.tarball }} --access public --provenance --tag ${{ steps.determine_npm_tag.outputs.npm_tag }}
+        run: bun publish --provenance --access public --tag ${{ steps.determine_npm_tag.outputs.npm_tag }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   homebrew:
     runs-on: ubuntu-latest
@@ -110,9 +95,6 @@ jobs:
       !contains(github.ref, 'canary') &&
       !contains(github.ref, 'beta') &&
       !contains(github.ref, 'rc')
-    permissions:
-      contents: write
-
     steps:
       - name: Wait for npm package availability
         if: needs.npm.result == 'success'
