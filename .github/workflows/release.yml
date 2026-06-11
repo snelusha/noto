@@ -54,7 +54,7 @@ jobs:
 
       - name: Build
         working-directory: packages/cli
-        run: bun run build
+        run: bun run package
 
       - name: Determine npm tag
         id: determine_npm_tag
@@ -77,7 +77,7 @@ jobs:
 
       - name: Publish to npm
         working-directory: packages/cli
-        run: bun publish --provenance --access public --tag ${{ steps.determine_npm_tag.outputs.npm_tag }}
+        run: bun run publish:platforms -- --tag ${{ steps.determine_npm_tag.outputs.npm_tag }}
         env:
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
 

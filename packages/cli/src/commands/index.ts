@@ -1,15 +1,9 @@
-import { checkout } from "~/commands/checkout";
-import { config } from "~/commands/config";
-import { prev } from "~/commands/prev";
-import { init } from "~/commands/init";
-import { noto } from "~/commands/noto";
-import { upgrade } from "~/commands/upgrade";
+import { app } from "~/app";
+import { configCmd } from "~/commands/config/container";
+import { checkoutCmd } from "~/commands/checkout";
+import { initCmd } from "~/commands/init";
+import { notoCmd } from "~/commands/noto";
+import { prevCmd } from "~/commands/prev";
+import { upgradeCmd } from "~/commands/upgrade";
 
-export const commands = {
-  checkout,
-  config,
-  prev,
-  init,
-  noto,
-  upgrade,
-};
+export { app, notoCmd, prevCmd, checkoutCmd, initCmd, upgradeCmd, configCmd };

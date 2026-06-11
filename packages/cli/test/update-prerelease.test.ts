@@ -11,7 +11,7 @@ import {
   vi,
 } from "vitest";
 
-import { CacheManager } from "~/utils/cache";
+import { memoryCache } from "./helpers/memory-cache.mock.js";
 
 vi.mock("latest-version", () => ({
   default: vi.fn(),
@@ -27,7 +27,7 @@ import latestVersion from "latest-version";
 import { checkForUpdate, getAvailableUpdate } from "~/utils/update";
 
 const tempDir = path.resolve(os.tmpdir(), ".noto-update-prerelease-test");
-const cachePath = path.resolve(tempDir, "cache");
+const cachePath = path.resolve(tempDir, "cache.json");
 
 describe("update utilities - prerelease", () => {
   beforeAll(async () => {
@@ -36,11 +36,8 @@ describe("update utilities - prerelease", () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    CacheManager.storagePath = cachePath;
-    CacheManager.storage = {};
-    try {
-      await fs.unlink(cachePath);
-    } catch {}
+    memoryCache.path = cachePath;
+    memoryCache.storage = {};
   });
 
   afterAll(async () => {

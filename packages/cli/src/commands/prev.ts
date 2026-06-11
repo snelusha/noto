@@ -1,102 +1,105 @@
 import { z } from "zod";
 
-import * as p from "@clack/prompts";
-import color from "picocolors";
-
 import dedent from "dedent";
 import clipboard from "clipboardy";
+import { commandValidator, flag } from "@crustjs/validate";
+import { cyan, dim, red } from "@crustjs/style";
 
-import { gitProcedure } from "~/trpc";
-
-import { StorageManager } from "~/utils/storage";
-
+import { app } from "~/app";
+import { withGit } from "~/plugins/context";
+import { log } from "~/ui/log";
+import { input } from "~/ui/prompts";
+import { isCancelled } from "~/ui/cancel";
 import { commit } from "~/utils/git";
 import { exit } from "~/utils/process";
+import { StorageManager } from "~/utils/storage";
 
-export const prev = gitProcedure
-  .meta({
-    description: "access the last generated commit",
-    repoRequired: false,
-  })
-  .input(
-    z.object({
-      copy: z
-        .boolean()
-        .meta({ description: "copy the last commit to clipboard", alias: "c" }),
-      preview: z.boolean().meta({
-        description: "preview the last generated message without committing",
-        alias: "p",
-      }),
-      amend: z.boolean().meta({
-        description: "amend the last commit with the last message",
-      }),
+export const prevCmd = app
+  .sub("prev")
+  .meta({ description: "access the last generated commit" })
+  .flags({
+    copy: flag(z.boolean().default(false), {
+      type: "boolean",
+      short: "c",
+      description: "copy the last commit to clipboard",
     }),
-  )
-  .mutation(async (opts) => {
-    const { input, ctx } = opts;
+    preview: flag(z.boolean().default(false), {
+      type: "boolean",
+      short: "p",
+      description: "preview the last generated message without committing",
+    }),
+    amend: flag(z.boolean().default(false), {
+      type: "boolean",
+      description: "amend the last commit with the last message",
+    }),
+  })
+  .run(
+    commandValidator(async ({ flags }) => {
+      const { git } = await withGit({ repoRequired: false });
 
-    let lastGeneratedMessage = (await StorageManager.get())
-      .lastGeneratedMessage;
+      let lastGeneratedMessage = (await StorageManager.get())
+        .lastGeneratedMessage;
 
-    if (!lastGeneratedMessage) {
-      p.log.error(color.red("no previous commit message found"));
-      return await exit(1);
-    }
+      if (!lastGeneratedMessage) {
+        log.error(red("no previous commit message found"));
+        return await exit(1);
+      }
 
-    const isAmend = input.amend;
+      const isAmend = flags.amend;
 
-    if (input.preview) {
-      p.log.step(color.green(lastGeneratedMessage));
-    } else {
-      if (!ctx.git.isRepository) {
-        p.log.error(
-          dedent`${color.red("no git repository found in cwd.")}
-              ${color.dim(`run ${color.cyan("`git init`")} to initialize a new repository.`)}`,
+      if (flags.preview) {
+        log.step(lastGeneratedMessage);
+      } else {
+        if (!git.isRepository) {
+          log.error(
+            dedent`${red("no git repository found in cwd.")}
+              ${dim(`run ${cyan("`git init`")} to initialize a new repository.`)}`,
+          );
+          return await exit(1);
+        }
+
+        try {
+          lastGeneratedMessage = await input({
+            message: "edit the last generated commit message",
+            default: lastGeneratedMessage,
+            placeholder: lastGeneratedMessage,
+          });
+        } catch (error) {
+          if (isCancelled(error)) {
+            log.error(red("nothing changed!"));
+            return await exit(1);
+          }
+          throw error;
+        }
+
+        log.step(lastGeneratedMessage);
+      }
+
+      if (flags.copy) {
+        clipboard.writeSync(lastGeneratedMessage);
+        log.dim("copied last generated commit message to clipboard");
+      }
+
+      if (!git.diff && !isAmend) {
+        log.error(
+          dedent`${red("no staged changes found.")}
+              ${dim(`run ${cyan("`git add <file>`")} or ${cyan("`git add .`")} to stage changes.`)}`,
         );
         return await exit(1);
       }
 
-      const editedMessage = await p.text({
-        message: "edit the last generated commit message",
-        initialValue: lastGeneratedMessage,
-        placeholder: lastGeneratedMessage,
-      });
+      await StorageManager.update((current) => ({
+        ...current,
+        lastGeneratedMessage,
+      }));
 
-      if (p.isCancel(editedMessage)) {
-        p.log.error(color.red("nothing changed!"));
-        return await exit(1);
+      const success = await commit(lastGeneratedMessage, isAmend);
+      if (success) {
+        log.dim("commit successful");
+      } else {
+        log.error(red("failed to commit changes"));
       }
 
-      lastGeneratedMessage = editedMessage;
-      p.log.step(color.green(lastGeneratedMessage));
-    }
-
-    if (input.copy) {
-      clipboard.writeSync(lastGeneratedMessage);
-      p.log.step(
-        color.dim("copied last generated commit message to clipboard"),
-      );
-    }
-
-    if (!ctx.git.diff && !isAmend) {
-      p.log.error(
-        dedent`${color.red("no staged changes found.")}
-              ${color.dim(`run ${color.cyan("`git add <file>`")} or ${color.cyan("`git add .`")} to stage changes.`)}`,
-      );
-      return await exit(1);
-    }
-
-    await StorageManager.update((current) => ({
-      ...current,
-      lastGeneratedMessage,
-    }));
-
-    const success = await commit(lastGeneratedMessage, isAmend);
-    if (success) {
-      p.log.step(color.dim("commit successful"));
-    } else {
-      p.log.error(color.red("failed to commit changes"));
-    }
-
-    return await exit(0);
-  });
+      return await exit(0);
+    }),
+  );

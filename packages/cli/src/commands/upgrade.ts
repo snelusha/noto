@@ -2,16 +2,18 @@ import { spawn } from "node:child_process";
 
 import { z } from "zod";
 
-import * as p from "@clack/prompts";
-import color from "picocolors";
 import semver from "semver";
+import { commandValidator, flag } from "@crustjs/validate";
+import { dim, green } from "@crustjs/style";
 
-import { baseProcedure } from "~/trpc";
-
-import { exit } from "~/utils/process";
+import { app } from "~/app";
+import { withIntro } from "~/plugins/context";
+import { log } from "~/ui/log";
+import { spinner } from "~/ui/prompts";
 import { CacheManager } from "~/utils/cache";
-import { getAvailableUpdate } from "~/utils/update";
 import { getInstallationInfo } from "~/utils/installation-info";
+import { exit } from "~/utils/process";
+import { getAvailableUpdate } from "~/utils/update";
 
 import { version } from "package";
 
@@ -21,11 +23,11 @@ async function performUpgrade(targetVersion: string): Promise<void> {
   const installationInfo = await getInstallationInfo();
   if (!installationInfo.updateCommand) {
     if (installationInfo.updateMessage) {
-      p.log.warn(installationInfo.updateMessage);
+      log.warn(installationInfo.updateMessage);
       return await exit(0, false);
     }
 
-    p.log.error("unable to determine update command for your installation.");
+    log.error("unable to determine update command for your installation.");
     return await exit(1, false);
   }
 
@@ -39,18 +41,20 @@ async function performUpgrade(targetVersion: string): Promise<void> {
     shell: true,
   });
 
-  const spin = p.spinner();
-  spin.start("upgrading noto");
   try {
-    await new Promise<void>((resolve, reject) => {
-      updateProcess.on("close", (code) => {
-        if (code === 0) resolve();
-        else reject();
-      });
+    await spinner({
+      message: "upgrading noto",
+      task: async () =>
+        new Promise<void>((resolve, reject) => {
+          updateProcess.on("close", (code) => {
+            if (code === 0) resolve();
+            else reject(new Error("upgrade failed"));
+          });
+        }),
     });
-    spin.stop(color.green("noto has been updated successfully!"));
+    log.success(green("noto has been updated successfully!"));
   } catch {
-    p.log.error(
+    log.error(
       `automatic update failed. please try updating manually by running: ${installationInfo.updateCommand}`,
     );
     return await exit(1, false);
@@ -64,51 +68,54 @@ async function performUpgrade(targetVersion: string): Promise<void> {
   return await exit(0, false);
 }
 
-export const upgrade = baseProcedure
-  .meta({
-    description: "upgrade noto",
-  })
-  .input(
-    z.object({
-      stable: z.boolean().optional().meta({
-        description: "upgrade to the latest stable version",
-      }),
-      beta: z.boolean().optional().meta({
-        description: "upgrade to the latest beta version",
-      }),
+export const upgradeCmd = app
+  .sub("upgrade")
+  .meta({ description: "upgrade noto" })
+  .flags({
+    stable: flag(z.boolean().default(false), {
+      type: "boolean",
+      description: "upgrade to the latest stable version",
     }),
-  )
-  .mutation(async (opts) => {
-    const { input } = opts;
+    beta: flag(z.boolean().default(false), {
+      type: "boolean",
+      description: "upgrade to the latest beta version",
+    }),
+  })
+  .run(
+    commandValidator(async ({ flags }) => {
+      withIntro();
 
-    if (input.stable && input.beta) {
-      p.log.error("please choose either --stable or --beta option, not both.");
-      return await exit(1, false);
-    }
+      if (flags.stable && flags.beta) {
+        log.error("please choose either --stable or --beta option, not both.");
+        return await exit(1, false);
+      }
 
-    const tag: UpdateTag = input.stable
-      ? "stable"
-      : input.beta
-        ? "beta"
-        : "auto";
+      const tag: UpdateTag = flags.stable
+        ? "stable"
+        : flags.beta
+          ? "beta"
+          : "auto";
 
-    const spin = p.spinner();
-    spin.start("fetching latest version");
-    const update = await getAvailableUpdate(true, true, tag);
-    if (!update) {
-      spin.stop(
-        `You're already on the latest version of noto (${color.dim(`which is ${version}`)})`,
+      const update = await spinner({
+        message: "fetching latest version",
+        task: async () => getAvailableUpdate(true, true, tag),
+      });
+
+      if (!update) {
+        log.dim(
+          `You're already on the latest version of noto (which is ${version})`,
+        );
+        return await exit(0, false);
+      }
+
+      log.step(
+        `noto ${green(update.latest)} is out! You are on ${dim(update.current)}.`,
       );
-      return await exit(0, false);
-    }
 
-    spin.stop(
-      `noto ${color.green(update.latest)} is out! You are on ${color.dim(update.current)}.`,
-    );
+      const isPrerelease = semver.prerelease(update.latest) !== null;
+      const upgradeVersion =
+        isPrerelease || tag === "beta" ? "beta" : update.latest;
 
-    const isPrerelease = semver.prerelease(update.latest) !== null;
-    const upgradeVersion =
-      isPrerelease || tag === "beta" ? "beta" : update.latest;
-
-    return await performUpgrade(upgradeVersion);
-  });
+      return await performUpgrade(upgradeVersion);
+    }),
+  );

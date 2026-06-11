@@ -19,21 +19,8 @@
     "url": "https://github.com/snelusha/noto/issues"
   },
   "llms": "https://noto.snelusha.dev/llms.txt",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "bin": {
-    "noto": "dist/index.js"
-  },
-  "scripts": {
-    "build": "bunup --clean",
-    "test": "bunup --clean && vitest run",
-    "lint": "biome check .",
-    "clean": "git clean -xdf .cache .turbo node_modules"
-  },
   "files": [
     "dist",
-    "bin",
     "README.md"
   ],
   "keywords": [
@@ -42,29 +29,45 @@
     "conventional",
     "cli"
   ],
+  "bin": {
+    "noto": "dist/cli"
+  },
+  "scripts": {
+    "dev": "bun run src/cli.ts",
+    "build": "crust build",
+    "package": "crust build --package",
+    "publish:platforms": "crust publish --stage-dir dist/npm",
+    "test": "vitest run && bun run --bun vitest run -c vitest.bun.config.ts",
+    "lint": "biome check .",
+    "clean": "git clean -xdf .cache .turbo node_modules"
+  },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@crustjs/core": "^0.0.19",
+    "@crustjs/crust": "^0.0.24",
+    "@crustjs/plugins": "^0.1.2",
+    "@crustjs/progress": "^0.0.4",
+    "@crustjs/prompts": "^0.1.0",
+    "@crustjs/store": "^0.2.0",
+    "@crustjs/style": "^0.2.0",
+    "@crustjs/validate": "^0.1.2",
+    "@types/bun": "^1.3.14",
     "@types/node": "catalog:",
     "@types/semver": "catalog:",
-    "bunup": "^0.16.31",
     "typescript": "catalog:",
     "vitest": "^4.1.5"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.64",
     "@ai-sdk/provider": "^3.0.8",
-    "@clack/prompts": "^1.2.0",
-    "@trpc/server": "^11.16.0",
     "ai": "^6.0.168",
     "clipboardy": "^5.3.1",
     "dedent": "^1.7.2",
     "latest-version": "^9.0.0",
-    "picocolors": "^1.1.1",
     "semver": "catalog:",
     "simple-git": "^3.36.0",
     "superjson": "^2.2.6",
     "tinyexec": "^1.1.1",
-    "trpc-cli": "^0.12.4",
     "zod": "catalog:"
   }
 }

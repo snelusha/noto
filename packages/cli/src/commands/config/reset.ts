@@ -1,28 +1,38 @@
-import * as p from "@clack/prompts";
-import color from "picocolors";
+import { green } from "@crustjs/style";
 
-import { baseProcedure } from "~/trpc";
-
-import { StorageManager } from "~/utils/storage";
+import { configSub } from "~/commands/config/base";
+import { withIntro } from "~/plugins/context";
+import { log } from "~/ui/log";
+import { confirm } from "~/ui/prompts";
+import { isCancelled } from "~/ui/cancel";
 import { exit } from "~/utils/process";
+import { StorageManager } from "~/utils/storage";
 
-export const reset = baseProcedure
-  .meta({
-    description: "reset the configuration",
-  })
-  .mutation(async () => {
-    const confirm = await p.confirm({
-      message: "are you sure you want to reset the configuration?",
-    });
+export const resetCmd = configSub
+  .sub("reset")
+  .meta({ description: "reset the configuration" })
+  .run(async () => {
+    withIntro();
 
-    if (p.isCancel(confirm) || !confirm) {
-      p.log.error(color.red("nothing changed!"));
+    let confirmed = false;
+    try {
+      confirmed = await confirm({
+        message: "are you sure you want to reset the configuration?",
+      });
+    } catch (error) {
+      if (isCancelled(error)) {
+        log.error("nothing changed!");
+        return await exit(1);
+      }
+      throw error;
+    }
+
+    if (!confirmed) {
+      log.error("nothing changed!");
       return await exit(1);
     }
 
     await StorageManager.clear();
-
-    p.log.success(color.green("configuration reset!"));
-
-    await exit(0);
+    log.success(green("configuration reset!"));
+    return await exit(0);
   });

@@ -11,13 +11,7 @@ import {
   vi,
 } from "vitest";
 
-import {
-  checkForUpdate,
-  getAvailableUpdate,
-  markUpdateChecked,
-  type UpdateInfo,
-} from "~/utils/update";
-import { CacheManager } from "~/utils/cache";
+import { memoryCache } from "./helpers/memory-cache.mock.js";
 
 vi.mock("latest-version", () => ({
   default: vi.fn(),
@@ -30,8 +24,16 @@ vi.mock("package", () => ({
 
 import latestVersion from "latest-version";
 
+import { CacheManager } from "~/utils/cache";
+import {
+  checkForUpdate,
+  getAvailableUpdate,
+  markUpdateChecked,
+  type UpdateInfo,
+} from "~/utils/update";
+
 const tempDir = path.resolve(os.tmpdir(), ".noto-update-test");
-const cachePath = path.resolve(tempDir, "cache");
+const cachePath = path.resolve(tempDir, "cache.json");
 
 describe("update utilities", () => {
   beforeAll(async () => {
@@ -40,11 +42,8 @@ describe("update utilities", () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    CacheManager.storagePath = cachePath;
-    CacheManager.storage = {};
-    try {
-      await fs.unlink(cachePath);
-    } catch {}
+    memoryCache.path = cachePath;
+    memoryCache.storage = {};
   });
 
   afterAll(async () => {

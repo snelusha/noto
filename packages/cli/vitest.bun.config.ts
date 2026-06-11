@@ -11,6 +11,12 @@ export default defineConfig({
     },
   },
   test: {
-    exclude: ["test/storage.test.ts"],
+    pool: "forks",
+    experimental: {
+      viteModuleRunner: false,
+      nodeLoader: false,
+    },
+    reporters: [["default", { summary: false }]],
+    include: ["test/storage.test.ts"],
   },
 });

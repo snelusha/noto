@@ -5,8 +5,8 @@ import { exec } from "tinyexec";
 import { expect, it } from "vitest";
 
 it("noto should just work", async () => {
-  const binPath = path.resolve(__dirname, "../dist/index.js");
-  const proc = await exec(process.execPath, [binPath, "--version"], {
+  const cliPath = path.resolve(__dirname, "../src/cli.ts");
+  const proc = await exec("bun", [cliPath, "--version"], {
     throwOnError: false,
   });
   expect(proc.stderr).toBe("");

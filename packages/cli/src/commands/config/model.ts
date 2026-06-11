@@ -1,43 +1,50 @@
-import * as p from "@clack/prompts";
-import color from "picocolors";
-
-import { baseProcedure } from "~/trpc";
+import { green } from "@crustjs/style";
 
 import { models } from "~/ai/models";
-
-import { StorageManager } from "~/utils/storage";
+import { configSub } from "~/commands/config/base";
+import { withIntro } from "~/plugins/context";
+import { log } from "~/ui/log";
+import { select } from "~/ui/prompts";
+import { isCancelled } from "~/ui/cancel";
 import { exit } from "~/utils/process";
+import { StorageManager } from "~/utils/storage";
 
 import type { AvailableModels } from "~/ai/types";
 
-export const model = baseProcedure
-  .meta({
-    description: "configure model",
-  })
-  .mutation(async () => {
-    const model = await p.select({
-      message: "select a model",
-      initialValue: (await StorageManager.get()).llm?.model,
-      options: Object.keys(models).map((model) => ({
-        label: model,
-        value: model,
-      })),
-    });
+export const modelCmd = configSub
+  .sub("model")
+  .meta({ description: "configure model" })
+  .run(async () => {
+    withIntro();
 
-    if (p.isCancel(model)) {
-      p.log.error(color.red("nothing changed!"));
-      return await exit(1);
+    let model: AvailableModels;
+    try {
+      model = await select({
+        message: "select a model",
+        default: (await StorageManager.get()).llm?.model as
+          | AvailableModels
+          | undefined,
+        choices: Object.keys(models).map((name) => ({
+          label: name,
+          value: name as AvailableModels,
+        })),
+      });
+    } catch (error) {
+      if (isCancelled(error)) {
+        log.error("nothing changed!");
+        return await exit(1);
+      }
+      throw error;
     }
 
     await StorageManager.update((current) => ({
       ...current,
       llm: {
         ...current.llm,
-        model: model as AvailableModels,
+        model,
       },
     }));
 
-    p.log.success(color.green("model configured!"));
-
-    await exit(0);
+    log.success(green("model configured!"));
+    return await exit(0);
   });

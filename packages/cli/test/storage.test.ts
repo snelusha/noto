@@ -5,8 +5,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 
 import { StorageManager, cleanupLegacyStorage } from "~/utils/storage";
 
-const storageFileName = ".notorc";
-const tempDir = path.resolve(os.tmpdir(), ".noto");
+const tempDir = path.resolve(os.tmpdir(), ".noto-storage-test");
 
 describe("StorageManager", () => {
   beforeAll(async () => {
@@ -14,10 +13,16 @@ describe("StorageManager", () => {
   });
 
   beforeEach(async () => {
-    StorageManager.storagePath = path.resolve(tempDir, storageFileName);
+    StorageManager.storagePath = path.resolve(tempDir, "notorc.json");
     StorageManager.storage = {};
     try {
       await fs.unlink(StorageManager.storagePath);
+    } catch {}
+    try {
+      await fs.unlink(path.join(tempDir, ".notorc"));
+    } catch {}
+    try {
+      await fs.unlink(path.join(tempDir, ".notorc.bak"));
     } catch {}
   });
 
@@ -66,18 +71,16 @@ describe("StorageManager", () => {
     expect(storage).toEqual({});
   });
 
-  it("cleanupLegacyStorage() removes legacy cache field from storage", async () => {
+  it("cleanupLegacyStorage() migrates legacy .notorc and removes cache field", async () => {
     const legacyStorage = {
       llm: { apiKey: "test-key", model: "gpt-4" },
       lastGeneratedMessage: "test message",
       cache: { someHash: "some commit message" },
     };
 
-    await fs.mkdir(path.dirname(StorageManager.storagePath), {
-      recursive: true,
-    });
+    const legacyPath = path.join(tempDir, ".notorc");
     await fs.writeFile(
-      StorageManager.storagePath,
+      legacyPath,
       JSON.stringify(legacyStorage, null, 2),
       "utf-8",
     );
@@ -94,6 +97,7 @@ describe("StorageManager", () => {
     const fileContent = await fs.readFile(StorageManager.storagePath, "utf-8");
     const parsedFile = JSON.parse(fileContent);
     expect(parsedFile).not.toHaveProperty("cache");
+    expect(parsedFile.llmApiKey).toBe("test-key");
   });
 
   it("cleanupLegacyStorage() handles missing file gracefully", async () => {
