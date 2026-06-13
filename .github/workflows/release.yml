@@ -76,8 +76,14 @@ jobs:
         working-directory: packages/cli
         run: |
           bun run build
-          tarball=$(bun pm pack --quiet)
-          tarball_abs="$(readlink -f "$tarball")"
+          tarball="$(bun pm pack --quiet | tail -n 1)"
+          tarball_abs="$(realpath "$tarball")"
+
+          if tar -xOf "$tarball_abs" package/package.json | grep -q '"catalog:'; then
+            echo "::error ::Packed package.json still contains catalog: dependency specs"
+            exit 1
+          fi
+
           npm publish "$tarball_abs" --access public --tag ${{ steps.determine_npm_tag.outputs.npm_tag }} --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
