@@ -52,10 +52,6 @@ jobs:
       - run: bun install
         working-directory: packages/cli
 
-      - name: Build
-        working-directory: packages/cli
-        run: bun run build
-
       - name: Determine npm tag
         id: determine_npm_tag
         shell: bash
@@ -75,11 +71,15 @@ jobs:
           echo "npm_tag=$NPM_TAG" >> $GITHUB_OUTPUT
           echo "Using npm tag: $NPM_TAG"
 
-      - name: Publish to npm
+      - name: Build & Publish
         working-directory: packages/cli
-        run: bun publish --provenance --access public --tag ${{ steps.determine_npm_tag.outputs.npm_tag }}
+        run: |
+          bun run build
+          tarball=$(bun pm pack --quiet)
+          tarball_abs="$(readlink -f "$tarball")"
+          npm publish "$tarball_abs" --access public --tag ${{ steps.determine_npm_tag.outputs.npm_tag }} --provenance
         env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   homebrew:
     runs-on: ubuntu-latest
