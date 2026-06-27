@@ -101,3 +101,9 @@
 
   --radius: 0;
 }
+
+@layer base {
+  html {
+    @apply scrollbar-thin;
+  }
+}
