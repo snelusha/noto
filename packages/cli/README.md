@@ -142,6 +142,13 @@ Update noto to the latest version:
 noto upgrade
 ```
 
+Install a specific version (including a prerelease):
+
+```bash
+noto upgrade 2.0.0
+noto upgrade 2.0.0-beta.3
+```
+
 > noto will automatically detect your installation method and update itself accordingly.
 
 ## Pro Tips

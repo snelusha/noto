@@ -82,8 +82,9 @@ Control which version to upgrade to:
 ```bash
 noto upgrade --stable  # Upgrade to latest stable version
 noto upgrade --beta    # Upgrade to latest beta version
+noto upgrade 2.0.0     # Install or roll back to an exact version
 ```
 
-> **Note:** By default, the upgrade command automatically chooses the appropriate version based on your current installation. If you're on a prerelease version, it will check for the best available update (stable or beta). Use `--stable` or `--beta` to explicitly control the upgrade target.
+> **Note:** By default, the upgrade command automatically chooses the appropriate version based on your current installation. If you're on a prerelease version, it will check for the best available update (stable or beta). Use `--stable` or `--beta` to explicitly control the upgrade target, or provide an exact version as a positional argument.
 
 **Having trouble?** Check out our [troubleshooting guide](/docs/reference/faq) or [open an issue](https://github.com/snelusha/noto/issues) on GitHub.
