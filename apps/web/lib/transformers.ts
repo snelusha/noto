@@ -44,7 +44,8 @@ export const transformers = [
             __npm__: (cmd: string) => cmd,
             __pnpm__: (cmd: string) =>
               cmd.replace("npm uninstall", "pnpm remove"),
-            __bun__: (cmd: string) => cmd.replace("npm uninstall", "bun remove"),
+            __bun__: (cmd: string) =>
+              cmd.replace("npm uninstall", "bun remove"),
           },
         },
         {

@@ -19,7 +19,12 @@ export const components = {
     );
   },
   code: ({ className, ...props }: CodeBlockCommandProps) => {
-    const { __npm__: npm, __pnpm__: pnpm, __bun__: bun, __brew__: brew } = props;
+    const {
+      __npm__: npm,
+      __pnpm__: pnpm,
+      __bun__: bun,
+      __brew__: brew,
+    } = props;
     if (typeof props.children === "string") {
       return <code className={className} {...props} />;
     }

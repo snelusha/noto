@@ -17,23 +17,39 @@ import { version } from "package";
 
 import type { UpdateTag } from "~/utils/update";
 
-async function performUpgrade(targetVersion: string): Promise<void> {
+export function resolveTargetVersion(target: string): string | null {
+  return semver.valid(target.trim());
+}
+
+async function getUpdateCommand(
+  targetVersion: string,
+  isExplicitTarget: boolean = false,
+): Promise<string | null> {
   const installationInfo = await getInstallationInfo();
   if (!installationInfo.updateCommand) {
     if (installationInfo.updateMessage) {
+      if (isExplicitTarget) {
+        p.log.error(
+          `noto ${targetVersion} cannot be installed automatically. ${installationInfo.updateMessage}`,
+        );
+        await exit(1, false);
+        return null;
+      }
+
       p.log.warn(installationInfo.updateMessage);
-      return await exit(0, false);
+      await exit(0, false);
+      return null;
     }
 
     p.log.error("unable to determine update command for your installation.");
-    return await exit(1, false);
+    await exit(1, false);
+    return null;
   }
 
-  const updateCommand = installationInfo.updateCommand.replace(
-    "@latest",
-    `@${targetVersion}`,
-  );
+  return installationInfo.updateCommand.replace("@latest", `@${targetVersion}`);
+}
 
+async function performUpgrade(updateCommand: string): Promise<void> {
   const updateProcess = spawn(updateCommand, {
     stdio: "pipe",
     shell: true,
@@ -43,6 +59,7 @@ async function performUpgrade(targetVersion: string): Promise<void> {
   spin.start("upgrading noto");
   try {
     await new Promise<void>((resolve, reject) => {
+      updateProcess.on("error", reject);
       updateProcess.on("close", (code) => {
         if (code === 0) resolve();
         else reject();
@@ -51,7 +68,7 @@ async function performUpgrade(targetVersion: string): Promise<void> {
     spin.stop(color.green("noto has been updated successfully!"));
   } catch {
     p.log.error(
-      `automatic update failed. please try updating manually by running: ${installationInfo.updateCommand}`,
+      `automatic update failed. please try updating manually by running: ${updateCommand}`,
     );
     return await exit(1, false);
   }
@@ -70,6 +87,10 @@ export const upgrade = baseProcedure
   })
   .input(
     z.object({
+      target: z.string().optional().meta({
+        positional: true,
+        description: "exact version to install",
+      }),
       stable: z.boolean().optional().meta({
         description: "upgrade to the latest stable version",
       }),
@@ -84,6 +105,26 @@ export const upgrade = baseProcedure
     if (input.stable && input.beta) {
       p.log.error("please choose either --stable or --beta option, not both.");
       return await exit(1, false);
+    }
+
+    if (input.target !== undefined && (input.stable || input.beta)) {
+      p.log.error("a target version cannot be used with --stable or --beta.");
+      return await exit(1, false);
+    }
+
+    if (input.target !== undefined) {
+      const targetVersion = resolveTargetVersion(input.target);
+      if (!targetVersion) {
+        p.log.error(
+          "please provide an exact valid version, for example: noto upgrade 2.0.0",
+        );
+        return await exit(1, false);
+      }
+
+      const updateCommand = await getUpdateCommand(targetVersion, true);
+      if (!updateCommand) return;
+
+      return await performUpgrade(updateCommand);
     }
 
     const tag: UpdateTag = input.stable
@@ -110,5 +151,8 @@ export const upgrade = baseProcedure
     const upgradeVersion =
       isPrerelease || tag === "beta" ? "beta" : update.latest;
 
-    return await performUpgrade(upgradeVersion);
+    const updateCommand = await getUpdateCommand(upgradeVersion);
+    if (!updateCommand) return;
+
+    return await performUpgrade(updateCommand);
   });
