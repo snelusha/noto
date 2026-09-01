@@ -35,5 +35,10 @@
   },
   "overrides": {
     "@types/bun": "catalog:"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "^4.0.60",
+    "@ai-sdk/provider": "^4.0.9",
+    "ai": "^7.0.88"
   }
 }

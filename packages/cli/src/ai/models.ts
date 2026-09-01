@@ -1,4 +1,4 @@
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createGoogle } from "@ai-sdk/google";
 
 import { StorageManager } from "~/utils/storage";
 
@@ -6,7 +6,7 @@ import type { LanguageModelV3 } from "@ai-sdk/provider";
 
 import type { AvailableModels } from "~/ai/types";
 
-const google = createGoogleGenerativeAI({
+const google = createGoogle({
   apiKey:
     process.env.NOTO_API_KEY ||
     (await StorageManager.get()).llm?.apiKey ||
