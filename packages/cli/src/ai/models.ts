@@ -2,20 +2,17 @@ import { createGoogle } from "@ai-sdk/google";
 
 import { StorageManager } from "~/utils/storage";
 
-import type { LanguageModelV3 } from "@ai-sdk/provider";
+import type { LanguageModelV4 } from "@ai-sdk/provider";
 
 import type { AvailableModels } from "~/ai/types";
 
 const google = createGoogle({
-  apiKey:
-    process.env.NOTO_API_KEY ||
-    (await StorageManager.get()).llm?.apiKey ||
-    "api-key",
+  apiKey: process.env.NOTO_API_KEY || (await StorageManager.get()).llm?.apiKey || "api-key",
 });
 
 export const DEFAULT_MODEL: AvailableModels = "gemini-2.5-flash-lite";
 
-export const models: Record<AvailableModels, LanguageModelV3> = {
+export const models: Record<AvailableModels, LanguageModelV4> = {
   "gemini-2.5-flash": google("gemini-2.5-flash"),
   "gemini-2.5-flash-lite": google("gemini-2.5-flash-lite"),
   "gemini-2.5-pro": google("gemini-2.5-pro"),
@@ -23,6 +20,13 @@ export const models: Record<AvailableModels, LanguageModelV3> = {
   "gemini-3-pro-preview": google("gemini-3-pro-preview"),
   "gemini-3.1-flash-lite-preview": google("gemini-3.1-flash-lite-preview"),
   "gemini-3.1-pro-preview": google("gemini-3.1-pro-preview"),
+  "gemini-3.5-flash": google("gemini-3.5-flash"),
+  "gemini-3.5-flash-lite": google("gemini-3.5-flash-lite"),
+  "gemini-3.6-flash": google("gemini-3.6-flash"),
+  "gemini-3.7-flash": google("gemini-3.7-flash"),
+  "gemini-pro-latest": google("gemini-pro-latest"),
+  "gemini-flash-latest": google("gemini-flash-latest"),
+  "gemini-flash-lite-latest": google("gemini-flash-lite-latest"),
 };
 
 export const availableModels = Object.keys(models) as AvailableModels[];
@@ -47,10 +51,7 @@ export const getModel = async (model?: string) => {
 
   if (!selectedModel) {
     const storageModel = (await StorageManager.get()).llm?.model;
-    if (
-      storageModel &&
-      availableModels.includes(storageModel as AvailableModels)
-    )
+    if (storageModel && availableModels.includes(storageModel as AvailableModels))
       selectedModel = storageModel as AvailableModels;
   }
 
