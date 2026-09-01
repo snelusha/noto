@@ -357,11 +357,8 @@ export const generateCommitMessage = async (
         message: z.string(),
       }),
     }),
+    instructions: COMMIT_GENERATOR_PROMPT,
     messages: [
-      {
-        role: "system",
-        content: COMMIT_GENERATOR_PROMPT,
-      },
       {
         role: "user",
         content: dedent`
@@ -374,7 +371,6 @@ export const generateCommitMessage = async (
       `,
       },
     ],
-    allowSystemInMessages: true,
   });
 
   return output.message.trim();
@@ -393,11 +389,8 @@ export const generateCommitGuidelines = async (
         prompt: z.string(),
       }),
     }),
+    instructions: GUIDELINES_GENERATOR_PROMPT,
     messages: [
-      {
-        role: "system",
-        content: GUIDELINES_GENERATOR_PROMPT,
-      },
       {
         role: "user",
         content: dedent`
@@ -405,7 +398,6 @@ export const generateCommitGuidelines = async (
         ${commits.join("\n")}`,
       },
     ],
-    allowSystemInMessages: true,
   });
 
   return output.prompt.trim();
