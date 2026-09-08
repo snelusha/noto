@@ -17,7 +17,7 @@ import { exit } from "~/utils/process";
 
 export const checkout = gitProcedure
   .meta({
-    description: "checkout a branch",
+    description: "[deprecated] checkout a branch",
   })
   .input(
     z.object({
@@ -33,6 +33,8 @@ export const checkout = gitProcedure
     }),
   )
   .mutation(async (opts) => {
+    p.log.warn(color.yellow("noto checkout is deprecated and will be removed in v2.0.0."));
+
     const { input } = opts;
 
     const branches = await getBranches();
@@ -43,24 +45,18 @@ export const checkout = gitProcedure
 
     const currentBranch = await getCurrentBranch();
 
-    const targetBranch =
-      typeof input.create === "string" ? input.create : input.branch;
-    const createFlag =
-      input.create === true || typeof input.create === "string";
+    const targetBranch = typeof input.create === "string" ? input.create : input.branch;
+    const createFlag = input.create === true || typeof input.create === "string";
 
     if (createFlag && targetBranch) {
       if (branches.includes(targetBranch)) {
-        p.log.error(
-          `branch ${color.red(targetBranch)} already exists in the repository`,
-        );
+        p.log.error(`branch ${color.red(targetBranch)} already exists in the repository`);
         return await exit(1);
       }
 
       const result = await checkoutLocalBranch(targetBranch);
       if (!result) {
-        p.log.error(
-          `failed to create and checkout ${color.bold(targetBranch)}`,
-        );
+        p.log.error(`failed to create and checkout ${color.bold(targetBranch)}`);
         return await exit(1);
       }
 
@@ -70,9 +66,7 @@ export const checkout = gitProcedure
 
     if (targetBranch) {
       if (!branches.includes(targetBranch)) {
-        p.log.error(
-          `branch ${color.red(targetBranch)} does not exist in the repository`,
-        );
+        p.log.error(`branch ${color.red(targetBranch)} does not exist in the repository`);
 
         const createBranch = await p.confirm({
           message: `do you want to create branch ${color.green(targetBranch)}?`,
@@ -86,9 +80,7 @@ export const checkout = gitProcedure
         if (createBranch) {
           const result = await checkoutLocalBranch(targetBranch);
           if (!result) {
-            p.log.error(
-              `failed to create and checkout ${color.bold(targetBranch)}`,
-            );
+            p.log.error(`failed to create and checkout ${color.bold(targetBranch)}`);
             return await exit(1);
           }
 
@@ -100,9 +92,7 @@ export const checkout = gitProcedure
       }
 
       if (targetBranch === currentBranch) {
-        p.log.error(
-          `${color.red("already on branch")} ${color.green(targetBranch)}`,
-        );
+        p.log.error(`${color.red("already on branch")} ${color.green(targetBranch)}`);
         return await exit(1);
       }
 
@@ -125,9 +115,7 @@ export const checkout = gitProcedure
       message: "select a branch to checkout",
       options: branches.map((branch) => ({
         value: branch,
-        label: color.bold(
-          branch === currentBranch ? color.green(branch) : branch,
-        ),
+        label: color.bold(branch === currentBranch ? color.green(branch) : branch),
         hint: branch === currentBranch ? "current branch" : undefined,
       })),
       initialValue: currentBranch,
