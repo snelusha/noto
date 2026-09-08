@@ -7,7 +7,10 @@ import type { LanguageModelV4 } from "@ai-sdk/provider";
 import type { AvailableModels } from "~/ai/types";
 
 const google = createGoogle({
-  apiKey: process.env.NOTO_API_KEY || (await StorageManager.get()).llm?.apiKey || "api-key",
+  apiKey:
+    process.env.NOTO_API_KEY ||
+    (await StorageManager.get()).llm?.apiKey ||
+    "api-key",
 });
 
 export const DEFAULT_MODEL: AvailableModels = "gemini-2.5-flash-lite";
@@ -51,7 +54,10 @@ export const getModel = async (model?: string) => {
 
   if (!selectedModel) {
     const storageModel = (await StorageManager.get()).llm?.model;
-    if (storageModel && availableModels.includes(storageModel as AvailableModels))
+    if (
+      storageModel &&
+      availableModels.includes(storageModel as AvailableModels)
+    )
       selectedModel = storageModel as AvailableModels;
   }
 
