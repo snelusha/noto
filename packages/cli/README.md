@@ -124,18 +124,6 @@ noto prev --amend
 
 Note: `--preview` and `--copy` can also be used with the `noto prev` command. When using `--preview`, the message is shown without prompting for editing. Without `--preview`, the command will prompt you to edit the message before committing (or amending).
 
-Switch between branches in your git repo with an interactive prompt:
-
-```bash
-noto checkout
-```
-
-Create and switch to a new branch:
-
-```bash
-noto checkout -b new-branch-name
-```
-
 Update noto to the latest version:
 
 ```bash

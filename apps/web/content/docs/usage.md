@@ -92,20 +92,6 @@ noto init --root --generate   # Both options
 
 > **Note:** Learn more about custom prompts in [Configuration](/docs/configuration#commit-prompts).
 
-## Branch Management
-
-### Switch Branches
-
-```bash
-noto checkout
-```
-
-### Create New Branch
-
-```bash
-noto checkout -b feat/new-feature
-```
-
 ## Upgrading noto
 
 ### Check for Updates
