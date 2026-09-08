@@ -21,7 +21,6 @@ noto solves this by doing the thinking for you. It analyzes your actual code cha
 - **Git Integration** - Apply, edit, or copy messages directly
 - **Smart Defaults** - Works great out of the box, customizable when you need it
 - **Message Caching** - Reuses cached messages for the same changes to save time and API costs
-- **Branch Management** - Switch, create, and manage branches with ease
 - **Auto Upgrades** - Keep noto up to date with the latest features
 
 ## Installation
@@ -243,20 +242,6 @@ noto prev --amend -e  # or --edit
 ```
 
 > When using `--amend`, the `--edit` flag is required.
-
-### Branch Management
-
-Switch between branches:
-
-```bash
-noto checkout
-```
-
-Create a new branch:
-
-```bash
-noto checkout -b feat/new-feature
-```
 
 ### Upgrading noto
 
