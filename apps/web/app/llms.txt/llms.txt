@@ -122,34 +122,12 @@ noto prev --amend --edit # or simply: noto prev --amend -e
 
 Note: All of the flags shown above (`--apply`, `--copy`, `--type`, `--edit`) can also be used with the `noto prev` command to work with the previously generated commit message.
 
-Switch between branches in you git repo with an interactive prompt:
+## Deprecated: Branch Management
+
+> `noto checkout` is deprecated and will be removed in v2.0.0.
 
 ```bash
 noto checkout
-```
-
-To copy the selected branch to your clipboard immediately after choosing it, use the new `-c` flag:
-
-```bash
-noto branch
-```
-
-To list all branches, including remote branches, use the -r flag
-
-```bash
-noto branch -r
-```
-
-Delete local branches:
-
-```bash
-noto branch delete
-```
-
-If you need to force delete a branch, you can use the force flag:
-
-```bash
-noto branch delete --force # simply: noto branch delete -f
 ```
 
 ## Pro Tips

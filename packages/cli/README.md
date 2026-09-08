@@ -106,6 +106,10 @@ noto prev --amend --edit # or simply: noto prev --amend -e
 
 Note: All of the flags shown above (`--apply`, `--copy`, `--edit`) can also be used with the `noto prev` command to work with the previously generated commit message.
 
+### Deprecated: Branch Management
+
+> `noto checkout` is deprecated and will be removed in v2.0.0.
+
 Switch between branches in your git repo with an interactive prompt:
 
 ```bash
