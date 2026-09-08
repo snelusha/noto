@@ -17,7 +17,7 @@ import { exit } from "~/utils/process";
 
 export const checkout = gitProcedure
   .meta({
-    description: "checkout a branch",
+    description: "[deprecated] checkout a branch",
   })
   .input(
     z.object({
@@ -33,6 +33,12 @@ export const checkout = gitProcedure
     }),
   )
   .mutation(async (opts) => {
+    p.log.warn(
+      color.yellow(
+        "noto checkout is deprecated and will be removed in v2.0.0.",
+      ),
+    );
+
     const { input } = opts;
 
     const branches = await getBranches();

@@ -90,7 +90,9 @@ noto init --root --generate   # Both options
 
 > **Note:** Learn more about custom prompts in [Configuration](/docs/configuration#commit-prompts).
 
-## Branch Management
+## Deprecated: Branch Management
+
+> `noto checkout` is deprecated and will be removed in v2.0.0.
 
 ### Switch Branches
 
