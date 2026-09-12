@@ -81,6 +81,7 @@ noto will interactively ask where to create the file and whether to generate gui
 
 - **`--root`** - Create the prompt file in the git root
 - **`--generate`** - Generate prompt from existing commits (requires 5+ commits)
+- **`-m, --message`** - Provide context for generated commit-message guidelines
 
 **Examples:**
 
@@ -88,6 +89,8 @@ noto will interactively ask where to create the file and whether to generate gui
 noto init --root              # Create in git root
 noto init --generate          # Generate from commits
 noto init --root --generate   # Both options
+noto init -m "Use concise conventional commits with scopes"
+noto init --generate -m "Prefer imperative subjects and ticket IDs"
 ```
 
 > **Note:** Learn more about custom prompts in [Configuration](/docs/configuration#commit-prompts).
@@ -132,6 +135,7 @@ noto upgrade --beta    # Latest beta version
 
 - **`--root`** - Create prompt file in git root
 - **`--generate`** - Generate prompt from existing commits
+- **`-m, --message`** - Provide context for generated commit-message guidelines
 
 **Upgrade:**
 
@@ -175,8 +179,11 @@ noto prev -p
 # Amend last commit
 noto prev --amend
 
-# Set up custom prompts
+# Set up custom prompts from history
 noto init --root --generate
+
+# Set up custom prompts from a style description
+noto init -m "Use concise conventional commits with scopes"
 ```
 
 > **Tip:** Need to configure API keys or models? Check out [Configuration](/docs/configuration) for setup instructions. Using custom commit prompts? noto automatically uses your `.noto/commit-prompt.md` file.

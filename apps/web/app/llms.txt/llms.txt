@@ -122,6 +122,7 @@ noto init
 Available flags:
 - `--root` - Create the prompt file in the git root
 - `--generate` - Generate prompt from existing commits (requires 5+ commits)
+- `-m, --message` - Provide context for generated commit-message guidelines
 
 Examples:
 
@@ -129,6 +130,8 @@ Examples:
 noto init --root              # Create in git root
 noto init --generate          # Generate from commits
 noto init --root --generate   # Both options
+noto init -m "Use concise conventional commits with scopes"
+noto init --generate -m "Prefer imperative subjects and ticket IDs"
 ```
 
 noto will create a `.noto/commit-prompt.md` file that defines your commit message style. Commit this file to version control so your entire team uses consistent commit messages.
@@ -275,6 +278,7 @@ noto upgrade --beta    # Latest beta version
 ### Initialization
 - `--root` - Create prompt file in git root
 - `--generate` - Generate prompt from existing commits
+- `-m, --message` - Provide context for generated commit-message guidelines
 
 ### Upgrade
 - `--stable` - Upgrade to the latest stable version
@@ -308,8 +312,11 @@ noto prev -a
 # Amend last commit
 noto prev --amend -e
 
-# Set up custom prompts
+# Set up custom prompts from history
 noto init --root --generate
+
+# Set up custom prompts from a style description
+noto init -m "Use concise conventional commits with scopes"
 ```
 
 ## Common Issues
