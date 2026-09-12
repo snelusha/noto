@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import path from "node:path";
 
 import { z } from "zod";
 
@@ -36,6 +37,10 @@ export const init = authedGitProcedure
         description: "provide context for the commit message guidelines",
         alias: "m",
       }),
+      force: z.boolean().meta({
+        description: "overwrite an existing prompt file without confirmation",
+        alias: "f",
+      }),
       model: z.string().optional().meta({
         description: "specify the model to use",
       }),
@@ -53,7 +58,9 @@ export const init = authedGitProcedure
 
     let prompt: string | null = null;
 
-    if (existingPromptFile) {
+    if (existingPromptFile && input.force) {
+      promptFile = path.dirname(path.dirname(existingPromptFile));
+    } else if (existingPromptFile) {
       if (!existingPromptFile.startsWith(cwd)) {
         p.log.warn(
           dedent`${color.yellow("a prompt file already exists!")}
@@ -80,7 +87,7 @@ export const init = authedGitProcedure
       }
     }
 
-    if (root !== cwd && !input.root) {
+    if (!input.force && root !== cwd && !input.root) {
       const shouldUseRoot = await p.confirm({
         message: "do you want to create the prompt file in the git root?",
         initialValue: true,
