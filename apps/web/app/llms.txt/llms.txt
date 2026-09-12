@@ -123,6 +123,7 @@ Available flags:
 - `--root` - Create the prompt file in the git root
 - `--generate` - Generate prompt from existing commits (requires 5+ commits)
 - `-m, --message` - Provide context for generated commit-message guidelines
+- `-f, --force` - Overwrite an existing prompt file without confirmation
 
 Examples:
 
@@ -132,6 +133,7 @@ noto init --generate          # Generate from commits
 noto init --root --generate   # Both options
 noto init -m "Use concise conventional commits with scopes"
 noto init --generate -m "Prefer imperative subjects and ticket IDs"
+noto init --force             # Overwrite an existing prompt file
 ```
 
 noto will create a `.noto/commit-prompt.md` file that defines your commit message style. Commit this file to version control so your entire team uses consistent commit messages.
@@ -279,6 +281,7 @@ noto upgrade --beta    # Latest beta version
 - `--root` - Create prompt file in git root
 - `--generate` - Generate prompt from existing commits
 - `-m, --message` - Provide context for generated commit-message guidelines
+- `-f, --force` - Overwrite an existing prompt file without confirmation
 
 ### Upgrade
 - `--stable` - Upgrade to the latest stable version

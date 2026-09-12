@@ -82,6 +82,7 @@ noto will interactively ask where to create the file and whether to generate gui
 - **`--root`** - Create the prompt file in the git root
 - **`--generate`** - Generate prompt from existing commits (requires 5+ commits)
 - **`-m, --message`** - Provide context for generated commit-message guidelines
+- **`-f, --force`** - Overwrite an existing prompt file without confirmation
 
 **Examples:**
 
@@ -91,6 +92,7 @@ noto init --generate          # Generate from commits
 noto init --root --generate   # Both options
 noto init -m "Use concise conventional commits with scopes"
 noto init --generate -m "Prefer imperative subjects and ticket IDs"
+noto init --force             # Overwrite an existing prompt file
 ```
 
 > **Note:** Learn more about custom prompts in [Configuration](/docs/configuration#commit-prompts).
@@ -136,6 +138,7 @@ noto upgrade --beta    # Latest beta version
 - **`--root`** - Create prompt file in git root
 - **`--generate`** - Generate prompt from existing commits
 - **`-m, --message`** - Provide context for generated commit-message guidelines
+- **`-f, --force`** - Overwrite an existing prompt file without confirmation
 
 **Upgrade:**
 

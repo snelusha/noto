@@ -150,6 +150,12 @@ Combine your guidance with commit history:
 noto init --generate -m "Prefer imperative subjects and ticket IDs"
 ```
 
+Overwrite an existing prompt file without confirmations:
+
+```bash
+noto init --force
+```
+
 Update noto to the latest version:
 
 ```bash
