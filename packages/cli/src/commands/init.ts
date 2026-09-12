@@ -32,6 +32,10 @@ export const init = authedGitProcedure
       generate: z.boolean().meta({
         description: "generate a prompt file based on existing commits",
       }),
+      message: z.string().or(z.boolean()).meta({
+        description: "provide context for the commit message guidelines",
+        alias: "m",
+      }),
       model: z.string().optional().meta({
         description: "specify the model to use",
       }),
@@ -90,18 +94,43 @@ export const init = authedGitProcedure
       if (!shouldUseRoot) promptFile = cwd;
     }
 
-    const commits = await getCommits(20, true);
-    let generate = input.generate;
-
-    if (generate) {
-      if (!commits || commits.length < 5) {
-        p.log.error(
-          dedent`${color.red("not enough commits to generate a prompt file.")}
-                    ${color.gray("at least 5 commits are required.")}`,
-        );
+    let context = input.message;
+    if (typeof context === "string") {
+      context = context.trim();
+      if (!context) {
+        p.log.error(color.red("guideline context cannot be empty!"));
         return await exit(1);
       }
-    } else if (commits && commits.length >= 5) {
+    } else if (context === true) {
+      const enteredContext = await p.text({
+        message: "provide context for the commit message guidelines",
+        placeholder: "describe your project's commit message style",
+      });
+
+      if (p.isCancel(enteredContext)) {
+        p.log.error("aborted");
+        return await exit(1);
+      }
+
+      context = enteredContext.trim();
+      if (!context) {
+        p.log.error(color.red("guideline context cannot be empty!"));
+        return await exit(1);
+      }
+    }
+
+    const commits = await getCommits(20, true);
+    let generate = input.generate || typeof context === "string";
+
+    if (input.generate && (!commits || commits.length < 5)) {
+      p.log.error(
+        dedent`${color.red("not enough commits to generate a prompt file.")}
+                  ${color.gray("at least 5 commits are required.")}`,
+      );
+      return await exit(1);
+    }
+
+    if (!generate && commits && commits.length >= 5) {
       const shouldGenerate = await p.confirm({
         message:
           "do you want to generate a prompt file based on existing commits?",
@@ -118,9 +147,13 @@ export const init = authedGitProcedure
 
     const spin = p.spinner();
 
-    if (commits && generate) {
+    if (generate) {
       spin.start("generating commit message guidelines");
-      prompt = await generateCommitGuidelines(commits, input.model);
+      prompt = await generateCommitGuidelines(
+        commits ?? [],
+        input.model,
+        typeof context === "string" ? context : undefined,
+      );
       spin.stop(color.green("generated commit message guidelines!"));
     } else {
       prompt = EMPTY_TEMPLATE;

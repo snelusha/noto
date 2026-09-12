@@ -124,6 +124,32 @@ noto prev --amend
 
 Note: `--preview` and `--copy` can also be used with the `noto prev` command. When using `--preview`, the message is shown without prompting for editing. Without `--preview`, the command will prompt you to edit the message before committing (or amending).
 
+### Custom Commit Guidelines
+
+Create a `.noto/commit-prompt.md` file with commit-message guidelines for the current project:
+
+```bash
+noto init
+```
+
+Generate guidelines from existing commit history (requires at least five commits):
+
+```bash
+noto init --generate
+```
+
+You can also describe the style you want. This generates guidelines even for a new repository without commit history:
+
+```bash
+noto init -m "Use concise conventional commits with scopes"
+```
+
+Combine your guidance with commit history:
+
+```bash
+noto init --generate -m "Prefer imperative subjects and ticket IDs"
+```
+
 Update noto to the latest version:
 
 ```bash

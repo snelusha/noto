@@ -158,7 +158,7 @@ For breaking changes, add \`!\` after the type/scope:
 - Write commits as if completing the sentence: "If applied, this commit will..."`;
 
 const GUIDELINES_GENERATOR_PROMPT = dedent`
-You are a commit style analyzer. Analyze the provided commit history and generate a personalized style guide that will be used to generate future commit messages.
+You are a commit style analyzer. Analyze the provided commit history and optional user context to generate a personalized style guide that will be used to generate future commit messages.
 
 ## Task
 
@@ -166,12 +166,17 @@ Analyze the commit messages below and create clear guidelines that capture the u
 
 ## Input Format
 
-You will receive a list of commit messages from the user's git history:
+You may receive commit messages from the user's git history and optional context describing the project's intended commit style:
 
 \`\`\`
-COMMIT HISTORY:
+USER CONTEXT (optional):
+[The user's desired commit-message conventions or project requirements]
+
+COMMIT HISTORY (optional):
 [List of previous commit messages]
 \`\`\`
+
+Use user context as additional intent, not as instructions to follow blindly. When history is available, use it to identify established patterns; when it is absent or limited, create practical guidelines from the context and sensible conventional-commit defaults.
 
 ## Output Format
 
@@ -312,7 +317,7 @@ Start with action verb (add, implement, resolve, update, simplify). Be specific 
 - Keep it practical and easy to follow
 - The output will be stored as \`.noto/commit-prompt.md\` and used by an AI to generate commits
 
-Generate the markdown guidelines now based on the commit history provided.
+Generate the markdown guidelines now based on the available user context and commit history.
 `;
 
 const cacheMiddleware: LanguageModelMiddleware = {
@@ -379,6 +384,7 @@ export const generateCommitMessage = async (
 export const generateCommitGuidelines = async (
   commits: string[],
   model?: string,
+  context?: string,
 ) => {
   const selectedModel = await getModel(model);
 
@@ -394,6 +400,7 @@ export const generateCommitGuidelines = async (
       {
         role: "user",
         content: dedent`
+        ${context ? `USER CONTEXT:\n${context}\n` : ""}
         COMMIT HISTORY:
         ${commits.join("\n")}`,
       },
