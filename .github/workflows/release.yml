@@ -75,7 +75,11 @@ jobs:
       - name: Package and publish to npm
         working-directory: packages/cli
         run: |
-          TARBALL="$(bun pm pack --destination "$RUNNER_TEMP" --quiet)"
+          PACK_DIR="$RUNNER_TEMP/noto-package"
+          mkdir -p "$PACK_DIR"
+          bun pm pack --destination "$PACK_DIR" >/dev/null
+          TARBALL="$(find "$PACK_DIR" -maxdepth 1 -type f -name '*.tgz' -print -quit)"
+          test -n "$TARBALL"
           npm publish "$TARBALL" --provenance --access public --tag "${{ steps.determine_npm_tag.outputs.npm_tag }}"
 
   homebrew:
