@@ -81,6 +81,8 @@ jobs:
           TARBALL="$(find "$PACK_DIR" -maxdepth 1 -type f -name '*.tgz' -print -quit)"
           test -n "$TARBALL"
           npm publish "$TARBALL" --provenance --access public --tag "${{ steps.determine_npm_tag.outputs.npm_tag }}"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   homebrew:
     runs-on: ubuntu-latest
