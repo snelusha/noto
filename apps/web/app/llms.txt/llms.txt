@@ -234,7 +234,7 @@ noto prev
 Use with flags:
 
 ```bash
-noto prev -a  # Apply previous message
+noto prev -p  # Preview without committing or editing
 noto prev -c  # Copy previous message
 ```
 
@@ -243,10 +243,10 @@ noto prev -c  # Copy previous message
 Modify your last commit message:
 
 ```bash
-noto prev --amend -e  # or --edit
+noto prev --amend
 ```
 
-> When using `--amend`, the `--edit` flag is required.
+> Unless `--preview` is used, noto prompts you to edit the message before committing or amending.
 
 ### Upgrading noto
 
@@ -274,7 +274,8 @@ noto upgrade --beta    # Latest beta version
 - `--manual` - Write a custom commit message manually (accepts an optional message string)
 
 ### Previous Message
-- `-e, --edit` - Required with `--amend` (for `noto prev`)
+- `-p, --preview` - Preview the previous message without committing or editing
+- `-c, --copy` - Copy the previous message to the clipboard
 - `--amend` - Amend the previous commit (with `noto prev`)
 
 ### Initialization
@@ -309,11 +310,11 @@ noto -f
 # Copy for manual use
 noto -c
 
-# Reuse previous
-noto prev -a
+# Preview previous message
+noto prev -p
 
 # Amend last commit
-noto prev --amend -e
+noto prev --amend
 
 # Set up custom prompts from history
 noto init --root --generate
@@ -353,12 +354,12 @@ noto
 - Wait until you have 5+ commits, then try again
 - Use `noto init` without `--generate` for an empty template
 
-### "the --amend option requires the --edit option"
+### Amending a previous message
 
-Use both flags together:
+`noto prev --amend` prompts you to edit the previous message, then amends the last commit:
 
 ```bash
-noto prev --amend -e
+noto prev --amend
 ```
 
 ### Why does noto show the same message repeatedly?
