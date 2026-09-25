@@ -53,7 +53,7 @@
   "dependencies": {
     "@ai-sdk/google": "^4.0.60",
     "@ai-sdk/provider": "^4.0.9",
-    "@clack/prompts": "^1.2.0",
+    "@clack/prompts": "^1.8.1",
     "@trpc/server": "^11.16.0",
     "ai": "^7.0.88",
     "clipboardy": "^5.3.1",
