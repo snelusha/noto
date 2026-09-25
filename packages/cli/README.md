@@ -122,7 +122,7 @@ Amend the last commit with the previously generated commit message:
 noto prev --amend
 ```
 
-Note: `--preview` and `--copy` can also be used with the `noto prev` command. When using `--preview`, the message is shown without prompting for editing. Without `--preview`, the command will prompt you to edit the message before committing (or amending).
+Note: `--preview` and `--copy` can also be used with the `noto prev` command. When using `--preview`, the message is shown without prompting for editing. Without `--preview`, the command will prompt you to edit the message before committing (or amending). The commit-message editor supports multiple lines; press Enter twice to submit.
 
 ### Custom Commit Guidelines
 
