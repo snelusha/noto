@@ -56,7 +56,7 @@ export const prev = gitProcedure
         return await exit(1);
       }
 
-      const editedMessage = await p.text({
+      const editedMessage = await p.multiline({
         message: "edit the last generated commit message",
         initialValue: lastGeneratedMessage,
         placeholder: lastGeneratedMessage,
