@@ -72,15 +72,19 @@ jobs:
           echo "npm_tag=$NPM_TAG" >> $GITHUB_OUTPUT
           echo "Using npm tag: $NPM_TAG"
 
-      - name: Package and publish to npm
+      - name: Pack
+        id: pack
         working-directory: packages/cli
+        shell: bash
         run: |
-          PACK_DIR="$RUNNER_TEMP/noto-package"
-          mkdir -p "$PACK_DIR"
-          bun pm pack --destination "$PACK_DIR" >/dev/null
-          TARBALL="$(find "$PACK_DIR" -maxdepth 1 -type f -name '*.tgz' -print -quit)"
-          test -n "$TARBALL"
-          npm publish "$TARBALL" --provenance --access public --tag "${{ steps.determine_npm_tag.outputs.npm_tag }}"
+          set -euo pipefail
+          artifact_dir="$RUNNER_TEMP/noto-package"
+          mkdir -p "$artifact_dir"
+          tarball="$(bun pm pack --destination "$artifact_dir" --quiet)"
+          echo "tarball=$tarball" >> "$GITHUB_OUTPUT"
+
+      - name: Publish to npm
+        run: npm publish "${{ steps.pack.outputs.tarball }}" --provenance --access public --tag "${{ steps.determine_npm_tag.outputs.npm_tag }}"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
