@@ -126,7 +126,7 @@ export const noto = authedGitProcedure
 
       spin.stop(color.white(message));
 
-      const editedMessage = await p.text({
+      const editedMessage = await p.multiline({
         message: "edit the generated commit message",
         initialValue: message,
         placeholder: message,
