@@ -1,17 +1,8 @@
 {
   "name": "@snelusha/noto",
   "version": "0.0.0",
-  "license": "MIT",
-  "packageManager": "bun@1.3.8",
   "private": true,
-  "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "lint": "turbo lint",
-    "clean:workspaces": "turbo clean",
-    "clean": "git clean -xdf node_modules",
-    "format": "biome format --write"
-  },
+  "license": "MIT",
   "workspaces": {
     "packages": [
       "apps/*",
@@ -27,6 +18,19 @@
       "zod": "^4.3.6"
     }
   },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "clean:workspaces": "turbo clean",
+    "clean": "git clean -xdf node_modules",
+    "format": "biome format --write"
+  },
+  "dependencies": {
+    "@ai-sdk/google": "^4.0.60",
+    "@ai-sdk/provider": "^4.0.9",
+    "ai": "^7.0.88"
+  },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "semver": "^7.7.4",
@@ -36,9 +40,5 @@
   "overrides": {
     "@types/bun": "catalog:"
   },
-  "dependencies": {
-    "@ai-sdk/google": "^4.0.60",
-    "@ai-sdk/provider": "^4.0.9",
-    "ai": "^7.0.88"
-  }
+  "packageManager": "bun@1.4.2"
 }
