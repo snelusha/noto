@@ -31,11 +31,11 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || inputs.use-npm == true }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24.x
           registry-url: "https://registry.npmjs.org"
@@ -110,23 +110,23 @@ jobs:
           VERSION="${{ env.NOTO_VERSION }}"
           MAX_ATTEMPTS=30
           SLEEP_TIME=10
-          
+
           echo "Waiting for $PACKAGE_NAME@$VERSION to be available on npm..."
-          
+
           for i in $(seq 1 $MAX_ATTEMPTS); do
             echo "Attempt $i/$MAX_ATTEMPTS..."
-            
+
             if npm view "$PACKAGE_NAME@$VERSION" version 2>/dev/null; then
               echo "Package is available!"
               exit 0
             fi
-            
+
             if [ $i -lt $MAX_ATTEMPTS ]; then
               echo "Package not yet available, waiting ${SLEEP_TIME}s..."
               sleep $SLEEP_TIME
             fi
           done
-          
+
           echo "Package did not become available after $((MAX_ATTEMPTS * SLEEP_TIME)) seconds"
           exit 1
 
