@@ -139,8 +139,7 @@ export const init = authedGitProcedure
 
     if (!generate && commits && commits.length >= 5) {
       const shouldGenerate = await p.confirm({
-        message:
-          "do you want to generate a prompt file based on existing commits?",
+        message: "do you want to generate a prompt file based on existing commits?",
         initialValue: true,
       });
 

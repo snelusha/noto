@@ -32,14 +32,9 @@ export const isFirstCommit = async () => {
   return count === 0;
 };
 
-export const getCommits = async (
-  limit: number = 20,
-  excludeMerges: boolean = false,
-) => {
+export const getCommits = async (limit: number = 20, excludeMerges: boolean = false) => {
   try {
-    const options = excludeMerges
-      ? { maxCount: limit, "--no-merges": null }
-      : { maxCount: limit };
+    const options = excludeMerges ? { maxCount: limit, "--no-merges": null } : { maxCount: limit };
 
     const log = await git.log(options);
     return log.all.map((c) => c.message);
@@ -58,9 +53,7 @@ export const getBranch = async () => {
 
 export const getStagedFiles = async () => {
   try {
-    const stagedFiles = (await git.diff(["--cached", "--name-only"]))
-      .split("\n")
-      .filter(Boolean);
+    const stagedFiles = (await git.diff(["--cached", "--name-only"])).split("\n").filter(Boolean);
     return stagedFiles;
   } catch {
     return null;

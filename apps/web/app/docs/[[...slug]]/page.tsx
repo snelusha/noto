@@ -28,8 +28,7 @@ export async function generateMetadata({ params }: PageProps) {
 
   const doc = allDocs.find(
     (doc) =>
-      doc.slugs.length === slug.length &&
-      doc.slugs.every((value, index) => value === slug[index]),
+      doc.slugs.length === slug.length && doc.slugs.every((value, index) => value === slug[index]),
   );
   if (!doc) return notFound();
 
@@ -46,8 +45,7 @@ export default async function Page({ params }: PageProps) {
 
   const doc = allDocs.find(
     (doc) =>
-      doc.slugs.length === slug.length &&
-      doc.slugs.every((value, index) => value === slug[index]),
+      doc.slugs.length === slug.length && doc.slugs.every((value, index) => value === slug[index]),
   );
   if (!doc) return notFound();
 

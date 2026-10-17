@@ -20,9 +20,7 @@ export const prev = gitProcedure
   })
   .input(
     z.object({
-      copy: z
-        .boolean()
-        .meta({ description: "copy the last commit to clipboard", alias: "c" }),
+      copy: z.boolean().meta({ description: "copy the last commit to clipboard", alias: "c" }),
       preview: z.boolean().meta({
         description: "preview the last generated message without committing",
         alias: "p",
@@ -35,8 +33,7 @@ export const prev = gitProcedure
   .mutation(async (opts) => {
     const { input, ctx } = opts;
 
-    let lastGeneratedMessage = (await StorageManager.get())
-      .lastGeneratedMessage;
+    let lastGeneratedMessage = (await StorageManager.get()).lastGeneratedMessage;
 
     if (!lastGeneratedMessage) {
       p.log.error(color.red("no previous commit message found"));
@@ -73,9 +70,7 @@ export const prev = gitProcedure
 
     if (input.copy) {
       clipboard.writeSync(lastGeneratedMessage);
-      p.log.step(
-        color.dim("copied last generated commit message to clipboard"),
-      );
+      p.log.step(color.dim("copied last generated commit message to clipboard"));
     }
 
     if (!ctx.git.diff && !isAmend) {

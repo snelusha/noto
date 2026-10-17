@@ -12,10 +12,7 @@ export function useAnchorObserver(watch: string[], single: boolean): string[] {
         for (const entry of entries) {
           if (entry.isIntersecting && !visible.includes(entry.target.id)) {
             visible = [...visible, entry.target.id];
-          } else if (
-            !entry.isIntersecting &&
-            visible.includes(entry.target.id)
-          ) {
+          } else if (!entry.isIntersecting && visible.includes(entry.target.id)) {
             visible = visible.filter((v) => v !== entry.target.id);
           }
         }

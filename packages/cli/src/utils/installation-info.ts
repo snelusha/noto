@@ -52,8 +52,7 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       return {
         packageManager: PackageManager.UNKNOWN,
         isGlobal: false,
-        updateMessage:
-          'Running from a local git clone. Please update with "git pull".',
+        updateMessage: 'Running from a local git clone. Please update with "git pull".',
       };
     }
 
@@ -73,16 +72,12 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
         return {
           packageManager: PackageManager.HOMEBREW,
           isGlobal: true,
-          updateMessage:
-            'Installed via Homebrew. Please update with "brew upgrade".',
+          updateMessage: 'Installed via Homebrew. Please update with "brew upgrade".',
         };
       } catch {}
     }
 
-    if (
-      realPath.includes("/pnpm/dlx") ||
-      realPath.includes("/pnpm-cache/dlx")
-    ) {
+    if (realPath.includes("/pnpm/dlx") || realPath.includes("/pnpm-cache/dlx")) {
       return {
         packageManager: PackageManager.PNPX,
         isGlobal: false,
@@ -127,10 +122,7 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       };
     }
 
-    if (
-      normalizedRoot &&
-      realPath.startsWith(`${normalizedRoot}/node_modules`)
-    ) {
+    if (normalizedRoot && realPath.startsWith(`${normalizedRoot}/node_modules`)) {
       let pm = PackageManager.NPM;
       if (fs.existsSync(path.join(root, "yarn.lock"))) {
         pm = PackageManager.YARN;
@@ -145,8 +137,7 @@ export async function getInstallationInfo(): Promise<InstallationInfo> {
       return {
         packageManager: pm,
         isGlobal: false,
-        updateMessage:
-          "Locally installed. Please update via your project's package.json.",
+        updateMessage: "Locally installed. Please update via your project's package.json.",
       };
     }
 

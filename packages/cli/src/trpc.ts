@@ -101,8 +101,7 @@ export const baseProcedure = t.procedure.use((opts) => {
 
   if (meta?.intro) {
     console.log();
-    if (isPrerelease)
-      p.intro(`${color.bgGreen(color.black(" @snelusha/noto [Prerelease] "))}`);
+    if (isPrerelease) p.intro(`${color.bgGreen(color.black(" @snelusha/noto [Prerelease] "))}`);
     else p.intro(`${color.bgCyan(color.black(" @snelusha/noto "))}`);
   }
 
@@ -113,6 +112,4 @@ export const authProcedure = baseProcedure.use(authMiddleware);
 
 export const gitProcedure = baseProcedure.use(gitMiddleware);
 
-export const authedGitProcedure = baseProcedure
-  .use(authMiddleware)
-  .use(gitMiddleware);
+export const authedGitProcedure = baseProcedure.use(authMiddleware).use(gitMiddleware);

@@ -2,6 +2,8 @@ import { defineConfig } from "bunup";
 
 import { version } from "package";
 
+import type { DefineConfigItem } from "bunup";
+
 export default defineConfig({
   entry: ["src/index.ts"],
   minify: true,
@@ -11,4 +13,4 @@ export default defineConfig({
     NODE_ENV: "production",
     VERSION: version,
   },
-});
+}) as DefineConfigItem;

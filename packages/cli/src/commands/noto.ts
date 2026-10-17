@@ -41,10 +41,7 @@ export const noto = authedGitProcedure
         description: "bypass cache and force regeneration of commit message",
         alias: "f",
       }),
-      manual: z
-        .string()
-        .or(z.boolean())
-        .meta({ description: "custom commit message" }),
+      manual: z.string().or(z.boolean()).meta({ description: "custom commit message" }),
       model: z.string().optional().meta({
         description: "specify the model to use",
       }),

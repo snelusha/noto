@@ -50,26 +50,12 @@ export interface ScrollProviderProps {
   children?: React.ReactNode;
 }
 
-export function ScrollProvider({
-  containerRef,
-  children,
-}: ScrollProviderProps) {
-  return (
-    <ScrollContext.Provider value={containerRef}>
-      {children}
-    </ScrollContext.Provider>
-  );
+export function ScrollProvider({ containerRef, children }: ScrollProviderProps) {
+  return <ScrollContext.Provider value={containerRef}>{children}</ScrollContext.Provider>;
 }
 
-export function AnchorProvider({
-  toc,
-  single = true,
-  children,
-}: AnchorProviderProps) {
-  const headings = React.useMemo(
-    () => toc.map((item) => item.url.slice(1)),
-    [toc],
-  );
+export function AnchorProvider({ toc, single = true, children }: AnchorProviderProps) {
+  const headings = React.useMemo(() => toc.map((item) => item.url.slice(1)), [toc]);
 
   return (
     <TOCContext.Provider value={toc}>
@@ -80,8 +66,7 @@ export function AnchorProvider({
   );
 }
 
-export interface TOCItemProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
+export interface TOCItemProps extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
   href: string;
   onActiveChange?: (v: boolean) => void;
 }
@@ -113,12 +98,7 @@ export function TOCItem({ href, onActiveChange, ...props }: TOCItemProps) {
   });
 
   return (
-    <Link
-      ref={anchorRef}
-      data-active={isActive || undefined}
-      href={href as Route}
-      {...props}
-    >
+    <Link ref={anchorRef} data-active={isActive || undefined} href={href as Route} {...props}>
       {props.children}
     </Link>
   );

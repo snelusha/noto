@@ -58,9 +58,7 @@ export default function Page() {
                 {line.split(" ").map((word, j) => (
                   <motion.span
                     key={word}
-                    className={cn(
-                      i === 1 && j === 0 && "text-secondary-foreground",
-                    )}
+                    className={cn(i === 1 && j === 0 && "text-secondary-foreground")}
                     variants={variants}
                     transition={{ duration: 0.8 }}
                   >
@@ -92,9 +90,7 @@ export default function Page() {
           <Link href={"/docs" as Route}>[docs]</Link>
           <div className="flex items-center gap-2">
             <Link href="https://github.com/snelusha/noto">[github]</Link>
-            <Link href="https://www.npmjs.com/package/@snelusha/noto">
-              [npm]
-            </Link>
+            <Link href="https://www.npmjs.com/package/@snelusha/noto">[npm]</Link>
           </div>
         </motion.div>
       </div>

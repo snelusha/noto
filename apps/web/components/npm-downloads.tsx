@@ -65,21 +65,14 @@ export function NpmDownloads() {
   }, []);
 
   return (
-    <Link
-      className="group outline-none"
-      href="https://www.npmjs.com/package/@snelusha/noto"
-    >
+    <Link className="group outline-none" href="https://www.npmjs.com/package/@snelusha/noto">
       <div
         className={cn(
           "text-muted-foreground/80 flex items-center gap-2 font-mono transition-opacity duration-300 select-none group-hover:underline md:text-sm",
           isLoaded ? "opacity-100" : "opacity-0",
         )}
       >
-        <HugeiconsIcon
-          className="size-4"
-          icon={PackageIcon}
-          strokeWidth={1.5}
-        />
+        <HugeiconsIcon className="size-4" icon={PackageIcon} strokeWidth={1.5} />
         {formatDownloads(downloads)}
       </div>
     </Link>

@@ -36,9 +36,7 @@ export function FigmaWrapper({ className, children }: FigmaWrapperProps) {
           {dimensions.width.toFixed(2)} x {dimensions.height.toFixed(2)}
         </div>
       )}
-      {children && (
-        <div className="border-input border border-dashed">{children}</div>
-      )}
+      {children && <div className="border-input border border-dashed">{children}</div>}
     </div>
   );
 }

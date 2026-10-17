@@ -15,6 +15,9 @@
     },
     "lint": {
       "dependsOn": ["^topo"]
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"]
     }
   }
 }

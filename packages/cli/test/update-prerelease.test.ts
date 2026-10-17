@@ -1,15 +1,7 @@
 import os from "node:os";
 import path from "node:path";
 import fs from "node:fs/promises";
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { CacheManager } from "~/utils/cache";
 

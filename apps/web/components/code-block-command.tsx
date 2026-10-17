@@ -18,15 +18,10 @@ export interface CodeBlockCommandProps extends React.ComponentProps<"pre"> {
   __brew__?: string;
 }
 
-export function CodeBlockCommand({
-  className,
-  children,
-  ...props
-}: CodeBlockCommandProps) {
+export function CodeBlockCommand(props: CodeBlockCommandProps) {
   const { __npm__: npm, __pnpm__: pnpm, __bun__: bun, __brew__: brew } = props;
 
-  const [packageManager, setPackageManager] =
-    React.useState<PackageManager>("npm");
+  const [packageManager, setPackageManager] = React.useState<PackageManager>("npm");
 
   const tabs = React.useMemo(() => {
     return {
