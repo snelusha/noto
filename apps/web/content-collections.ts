@@ -89,5 +89,5 @@ const docs = defineCollection({
 });
 
 export default defineConfig({
-  collections: [docs],
+  content: [docs],
 });
