@@ -21,9 +21,7 @@ export function createStorage<TSchema extends z.ZodTypeAny>(options: {
         const raw = await fs.readFile(GenericStorageClass.storagePath, "utf-8");
         const json = raw ? JSON.parse(raw) : {};
         const result = schema.safeParse(json);
-        GenericStorageClass.storage = result.success
-          ? result.data
-          : ({} as Schema);
+        GenericStorageClass.storage = result.success ? result.data : ({} as Schema);
       } catch {
         GenericStorageClass.storage = {} as Schema;
       }

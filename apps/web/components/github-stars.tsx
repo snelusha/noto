@@ -45,9 +45,7 @@ export function GithubStars() {
       }
 
       try {
-        const response = await fetch(
-          "https://api.github.com/repos/snelusha/noto",
-        );
+        const response = await fetch("https://api.github.com/repos/snelusha/noto");
         const data = (await response.json()) as { stargazers_count: number };
         setStars(data.stargazers_count);
         setCookie(COOKIE_NAME, data.stargazers_count.toString());
@@ -59,10 +57,7 @@ export function GithubStars() {
   }, []);
 
   return (
-    <Link
-      className="group outline-none"
-      href="https://github.com/snelusha/noto"
-    >
+    <Link className="group outline-none" href="https://github.com/snelusha/noto">
       <div
         className={cn(
           "text-muted-foreground/80 flex items-center gap-2 font-mono transition-opacity duration-300 select-none group-hover:underline md:text-sm",

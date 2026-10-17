@@ -23,9 +23,7 @@ export function Sidebar() {
     return defaultValue === -1 ? 0 : defaultValue;
   }, [pathname]);
 
-  const [currentOpen, setCurrentOpen] = React.useState<number>(() =>
-    getDefaultValue(),
-  );
+  const [currentOpen, setCurrentOpen] = React.useState<number>(() => getDefaultValue());
 
   return (
     <div className="fixed start-0 top-0">
@@ -37,14 +35,10 @@ export function Sidebar() {
                 <button
                   className="flex w-full items-center gap-2 border-b px-5 py-2.5 text-start hover:underline"
                   type="button"
-                  onClick={() =>
-                    setCurrentOpen(currentOpen === index ? -1 : index)
-                  }
+                  onClick={() => setCurrentOpen(currentOpen === index ? -1 : index)}
                 >
                   <span className="grow">{content.title}</span>
-                  <motion.div
-                    animate={{ rotate: currentOpen === index ? 180 : 0 }}
-                  >
+                  <motion.div animate={{ rotate: currentOpen === index ? 180 : 0 }}>
                     <HugeiconsIcon
                       className="size-4 shrink-0 transition-transform"
                       icon={ArrowDown01Icon}

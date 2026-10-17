@@ -67,20 +67,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <Databuddy
         clientId="reT8eU-VUrTZIcCJMddD_"
         trackHashChanges={true}
         trackPerformance={false}
         enableBatching={true}
       />
-      <body
-        className={cn(
-          callingCode.variable,
-          geistSans.variable,
-          geistMono.variable,
-        )}
-      >
+      <body className={cn(callingCode.variable, geistSans.variable, geistMono.variable)}>
         {children}
       </body>
     </html>

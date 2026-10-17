@@ -115,9 +115,7 @@ export const upgrade = baseProcedure
     if (input.target !== undefined) {
       const targetVersion = resolveTargetVersion(input.target);
       if (!targetVersion) {
-        p.log.error(
-          "please provide an exact valid version, for example: noto upgrade 2.0.0",
-        );
+        p.log.error("please provide an exact valid version, for example: noto upgrade 2.0.0");
         return await exit(1, false);
       }
 
@@ -127,11 +125,7 @@ export const upgrade = baseProcedure
       return await performUpgrade(updateCommand);
     }
 
-    const tag: UpdateTag = input.stable
-      ? "stable"
-      : input.beta
-        ? "beta"
-        : "auto";
+    const tag: UpdateTag = input.stable ? "stable" : input.beta ? "beta" : "auto";
 
     const spin = p.spinner();
     spin.start("fetching latest version");
@@ -148,8 +142,7 @@ export const upgrade = baseProcedure
     );
 
     const isPrerelease = semver.prerelease(update.latest) !== null;
-    const upgradeVersion =
-      isPrerelease || tag === "beta" ? "beta" : update.latest;
+    const upgradeVersion = isPrerelease || tag === "beta" ? "beta" : update.latest;
 
     const updateCommand = await getUpdateCommand(upgradeVersion);
     if (!updateCommand) return;

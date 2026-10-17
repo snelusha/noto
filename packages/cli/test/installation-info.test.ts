@@ -52,9 +52,7 @@ describe("installation-info", () => {
 
       process.argv = ["node", "/home/user/project/src/index.ts"];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
-      vi.mocked(fs.realpathSync).mockReturnValue(
-        "/home/user/project/src/index.ts",
-      );
+      vi.mocked(fs.realpathSync).mockReturnValue("/home/user/project/src/index.ts");
       vi.mocked(gitUtils.isGitRepository).mockResolvedValue(true);
 
       const result = await getInstallationInfo();
@@ -130,10 +128,7 @@ describe("installation-info", () => {
       const fs = await import("node:fs");
       const childProcess = await import("node:child_process");
 
-      process.argv = [
-        "node",
-        "/opt/homebrew/lib/node_modules/@snelusha/noto/dist/index.js",
-      ];
+      process.argv = ["node", "/opt/homebrew/lib/node_modules/@snelusha/noto/dist/index.js"];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/opt/homebrew/lib/node_modules/@snelusha/noto/dist/index.js",
@@ -154,10 +149,7 @@ describe("installation-info", () => {
       const fs = await import("node:fs");
       const childProcess = await import("node:child_process");
 
-      process.argv = [
-        "node",
-        "/home/user/.yarn/global/node_modules/@snelusha/noto/dist/index.js",
-      ];
+      process.argv = ["node", "/home/user/.yarn/global/node_modules/@snelusha/noto/dist/index.js"];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/home/user/.yarn/global/node_modules/@snelusha/noto/dist/index.js",
@@ -170,19 +162,14 @@ describe("installation-info", () => {
 
       expect(result.packageManager).toBe(PackageManager.YARN);
       expect(result.isGlobal).toBe(true);
-      expect(result.updateCommand).toBe(
-        "yarn global add @snelusha/noto@latest",
-      );
+      expect(result.updateCommand).toBe("yarn global add @snelusha/noto@latest");
     });
 
     it("should detect bunx installation", async () => {
       const fs = await import("node:fs");
       const childProcess = await import("node:child_process");
 
-      process.argv = [
-        "node",
-        "/tmp/bunx-1000-cli@snelusha/noto/node_modules/.bin/noto",
-      ];
+      process.argv = ["node", "/tmp/bunx-1000-cli@snelusha/noto/node_modules/.bin/noto"];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/tmp/bunx-1000-cli@snelusha/noto/node_modules/@snelusha/noto/dist/index.js",
@@ -224,10 +211,7 @@ describe("installation-info", () => {
       const fs = await import("node:fs");
       const childProcess = await import("node:child_process");
 
-      process.argv = [
-        "node",
-        "/home/user/project/node_modules/@snelusha/noto/dist/index.js",
-      ];
+      process.argv = ["node", "/home/user/project/node_modules/@snelusha/noto/dist/index.js"];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/home/user/project/node_modules/@snelusha/noto/dist/index.js",
@@ -249,10 +233,7 @@ describe("installation-info", () => {
       const fs = await import("node:fs");
       const childProcess = await import("node:child_process");
 
-      process.argv = [
-        "node",
-        "/home/user/project/node_modules/@snelusha/noto/dist/index.js",
-      ];
+      process.argv = ["node", "/home/user/project/node_modules/@snelusha/noto/dist/index.js"];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/home/user/project/node_modules/@snelusha/noto/dist/index.js",
@@ -274,10 +255,7 @@ describe("installation-info", () => {
       const fs = await import("node:fs");
       const childProcess = await import("node:child_process");
 
-      process.argv = [
-        "node",
-        "/home/user/project/node_modules/@snelusha/noto/dist/index.js",
-      ];
+      process.argv = ["node", "/home/user/project/node_modules/@snelusha/noto/dist/index.js"];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/home/user/project/node_modules/@snelusha/noto/dist/index.js",
@@ -299,10 +277,7 @@ describe("installation-info", () => {
       const fs = await import("node:fs");
       const childProcess = await import("node:child_process");
 
-      process.argv = [
-        "node",
-        "/usr/local/lib/node_modules/@snelusha/noto/dist/index.js",
-      ];
+      process.argv = ["node", "/usr/local/lib/node_modules/@snelusha/noto/dist/index.js"];
       process.cwd = vi.fn().mockReturnValue("/home/user/project");
       vi.mocked(fs.realpathSync).mockReturnValue(
         "/usr/local/lib/node_modules/@snelusha/noto/dist/index.js",

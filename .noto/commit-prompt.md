@@ -32,4 +32,3 @@ Start with an imperative verb. Describe the action taken. Be specific about what
 - feat: generate prompt file from commits and support prompt file
 - fix: use correct context variable
 - feat: add init command
-

@@ -58,10 +58,7 @@ export async function checkForUpdate(
     } else {
       latest = isPrerelease
         ? (getBestAvailableUpdate(
-            ...(await Promise.all([
-              latestVersion(name, { version: "beta" }),
-              latestVersion(name),
-            ])),
+            ...(await Promise.all([latestVersion(name, { version: "beta" }), latestVersion(name)])),
           ) ?? currentVersion)
         : await latestVersion(name);
     }
@@ -111,8 +108,7 @@ export async function getAvailableUpdate(
   const update = await checkForUpdate(mark, force, tag);
   const isValid = semver.valid(update.current) && semver.valid(update.latest);
   if (isValid) {
-    if (isPrerelease && tag === "stable" && update.current !== update.latest)
-      return update;
+    if (isPrerelease && tag === "stable" && update.current !== update.latest) return update;
     const isUpToDate = semver.gte(update.current, update.latest);
     if (!isUpToDate) return update;
   }

@@ -76,11 +76,7 @@ describe("StorageManager", () => {
     await fs.mkdir(path.dirname(StorageManager.storagePath), {
       recursive: true,
     });
-    await fs.writeFile(
-      StorageManager.storagePath,
-      JSON.stringify(legacyStorage, null, 2),
-      "utf-8",
-    );
+    await fs.writeFile(StorageManager.storagePath, JSON.stringify(legacyStorage, null, 2), "utf-8");
 
     await cleanupLegacyStorage();
 

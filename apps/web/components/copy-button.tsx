@@ -10,17 +10,15 @@ import { Copy01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { cn } from "~/styles/utils";
 import { AnimatePresence } from "motion/react";
 
-export interface CopyButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+export interface CopyButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "children"
+> {
   content: string;
   delay?: number;
 }
 
-export function CopyButton({
-  className,
-  content,
-  delay = 3000,
-}: CopyButtonProps) {
+export function CopyButton({ className, content, delay = 3000 }: CopyButtonProps) {
   const [isCopied, setIsCopied] = React.useState(false);
 
   const handleCopy = React.useCallback(() => {

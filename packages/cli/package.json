@@ -2,53 +2,44 @@
   "name": "@snelusha/noto",
   "version": "2.0.0-beta.17",
   "description": "Generate clean commit messages in a snap! ✨",
+  "keywords": [
+    "cli",
+    "commit",
+    "conventional",
+    "message"
+  ],
+  "homepage": "https://noto.snelusha.dev",
+  "bugs": {
+    "url": "https://github.com/snelusha/noto/issues"
+  },
   "license": "MIT",
-  "type": "module",
   "author": {
     "name": "Sithija Nelusha Silva",
     "email": "hello@snelusha.dev",
     "url": "https://snelusha.dev"
   },
-  "homepage": "https://noto.snelusha.dev",
   "repository": {
     "type": "git",
     "url": "https://github.com/snelusha/noto.git",
     "directory": "packages/cli"
   },
-  "bugs": {
-    "url": "https://github.com/snelusha/noto/issues"
-  },
-  "llms": "https://noto.snelusha.dev/llms.txt",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "bin": {
     "noto": "dist/index.js"
-  },
-  "scripts": {
-    "build": "bunup --clean",
-    "test": "bunup --clean && vitest run",
-    "clean": "git clean -xdf .cache .turbo node_modules",
-    "typecheck": "bun check"
   },
   "files": [
     "dist",
     "bin",
     "README.md"
   ],
-  "keywords": [
-    "commit",
-    "message",
-    "conventional",
-    "cli"
-  ],
-  "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@types/node": "catalog:",
-    "@types/semver": "catalog:",
-    "bunup": "^0.16.31",
-    "typescript": "catalog:",
-    "vitest": "^4.1.5"
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "bunup --clean",
+    "test": "bunup --clean && vitest run",
+    "clean": "git clean -xdf .cache .turbo node_modules",
+    "typecheck": "bun check"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.60",
@@ -66,5 +57,14 @@
     "tinyexec": "^1.1.1",
     "trpc-cli": "^0.12.4",
     "zod": "catalog:"
-  }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "@types/semver": "catalog:",
+    "bunup": "^0.16.31",
+    "typescript": "catalog:",
+    "vitest": "^4.1.5"
+  },
+  "llms": "https://noto.snelusha.dev/llms.txt"
 }

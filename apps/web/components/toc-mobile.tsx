@@ -5,21 +5,13 @@ import * as React from "react";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ArrowRight01Icon,
-  TextAlignLeftIcon,
-} from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, TextAlignLeftIcon } from "@hugeicons/core-free-icons";
 
 import { ScrollArea, ScrollViewport } from "~/components/ui/scroll-area";
 
 import { useOnClickOutside } from "~/hooks/use-on-click-outside";
 
-import {
-  ScrollProvider,
-  TOCItem,
-  useActiveAnchor,
-  useTOC,
-} from "~/components/toc";
+import { ScrollProvider, TOCItem, useActiveAnchor, useTOC } from "~/components/toc";
 
 import { cn } from "~/styles/utils";
 
@@ -39,16 +31,9 @@ export function TOCMobile() {
   }, [toc, active]);
 
   return (
-    <div
-      ref={outsideRef}
-      className="sticky top-16 z-10 h-10 overflow-visible xl:hidden"
-    >
+    <div ref={outsideRef} className="sticky top-16 z-10 h-10 overflow-visible xl:hidden">
       <header className="bg-background/90 border-b px-6 backdrop-blur-md">
-        <button
-          className="w-full py-2.5 text-start"
-          type="button"
-          onClick={() => setOpen(!open)}
-        >
+        <button className="w-full py-2.5 text-start" type="button" onClick={() => setOpen(!open)}>
           <div className="text-muted-foreground flex items-center gap-2">
             <HugeiconsIcon
               className="size-3.5 shrink-0"
@@ -57,10 +42,7 @@ export function TOCMobile() {
             />
             <span className="shrink-0">On this page</span>
             <HugeiconsIcon
-              className={cn(
-                open ? "rotate-90" : "-ms-1.5",
-                "size-4 shrink-0 transition-all",
-              )}
+              className={cn(open ? "rotate-90" : "-ms-1.5", "size-4 shrink-0 transition-all")}
               icon={ArrowRight01Icon}
               strokeWidth={1.5}
             />

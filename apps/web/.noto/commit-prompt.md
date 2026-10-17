@@ -32,4 +32,3 @@ Start with an action verb (add, update, handle). Be specific about what was chan
 - fix(web): handle missing href
 - docs(web): add descriptions to docs
 - chore(web): update og image
-

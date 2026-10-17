@@ -21,9 +21,9 @@ export interface NavbarMobileContextProps {
   toggle: () => void;
 }
 
-export const NavbarMobileContext = React.createContext<
-  NavbarMobileContextProps | undefined
->(undefined);
+export const NavbarMobileContext = React.createContext<NavbarMobileContextProps | undefined>(
+  undefined,
+);
 
 export function NavbarMobileProvider({ children }: React.PropsWithChildren) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -43,10 +43,7 @@ export function NavbarMobileProvider({ children }: React.PropsWithChildren) {
 
 export function useNavbarMobile() {
   const context = React.useContext(NavbarMobileContext);
-  if (!context)
-    throw new Error(
-      "useNavbarMobile must be used within a NavbarMobileProvider",
-    );
+  if (!context) throw new Error("useNavbarMobile must be used within a NavbarMobileProvider");
   return context;
 }
 
@@ -54,14 +51,17 @@ export function NavbarMobileButton() {
   const { toggle } = useNavbarMobile();
 
   return (
-    <button
-      className="block overflow-hidden outline-none md:hidden"
-      type="button"
-      onClick={toggle}
-    >
+    <button className="block overflow-hidden outline-none md:hidden" type="button" onClick={toggle}>
       <HugeiconsIcon className="size-4" icon={Menu11Icon} strokeWidth={1.5} />
     </button>
   );
+}
+
+function getDefaultOpenSections(pathname: string): Set<number> {
+  const defaultValue = config.docs.contents.findIndex((content) =>
+    content.list.some((item) => item.href === pathname),
+  );
+  return defaultValue === -1 ? new Set() : new Set([defaultValue]);
 }
 
 export function NavbarMobile() {
@@ -69,25 +69,18 @@ export function NavbarMobile() {
 
   const { isOpen, toggle } = useNavbarMobile();
 
-  const [openSections, setOpenSections] = React.useState<Set<number>>(
-    new Set(),
+  const [openSections, setOpenSections] = React.useState<Set<number>>(() =>
+    getDefaultOpenSections(pathname),
   );
-
-  const getDefaultValue = React.useEffectEvent((): Set<number> => {
-    const defaultValue = config.docs.contents.findIndex((content) =>
-      content.list.some((item) => item.href === pathname),
-    );
-    return defaultValue === -1 ? new Set() : new Set([defaultValue]);
-  });
-
-  React.useEffect(() => {
-    setOpenSections(getDefaultValue());
-  }, []);
 
   const toggleSection = (index: number) =>
     setOpenSections((prev) => {
       const set = new Set(prev);
-      set.has(index) ? set.delete(index) : set.add(index);
+      if (set.has(index)) {
+        set.delete(index);
+      } else {
+        set.add(index);
+      }
       return set;
     });
 
@@ -114,9 +107,7 @@ export function NavbarMobile() {
                   onClick={() => toggleSection(index)}
                 >
                   <span className="grow">{content.title}</span>
-                  <motion.div
-                    animate={{ rotate: openSections.has(index) ? 180 : 0 }}
-                  >
+                  <motion.div animate={{ rotate: openSections.has(index) ? 180 : 0 }}>
                     <HugeiconsIcon
                       className="size-4 shrink-0 transition-transform"
                       icon={ArrowDown01Icon}

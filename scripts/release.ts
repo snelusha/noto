@@ -13,14 +13,9 @@ function error(message: string): never {
 }
 
 function bumpVersion(version: string, type: semver.ReleaseType | string) {
-  if (
-    !semver.RELEASE_TYPES.includes(type as semver.ReleaseType) &&
-    semver.valid(type)
-  ) {
+  if (!semver.RELEASE_TYPES.includes(type as semver.ReleaseType) && semver.valid(type)) {
     if (!semver.gt(type, version))
-      error(
-        `specified version is not greater than current version: ${type} <= ${version}`,
-      );
+      error(`specified version is not greater than current version: ${type} <= ${version}`);
     return type;
   }
 
@@ -38,10 +33,7 @@ async function isGitClean() {
   return status.trim().length === 0;
 }
 
-async function updatePackageVersions(
-  version: string,
-  type: semver.ReleaseType | string,
-) {
+async function updatePackageVersions(version: string, type: semver.ReleaseType | string) {
   const changedFiles: string[] = [];
 
   for (const pkg of packages) {
@@ -61,10 +53,7 @@ async function release() {
   const type = process.argv[2];
 
   if (!type) error("please specify a release type or version");
-  if (
-    !semver.RELEASE_TYPES.includes(type as semver.ReleaseType) &&
-    !semver.valid(type)
-  )
+  if (!semver.RELEASE_TYPES.includes(type as semver.ReleaseType) && !semver.valid(type))
     error(`invalid release type or version: ${type}`);
 
   if (!(await isGitClean())) error("git working directory is not clean");
