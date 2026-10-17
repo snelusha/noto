@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": ["node_modules", "bun.lock", "**/.next"],
+  "sortPackageJson": {},
+  "sortTailwindcss": {
+    "functions": ["cn", "cva"]
+  }
+}

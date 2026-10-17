@@ -21,10 +21,10 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "lint": "turbo lint",
+    "lint": "oxlint",
+    "format": "biome format --write",
     "clean:workspaces": "turbo clean",
     "clean": "git clean -xdf node_modules",
-    "format": "biome format --write",
     "typecheck": "turbo typecheck"
   },
   "dependencies": {
@@ -34,6 +34,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "oxfmt": "^0.73.0",
+    "oxlint": "^1.88.0",
     "semver": "^7.7.4",
     "turbo": "^2.9.6",
     "typescript": "^6.0.3"
