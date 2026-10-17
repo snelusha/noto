@@ -5,7 +5,9 @@
   "categories": {
     "correctness": "error"
   },
-  "rules": {},
+  "rules": {
+    "react/rules-of-hooks": "error"
+  },
   "env": {
     "builtin": true
   }

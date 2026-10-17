@@ -45,6 +45,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.3
 
       - run: bun install
         working-directory: packages/cli
