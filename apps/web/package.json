@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "clean": "git clean -xdf .cache .turbo node_modules"
+    "clean": "git clean -xdf .cache .turbo node_modules",
+    "typecheck": "bun check"
   },
   "dependencies": {
     "@content-collections/mdx": "^0.2.2",

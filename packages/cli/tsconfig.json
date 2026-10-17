@@ -3,7 +3,7 @@
     "target": "ESNext",
 
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
 
@@ -25,10 +25,9 @@
 
     "skipLibCheck": true,
 
-    "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"],
-      "package": ["package.json"]
+      "~/*": ["./src/*"],
+      "package": ["./package.json"]
     }
   }
 }

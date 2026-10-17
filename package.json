@@ -24,7 +24,8 @@
     "lint": "turbo lint",
     "clean:workspaces": "turbo clean",
     "clean": "git clean -xdf node_modules",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "typecheck": "turbo typecheck"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.60",

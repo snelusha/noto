@@ -29,7 +29,8 @@
     "build": "bunup --clean",
     "test": "bunup --clean && vitest run",
     "lint": "biome check .",
-    "clean": "git clean -xdf .cache .turbo node_modules"
+    "clean": "git clean -xdf .cache .turbo node_modules",
+    "typecheck": "bun check"
   },
   "files": [
     "dist",
