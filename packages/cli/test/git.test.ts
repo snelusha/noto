@@ -4,7 +4,7 @@ import { getStagedDiff, git } from "~/utils/git";
 
 vi.mock("simple-git", () => {
   return {
-    default: () => ({
+    simpleGit: () => ({
       diff: vi.fn(),
     }),
   };

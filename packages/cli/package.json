@@ -52,7 +52,7 @@
     "latest-version": "^9.0.0",
     "picocolors": "^1.1.1",
     "semver": "catalog:",
-    "simple-git": "^3.36.0",
+    "simple-git": "^4.0.2",
     "superjson": "^2.2.6",
     "tinyexec": "^1.1.1",
     "trpc-cli": "^0.12.4",
