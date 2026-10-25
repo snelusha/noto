@@ -41,7 +41,7 @@ export function expandCommitPrompt(
   const escaped = content.replace(/\$\$/g, sentinel);
   const withVars = escaped.replace(/\{\{\s*(branch)\s*\}\}/g, (match, name: "branch") => {
     const value = options.vars[name];
-    return value?.trim() ? value : match;
+    return value?.trim() ? value.replace(/\$/g, sentinel) : match;
   });
 
   return substituteArgs(withVars, options.args).replaceAll(sentinel, "$");

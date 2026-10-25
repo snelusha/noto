@@ -1,13 +1,22 @@
 import { describe, it, expect, vi } from "vitest";
 
-import { getStagedDiff, git } from "~/utils/git";
+import { getBranch, getStagedDiff, git } from "~/utils/git";
 
 vi.mock("simple-git", () => {
   return {
     simpleGit: () => ({
       diff: vi.fn(),
+      raw: vi.fn(),
     }),
   };
+});
+
+describe("getBranch", () => {
+  it("returns null when HEAD is unavailable", async () => {
+    vi.mocked(git.raw).mockRejectedValueOnce(new Error("ambiguous argument 'HEAD'"));
+
+    await expect(getBranch()).resolves.toBeNull();
+  });
 });
 
 describe("getStagedDiff", () => {

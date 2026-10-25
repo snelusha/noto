@@ -60,5 +60,6 @@ describe("expandCommitPrompt", () => {
   it("supports dollar escaping and resolves each placeholder once", () => {
     expect(expandCommitPrompt("$$1 $$", { args: ["value"], vars: {} })).toBe("$1 $");
     expect(expandCommitPrompt("{{branch}}: $1", { args: ["value"], vars: { branch: "main" } })).toBe("main: value");
+    expect(expandCommitPrompt("{{branch}}", { args: ["value"], vars: { branch: "feature/$1" } })).toBe("feature/$1");
   });
 });
