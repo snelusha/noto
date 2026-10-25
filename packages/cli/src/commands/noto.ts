@@ -11,7 +11,9 @@ import { authedGitProcedure } from "~/trpc";
 
 import { generateCommitMessage } from "~/ai";
 
-import { commit, push } from "~/utils/git";
+import { commit, getBranch, push } from "~/utils/git";
+import { getPositionalArgs } from "~/utils/positionals";
+import { expandCommitPrompt } from "~/utils/prompt-template";
 import { StorageManager } from "~/utils/storage";
 import { exit } from "~/utils/process";
 
@@ -112,10 +114,19 @@ export const noto = authedGitProcedure
       spin.start("generating commit message");
 
       let message = null;
+      let prompt = ctx.noto.prompt;
+
+      if (prompt !== null) {
+        const branch = await getBranch();
+        prompt = expandCommitPrompt(prompt, {
+          args: getPositionalArgs(),
+          vars: { branch: branch?.trim() || undefined },
+        });
+      }
 
       message = await generateCommitMessage(
         ctx.git.diff as string,
-        ctx.noto.prompt as string,
+        prompt ?? undefined,
         typeof context === "string" ? context : undefined,
         input.force,
         input.model,

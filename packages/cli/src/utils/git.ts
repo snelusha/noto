@@ -45,7 +45,7 @@ export const getCommits = async (limit: number = 20, excludeMerges: boolean = fa
 
 export const getBranch = async () => {
   try {
-    return git.raw(["rev-parse", "--abbrev-ref", "HEAD"]);
+    return await git.raw(["rev-parse", "--abbrev-ref", "HEAD"]);
   } catch {
     return null;
   }
