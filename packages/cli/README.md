@@ -156,6 +156,25 @@ Overwrite an existing prompt file without confirmations:
 noto init --force
 ```
 
+A commit prompt can use git context and text passed after `--`. For example, to generate ticket-prefixed commit messages, pass the ticket after `--` and use it with the branch context:
+
+```markdown
+Use this exact commit format:
+
+<TICKET>: <type>(<scope>): <description>
+
+Current branch: {{branch}}
+Ticket: ${1:-none}
+
+Use the provided ticket at the beginning of the commit message. If the ticket is `none`, omit the ticket prefix.
+```
+
+```bash
+noto -- PROJ-123
+```
+
+For example, on `feat/parser-race-condition`, noto can generate `PROJ-123: fix(parser): prevent race condition`.
+
 Update noto to the latest version:
 
 ```bash
